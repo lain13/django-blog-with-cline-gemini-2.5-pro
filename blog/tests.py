@@ -66,3 +66,45 @@ class PostListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue('posts' in response.context)
         self.assertEqual(len(response.context['posts']), 5)
+
+
+class PostDetailViewTest(TestCase):
+    """Post 상세 뷰 관련 테스트"""
+
+    def setUp(self):
+        """테스트를 위한 데이터 사전 생성"""
+        # Given
+        self.post = Post.objects.create(
+            title="A good title",
+            content="Nice body content"
+        )
+
+    def test_view_url_exists_at_desired_location(self):
+        """상세 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
+        # When
+        response = self.client.get(f'/post/{self.post.pk}/')
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        """'post_detail' URL name으로 뷰에 접근 가능한지 테스트"""
+        # When
+        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """뷰가 올바른 템플릿을 사용하는지 테스트"""
+        # When
+        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/post_detail.html')
+
+    def test_view_displays_correct_content(self):
+        """뷰가 포스트의 제목과 내용을 올바르게 표시하는지 테스트"""
+        # When
+        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        # Then
+        self.assertContains(response, self.post.title)
+        self.assertContains(response, self.post.content)
