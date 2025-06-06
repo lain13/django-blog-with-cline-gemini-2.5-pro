@@ -1,7 +1,8 @@
 import time
 from django.test import TestCase
 from django.urls import reverse
-from .models import Post
+from .models import Post, Comment
+from .forms import CommentForm
 
 class PostModelTest(TestCase):
     """Post 모델 관련 테스트"""
@@ -130,6 +131,32 @@ class PostDetailViewTest(TestCase):
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.content)
 
+    def test_comment_form_is_displayed(self):
+        """상세 페이지에 댓글 폼이 표시되는지 테스트"""
+        # When
+        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        # Then
+        self.assertIsInstance(response.context['comment_form'], CommentForm)
+
+    def test_comment_creation(self):
+        """새로운 댓글을 성공적으로 생성하는지 테스트"""
+        # Given
+        initial_comment_count = self.post.comments.count()
+        comment_data = {
+            'author': 'Test Author',
+            'text': 'A new comment'
+        }
+
+        # When
+        response = self.client.post(reverse('add_comment_to_post', kwargs={'pk': self.post.pk}), data=comment_data)
+
+        # Then
+        self.assertEqual(self.post.comments.count(), initial_comment_count + 1)
+        new_comment = self.post.comments.last()
+        self.assertEqual(new_comment.author, 'Test Author')
+        self.assertEqual(new_comment.text, 'A new comment')
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
+
 
 class PostCreateViewTest(TestCase):
     """Post 생성 뷰 관련 테스트"""
@@ -223,6 +250,55 @@ class PostUpdateViewTest(TestCase):
         self.post.refresh_from_db()
         self.assertEqual(self.post.title, 'Updated Title')
         self.assertEqual(self.post.content, 'Updated Content')
+
+
+class CommentModelTest(TestCase):
+    """Comment 모델 관련 테스트"""
+
+    def setUp(self):
+        """테스트를 위한 데이터 사전 생성"""
+        self.post = Post.objects.create(
+            title="Test Post for Comment",
+            content="Some content"
+        )
+
+    def test_comment_model_can_be_created(self):
+        """Comment 모델 인스턴스가 올바르게 생성되는지 테스트"""
+        # Given
+        comment = Comment.objects.create(
+            post=self.post,
+            author="Cline",
+            text="This is a test comment."
+        )
+
+        # When
+        saved_comment = Comment.objects.get(pk=comment.pk)
+
+        # Then
+        self.assertEqual(saved_comment.post, self.post)
+        self.assertEqual(saved_comment.author, "Cline")
+        self.assertEqual(saved_comment.text, "This is a test comment.")
+        self.assertIsNotNone(saved_comment.created_at)
+
+
+class CommentFormTest(TestCase):
+    """CommentForm 관련 테스트"""
+
+    def test_form_is_valid_with_data(self):
+        """폼에 유효한 데이터가 입력되었을 때 폼이 유효한지 테스트"""
+        # Given
+        form_data = {'text': 'A valid comment'}
+        form = CommentForm(data=form_data)
+        # Then
+        self.assertTrue(form.is_valid())
+
+    def test_form_is_invalid_without_data(self):
+        """폼에 데이터가 입력되지 않았을 때 폼이 유효하지 않은지 테스트"""
+        # Given
+        form = CommentForm(data={})
+        # Then
+        self.assertFalse(form.is_valid())
+        self.assertIn('text', form.errors)
 
 
 class PostDeleteViewTest(TestCase):
