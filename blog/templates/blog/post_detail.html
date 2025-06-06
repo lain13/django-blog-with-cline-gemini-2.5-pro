@@ -6,5 +6,9 @@
 <body>
     <h1>{{ post.title }}</h1>
     <p>{{ post.content }}</p>
+    <hr>
+    <a href="{% url 'post_list' %}">목록으로</a>
+    <a href="{% url 'post_edit' pk=post.pk %}">수정하기</a>
+    <a href="{% url 'post_delete' pk=post.pk %}">삭제하기</a>
 </body>
 </html>
