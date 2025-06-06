@@ -155,3 +155,50 @@ class PostCreateViewTest(TestCase):
 
         # 3. 생성 후 상세 페이지로 리다이렉트되는지 확인
         self.assertRedirects(response, reverse('post_detail', kwargs={'pk': new_post.pk}))
+
+
+class PostUpdateViewTest(TestCase):
+    """Post 수정 뷰 관련 테스트"""
+
+    def setUp(self):
+        """테스트를 위한 데이터 사전 생성"""
+        self.post = Post.objects.create(
+            title='Original Title',
+            content='Original Content'
+        )
+        self.url = reverse('post_edit', kwargs={'pk': self.post.pk})
+
+    def test_view_url_exists_at_desired_location(self):
+        """수정 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
+        # When
+        response = self.client.get(self.url)
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """뷰가 올바른 템플릿을 사용하는지 테스트"""
+        # When
+        response = self.client.get(self.url)
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/post_form.html')
+
+    def test_post_update(self):
+        """포스트를 성공적으로 수정하는지 테스트"""
+        # Given
+        updated_data = {
+            'title': 'Updated Title',
+            'content': 'Updated Content'
+        }
+
+        # When
+        response = self.client.post(self.url, data=updated_data)
+
+        # Then
+        # 1. 수정 후 상세 페이지로 리다이렉트되는지 확인
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
+
+        # 2. 포스트 내용이 실제로 수정되었는지 확인
+        self.post.refresh_from_db()
+        self.assertEqual(self.post.title, 'Updated Title')
+        self.assertEqual(self.post.content, 'Updated Content')
