@@ -108,3 +108,50 @@ class PostDetailViewTest(TestCase):
         # Then
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.content)
+
+
+class PostCreateViewTest(TestCase):
+    """Post 생성 뷰 관련 테스트"""
+
+    def setUp(self):
+        """테스트를 위한 데이터 사전 생성"""
+        self.url = reverse('post_new')
+
+    def test_view_url_exists_at_desired_location(self):
+        """생성 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
+        # When
+        response = self.client.get(self.url)
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """뷰가 올바른 템플릿을 사용하는지 테스트"""
+        # When
+        response = self.client.get(self.url)
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/post_form.html')
+
+    def test_post_creation(self):
+        """새로운 포스트를 성공적으로 생성하는지 테스트"""
+        # Given
+        initial_post_count = Post.objects.count()
+        post_data = {
+            'title': 'New Test Title',
+            'content': 'New Test Content'
+        }
+
+        # When
+        response = self.client.post(self.url, data=post_data)
+
+        # Then
+        # 1. 포스트 개수가 1 증가했는지 확인
+        self.assertEqual(Post.objects.count(), initial_post_count + 1)
+
+        # 2. 새로 생성된 포스트의 내용이 올바른지 확인
+        new_post = Post.objects.latest('id')
+        self.assertEqual(new_post.title, 'New Test Title')
+        self.assertEqual(new_post.content, 'New Test Content')
+
+        # 3. 생성 후 상세 페이지로 리다이렉트되는지 확인
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': new_post.pk}))
