@@ -25,4 +25,4 @@
 ## 4. 프레임워크 (Framework)
 
 - **Name**: Django
-- **Version**: 4.x (latest stable)
+- **Version**: 5.2.x (latest stable)
