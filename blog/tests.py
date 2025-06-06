@@ -301,6 +301,52 @@ class CommentFormTest(TestCase):
         self.assertIn('text', form.errors)
 
 
+class SearchViewTest(TestCase):
+    """검색 뷰 관련 테스트"""
+
+    def setUp(self):
+        """테스트를 위한 데이터 사전 생성"""
+        Post.objects.create(title="Apple Banana", content="Content one")
+        Post.objects.create(title="Second Post", content="Content with Apple")
+        Post.objects.create(title="Third Banana", content="Content three")
+
+    def test_search_view_url_exists(self):
+        """검색 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
+        response = self.client.get(reverse('search'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_search_view_uses_correct_template(self):
+        """검색 뷰가 올바른 템플릿을 사용하는지 테스트"""
+        response = self.client.get(reverse('search'))
+        self.assertTemplateUsed(response, 'blog/search_results.html')
+
+    def test_search_by_title(self):
+        """제목으로 검색이 올바르게 동작하는지 테스트"""
+        response = self.client.get(reverse('search'), {'q': 'Apple'})
+        self.assertContains(response, "Apple Banana")
+        self.assertContains(response, "Second Post") # Content에도 Apple이 있지만, OR 조건이므로 포함되어야 함
+        self.assertNotContains(response, "Third Banana")
+
+    def test_search_by_content(self):
+        """내용으로 검색이 올바르게 동작하는지 테스트"""
+        response = self.client.get(reverse('search'), {'q': 'Content one'})
+        self.assertContains(response, "Apple Banana")
+        self.assertNotContains(response, "Second Post")
+        self.assertNotContains(response, "Third Banana")
+
+    def test_search_no_results(self):
+        """검색 결과가 없을 때를 올바르게 처리하는지 테스트"""
+        response = self.client.get(reverse('search'), {'q': 'NonExistentTerm'})
+        self.assertContains(response, "No posts found.")
+        self.assertNotContains(response, "Apple Banana")
+
+    def test_search_empty_query(self):
+        """검색어가 비어있을 때 모든 포스트를 보여주지 않는지 테스트"""
+        response = self.client.get(reverse('search'), {'q': ''})
+        self.assertContains(response, "Please enter a search term.")
+        self.assertNotIn('posts', response.context)
+
+
 class PostDeleteViewTest(TestCase):
     """Post 삭제 뷰 관련 테스트"""
 

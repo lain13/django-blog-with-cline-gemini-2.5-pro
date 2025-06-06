@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from .forms import PostForm, CommentForm
+from django.db.models import Q
 
 def post_list(request):
     posts = Post.objects.all()
@@ -51,3 +52,21 @@ def add_comment_to_post(request, pk):
             comment.save()
             return redirect('post_detail', pk=post.pk)
     return redirect('post_detail', pk=post.pk) # GET 요청 등 비정상 접근 시 상세페이지로 리다이렉트
+
+def search(request):
+    query = request.GET.get('q')
+    context = {'query': query}
+
+    if not query:
+        context['message'] = "Please enter a search term."
+        return render(request, 'blog/search_results.html', context)
+
+    results = Post.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query)
+    )
+
+    if not results.exists():
+        context['message'] = "No posts found."
+    
+    context['posts'] = results
+    return render(request, 'blog/search_results.html', context)

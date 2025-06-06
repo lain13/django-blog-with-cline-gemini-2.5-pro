@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Blog</title>
+    <title>Search Results</title>
 </head>
 <body>
-    <h1>Blog Posts</h1>
-    <a href="{% url 'post_new' %}">New Post</a>
-
-    <form action="{% url 'search' %}" method="get">
-        <input type="text" name="q" placeholder="Search Posts...">
-        <button type="submit">Search</button>
-    </form>
+    <h1>Search Results for "{{ query }}"</h1>
+    <a href="{% url 'post_list' %}">Back to Post List</a>
     <hr>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
 
     <ul>
         {% for post in posts %}
@@ -20,6 +19,10 @@
                 <p>{{ post.content }}</p>
                 <small>Created: {{ post.created_at }} | Updated: {{ post.updated_at }}</small>
             </li>
+        {% empty %}
+            {% if not message %}
+                <p>No posts found.</p>
+            {% endif %}
         {% endfor %}
     </ul>
 </body>
