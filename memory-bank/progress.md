@@ -2,8 +2,8 @@
 
 ## 1. 현재 상태 (Current Status)
 
-- **진행률**: 99%
-- **현재 단계**: 10. 신규 기능 개발 (댓글)
+- **진행률**: 99.5%
+- **현재 단계**: 11. 신규 기능 개발 (검색)
 
 ## 2. 완료된 작업 (What Works)
 
@@ -17,13 +17,10 @@
 - **8. 프로젝트 문서화 (Documentation)**
 - **9. 버그 수정 및 안정화 (Bug Fixing & Stabilization)**
 - **10. Post 수정일 표시 (TDD)**
+- **11. 댓글 기능 추가 (TDD)**
 
 ## 3. 남은 작업 (What's Left to Build)
 
-- **Phase 2: 댓글 기능 추가**:
-    - `Comment` 모델 및 `CommentForm` 정의
-    - 댓글 생성/조회 관련 View, URL, Template 구현
-    - 댓글 기능 TDD 테스트
 - **Phase 3: 검색 기능 추가**:
     - 제목/내용 기반 검색 View, URL, Template 구현
     - 검색 기능 TDD 테스트
