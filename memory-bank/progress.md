@@ -18,13 +18,18 @@
 
 ## 3. 남은 작업 (What's Left to Build)
 
-- **템플릿 링크 전체 점검 및 수정**:
-    - `post_detail.html`: 목록, 수정, 삭제 링크 추가
-    - `post_form.html`: 취소 링크 추가
-    - `post_confirm_delete.html`: 취소 링크 추가
-- 수정된 기능의 최종 확인 및 테스트
+- **Phase 1: Post 수정일 추가**:
+    - `Post` 모델에 `modified_at` 필드 추가 및 마이그레이션
+    - `modified_at` 자동 업데이트 기능 테스트
+    - 템플릿에 수정일 표시
+- **Phase 2: 댓글 기능 추가**:
+    - `Comment` 모델 및 `CommentForm` 정의
+    - 댓글 생성/조회 관련 View, URL, Template 구현
+    - 댓글 기능 TDD 테스트
+- **Phase 3: 검색 기능 추가**:
+    - 제목/내용 기반 검색 View, URL, Template 구현
+    - 검색 기능 TDD 테스트
 
 ## 4. 알려진 이슈 (Known Issues)
 
-- **[해결됨]** `techContext.md` 및 `.clinerules/environment.md`의 Django 버전 정보가 실제와 달랐음.
-- **[해결됨]** `post_list.html`에 새 글 작성 및 상세 페이지 링크 누락.
+- 현재 알려진 이슈 없음.

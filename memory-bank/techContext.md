@@ -3,7 +3,7 @@
 ## 1. 기술 스택 (Technology Stack)
 
 - **언어 (Language)**: Python 3.x
-- **프레임워크 (Framework)**: Django 4.x
+- **프레임워크 (Framework)**: Django 5.2.x
 - **데이터베이스 (Database)**: SQLite
 - **버전 관리 (Version Control)**: Git
 

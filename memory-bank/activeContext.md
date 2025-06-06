@@ -2,16 +2,18 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **템플릿 링크 수정 및 안정화 (Template Link Fixing & Stabilization)**
-- 사용자 경험의 일관성을 위해 각 템플릿에 누락된 네비게이션 링크를 추가하고, 관련 문서를 최신 상태로 유지한다.
+- **신규 기능 개발 (New Feature Development)**
+- Post 수정일, 댓글, 검색 기능을 TDD 방법론에 따라 순차적으로 개발한다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- **`.clinerules/environment.md` 업데이트**: Django 버전을 `4.x`에서 `5.2.x`로 수정하여 `techContext.md`와 일치시킴.
+- **`memory-bank/projectbrief.md` 업데이트**: 신규 기능 요구사항(댓글, 검색) 추가.
 
 ## 3. 다음 단계 (Next Steps)
 
-1.  `progress.md` 파일 업데이트하여 현재 상태 반영.
-2.  `blog/tests.py` 코드 검토.
-3.  `post_detail.html`, `post_form.html`, `post_confirm_delete.html` 템플릿에 누락된 링크 추가.
-4.  수정된 기능 최종 확인.
+1.  **`memory-bank/progress.md` 업데이트**: 신규 기능 개발 계획 반영.
+2.  **Phase 1: Post 수정일 추가**:
+    - `blog/models.py`의 `Post` 모델에 `modified_at` 필드 추가.
+    - 데이터베이스 마이그레이션 실행.
+    - `modified_at` 필드 검증 테스트 작성 및 실행.
+    - 템플릿에 수정일 표시.
