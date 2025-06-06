@@ -5,11 +5,13 @@
 </head>
 <body>
     <h1>Blog Posts</h1>
+    <a href="{% url 'post_new' %}">New Post</a>
     <ul>
         {% for post in posts %}
             <li>
-                <h2><a href="">{{ post.title }}</a></h2>
+                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
                 <p>{{ post.content }}</p>
+                <small>Created: {{ post.created_at }} | Updated: {{ post.updated_at }}</small>
             </li>
         {% endfor %}
     </ul>

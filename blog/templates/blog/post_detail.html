@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>{{ post.title }}</h1>
+    <p><small>Created: {{ post.created_at }} | Updated: {{ post.updated_at }}</small></p>
     <p>{{ post.content }}</p>
     <hr>
     <a href="{% url 'post_list' %}">목록으로</a>

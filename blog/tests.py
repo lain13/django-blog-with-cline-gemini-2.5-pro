@@ -1,3 +1,4 @@
+import time
 from django.test import TestCase
 from django.urls import reverse
 from .models import Post
@@ -21,6 +22,26 @@ class PostModelTest(TestCase):
         self.assertEqual(saved_post.content, "Test Content")
         self.assertIsNotNone(saved_post.created_at)
         self.assertIsNotNone(saved_post.updated_at)
+
+    def test_updated_at_is_updated_on_save(self):
+        """게시글이 저장될 때마다 updated_at 필드가 업데이트되는지 테스트"""
+        # Given
+        post = Post.objects.create(
+            title="Initial Title",
+            content="Initial Content"
+        )
+        first_updated_at = post.updated_at
+
+        # When
+        # 게시글을 수정하고 저장
+        time.sleep(0.001) # 시간차를 만들기 위해 약간의 딜레이를 줍니다.
+        post.title = "Updated Title"
+        post.save()
+        post.refresh_from_db()
+        second_updated_at = post.updated_at
+
+        # Then
+        self.assertGreater(second_updated_at, first_updated_at)
 
 
 class PostListViewTest(TestCase):
