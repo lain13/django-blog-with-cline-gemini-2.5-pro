@@ -2,17 +2,22 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **사용자 요청으로 작업 중단 및 PLAN MODE 전환 대기**
-- 프로젝트 초기 설정 단계 진행 중단됨.
+- **2. Post 모델 개발 (TDD)**
+- `Post` 모델이 존재하는지 확인하는 테스트 코드 작성
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- `git init`으로 Git 저장소 초기화
-- `.gitignore` 파일 생성 및 커밋
-- `python -m venv venv`로 가상 환경 생성
-- Django 설치 시도 중 오류 발생 및 해결 시도
+- **프로젝트 초기 설정 완료**
+    - `.clinerules` 정의 및 생성
+    - 가상 환경 설정 및 Django 설치 완료
+    - `requirements.txt` 생성
+    - `config` 프로젝트 및 `blog` 앱 생성
+    - 모든 변경사항 Git 커밋 완료
 
 ## 3. 다음 단계 (Next Steps)
 
-1.  사용자 요청에 따라 PLAN MODE로 전환.
-2.  PLAN MODE에서 다음 작업 계획 논의.
+1.  `blog/tests.py`에 `Post` 모델 존재 여부를 확인하는 테스트 코드 작성 (Red)
+2.  `blog/models.py`에 `Post` 모델 구현 (Green)
+3.  `config/settings.py`에 `blog` 앱 등록
+4.  `makemigrations` 및 `migrate` 실행
+5.  테스트 실행하여 통과 확인
