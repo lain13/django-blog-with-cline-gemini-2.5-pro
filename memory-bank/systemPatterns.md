@@ -39,3 +39,26 @@ graph TD
 
     URL --> URL_Resolver
     Rendered_HTML --> Response
+
+## 4. 데이터베이스 스키마 (Database Schema)
+
+```mermaid
+erDiagram
+    POST {
+        int id PK
+        varchar(200) title
+        text content
+        datetime created_at
+        datetime updated_at
+    }
+
+    COMMENT {
+        int id PK
+        varchar(200) author
+        text text
+        datetime created_at
+        int post_id FK
+    }
+
+    POST ||--o{ COMMENT : "has"
+```
