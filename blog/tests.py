@@ -1,8 +1,24 @@
 import time
 from django.test import TestCase
 from django.urls import reverse
-from .models import Post, Comment
-from .forms import CommentForm
+from .models import Post, Comment, Tag
+from .forms import CommentForm, PostForm
+
+
+class TagModelTest(TestCase):
+    """Tag 모델 관련 테스트"""
+
+    def test_tag_model_can_be_created(self):
+        """Tag 모델 인스턴스가 올바르게 생성되는지 테스트"""
+        # Given
+        tag = Tag.objects.create(name="django")
+
+        # When
+        saved_tag = Tag.objects.get(pk=tag.pk)
+
+        # Then
+        self.assertEqual(saved_tag.name, "django")
+
 
 class PostModelTest(TestCase):
     """Post 모델 관련 테스트"""
@@ -43,6 +59,21 @@ class PostModelTest(TestCase):
 
         # Then
         self.assertGreater(second_updated_at, first_updated_at)
+
+    def test_post_can_have_tags(self):
+        """Post 모델이 여러 Tag를 가질 수 있는지 테스트"""
+        # Given
+        post = Post.objects.create(title="Post with tags", content="Content")
+        tag1 = Tag.objects.create(name="tag1")
+        tag2 = Tag.objects.create(name="tag2")
+
+        # When
+        post.tags.add(tag1, tag2)
+
+        # Then
+        self.assertEqual(post.tags.count(), 2)
+        self.assertIn(tag1, post.tags.all())
+        self.assertIn(tag2, post.tags.all())
 
 
 class PostListViewTest(TestCase):
@@ -89,6 +120,19 @@ class PostListViewTest(TestCase):
         self.assertTrue('posts' in response.context)
         self.assertEqual(len(response.context['posts']), 5)
 
+    def test_view_displays_tags(self):
+        """포스트 목록에 태그가 표시되는지 테스트"""
+        # Given
+        post = Post.objects.first()
+        tag1 = Tag.objects.create(name="tag1")
+        post.tags.add(tag1)
+
+        # When
+        response = self.client.get(reverse('post_list'))
+
+        # Then
+        self.assertContains(response, "tag1")
+
 
 class PostDetailViewTest(TestCase):
     """Post 상세 뷰 관련 테스트"""
@@ -130,6 +174,20 @@ class PostDetailViewTest(TestCase):
         # Then
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.content)
+
+    def test_view_displays_tags(self):
+        """상세 뷰에 태그가 표시되는지 테스트"""
+        # Given
+        tag1 = Tag.objects.create(name="tag1")
+        tag2 = Tag.objects.create(name="tag2")
+        self.post.tags.add(tag1, tag2)
+
+        # When
+        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+
+        # Then
+        self.assertContains(response, "tag1")
+        self.assertContains(response, "tag2")
 
     def test_comment_form_is_displayed(self):
         """상세 페이지에 댓글 폼이 표시되는지 테스트"""
@@ -186,7 +244,8 @@ class PostCreateViewTest(TestCase):
         initial_post_count = Post.objects.count()
         post_data = {
             'title': 'New Test Title',
-            'content': 'New Test Content'
+            'content': 'New Test Content',
+            'tags': ''
         }
 
         # When
@@ -202,6 +261,29 @@ class PostCreateViewTest(TestCase):
         self.assertEqual(new_post.content, 'New Test Content')
 
         # 3. 생성 후 상세 페이지로 리다이렉트되는지 확인
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': new_post.pk}))
+
+    def test_post_creation_with_tags(self):
+        """태그와 함께 새로운 포스트를 성공적으로 생성하는지 테스트"""
+        # Given
+        initial_post_count = Post.objects.count()
+        post_data = {
+            'title': 'Post with Tags',
+            'content': 'Content for post with tags',
+            'tags': 'django, tdd, python'
+        }
+
+        # When
+        response = self.client.post(self.url, data=post_data)
+
+        # Then
+        self.assertEqual(Post.objects.count(), initial_post_count + 1)
+        new_post = Post.objects.latest('id')
+        self.assertEqual(new_post.tags.count(), 3)
+        tag_names = {tag.name for tag in new_post.tags.all()}
+        self.assertIn('django', tag_names)
+        self.assertIn('tdd', tag_names)
+        self.assertIn('python', tag_names)
         self.assertRedirects(response, reverse('post_detail', kwargs={'pk': new_post.pk}))
 
 
@@ -236,7 +318,8 @@ class PostUpdateViewTest(TestCase):
         # Given
         updated_data = {
             'title': 'Updated Title',
-            'content': 'Updated Content'
+            'content': 'Updated Content',
+            'tags': ''
         }
 
         # When
@@ -250,6 +333,30 @@ class PostUpdateViewTest(TestCase):
         self.post.refresh_from_db()
         self.assertEqual(self.post.title, 'Updated Title')
         self.assertEqual(self.post.content, 'Updated Content')
+
+    def test_post_update_with_tags(self):
+        """태그를 포함하여 포스트를 성공적으로 수정하는지 테스트"""
+        # Given
+        tag1 = Tag.objects.create(name="initial_tag")
+        self.post.tags.add(tag1)
+        
+        updated_data = {
+            'title': 'Updated Title',
+            'content': 'Updated Content',
+            'tags': 'new_tag, another_tag'
+        }
+
+        # When
+        response = self.client.post(self.url, data=updated_data)
+
+        # Then
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
+        self.post.refresh_from_db()
+        tag_names = {tag.name for tag in self.post.tags.all()}
+        self.assertEqual(self.post.tags.count(), 2)
+        self.assertIn('new_tag', tag_names)
+        self.assertIn('another_tag', tag_names)
+        self.assertNotIn('initial_tag', tag_names)
 
 
 class CommentModelTest(TestCase):
@@ -279,6 +386,35 @@ class CommentModelTest(TestCase):
         self.assertEqual(saved_comment.author, "Cline")
         self.assertEqual(saved_comment.text, "This is a test comment.")
         self.assertIsNotNone(saved_comment.created_at)
+
+
+class PostFormTest(TestCase):
+    """PostForm 관련 테스트"""
+
+    def test_form_has_tags_field(self):
+        """폼에 tags 필드가 존재하는지 테스트"""
+        form = PostForm()
+        self.assertIn('tags', form.fields)
+
+    def test_form_tags_are_optional(self):
+        """태그 없이도 폼이 유효한지 테스트"""
+        form_data = {'title': 'Test Title', 'content': 'Test Content', 'tags': ''}
+        form = PostForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_form_populates_tags_for_existing_post(self):
+        """기존 포스트의 태그를 폼에 올바르게 채우는지 테스트"""
+        # Given
+        post = Post.objects.create(title="Test Post", content="Content")
+        tag1 = Tag.objects.create(name="django")
+        tag2 = Tag.objects.create(name="python")
+        post.tags.add(tag1, tag2)
+
+        # When
+        form = PostForm(instance=post)
+
+        # Then
+        self.assertEqual(form.initial.get('tags'), 'django, python')
 
 
 class CommentFormTest(TestCase):
@@ -345,6 +481,63 @@ class SearchViewTest(TestCase):
         response = self.client.get(reverse('search'), {'q': ''})
         self.assertContains(response, "Please enter a search term.")
         self.assertNotIn('posts', response.context)
+
+
+class TagFilteredListViewTest(TestCase):
+    """태그 필터링 목록 뷰 관련 테스트"""
+
+    def setUp(self):
+        """테스트를 위한 데이터 사전 생성"""
+        # Given
+        self.tag_python = Tag.objects.create(name="python")
+        self.tag_django = Tag.objects.create(name="django")
+
+        self.post1 = Post.objects.create(title="Post 1", content="Content 1")
+        self.post1.tags.add(self.tag_python)
+
+        self.post2 = Post.objects.create(title="Post 2", content="Content 2")
+        self.post2.tags.add(self.tag_django)
+
+        self.post3 = Post.objects.create(title="Post 3", content="Content 3")
+        self.post3.tags.add(self.tag_python, self.tag_django)
+
+    def test_view_url_exists_at_desired_location(self):
+        """태그 필터링 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
+        # When
+        response = self.client.get(f'/tag/{self.tag_python.name}/')
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        """'post_list_by_tag' URL name으로 뷰에 접근 가능한지 테스트"""
+        # When
+        response = self.client.get(reverse('post_list_by_tag', args=[self.tag_python.name]))
+        # Then
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """뷰가 올바른 템플릿(post_list.html)을 사용하는지 테스트"""
+        # When
+        response = self.client.get(reverse('post_list_by_tag', args=[self.tag_python.name]))
+        # Then
+        self.assertTemplateUsed(response, 'blog/post_list.html')
+
+    def test_filters_posts_by_tag(self):
+        """뷰가 태그에 따라 포스트를 올바르게 필터링하는지 테스트"""
+        # When
+        response = self.client.get(reverse('post_list_by_tag', args=[self.tag_python.name]))
+        # Then
+        self.assertContains(response, self.post1.title)
+        self.assertNotContains(response, self.post2.title)
+        self.assertContains(response, self.post3.title)
+        self.assertEqual(len(response.context['posts']), 2)
+
+    def test_non_existent_tag_returns_not_found(self):
+        """존재하지 않는 태그로 접근 시 404를 반환하는지 테스트"""
+        # When
+        response = self.client.get(reverse('post_list_by_tag', args=['non-existent-tag']))
+        # Then
+        self.assertEqual(response.status_code, 404)
 
 
 class PostDeleteViewTest(TestCase):

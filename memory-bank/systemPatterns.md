@@ -60,5 +60,11 @@ erDiagram
         int post_id FK
     }
 
+    TAG {
+        int id PK
+        varchar(50) name
+    }
+
     POST ||--o{ COMMENT : "has"
+    POST }o--o{ TAG : "has"
 ```

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Tag
 from .forms import PostForm, CommentForm
 from django.db.models import Q
 
@@ -70,3 +70,9 @@ def search(request):
     
     context['posts'] = results
     return render(request, 'blog/search_results.html', context)
+
+
+def post_list_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = Post.objects.filter(tags=tag)
+    return render(request, 'blog/post_list.html', {'posts': posts, 'tag': tag})
