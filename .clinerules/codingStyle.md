@@ -10,7 +10,8 @@
 
 ## 2. URL 설계 (URL Design)
 
-- **URL 분리 (URL Separation)**: 프로젝트 최상위 `urls.py`는 각 앱(app)의 `urls.py`를 `include`하는 역할만 담당하여 URL 관리를 분산시킨다.
+- **최상위 URL 분리 (Top-Level URL Separation)**: 프로젝트 최상위 `urls.py`는 각 앱(app)의 `urls.py`를 `include`하는 역할만 담당하여 URL 관리를 분산시킨다.
+- **앱 내부 URL 분리 (In-App URL Separation)**: 앱의 `urls.py` 파일이 비대해지는 것을 방지하기 위해, 각 기능(또는 모델)과 관련된 URL은 `urls/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/urls/post_urls.py`)
 
 ## 3. 의존성 관리 (Dependency Management)
 
