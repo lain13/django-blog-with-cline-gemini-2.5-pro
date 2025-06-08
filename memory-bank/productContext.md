@@ -11,15 +11,44 @@
 ## 3. 사용자 경험 목표 (User Experience Goals)
 
 - **개발자 중심**: 이 프로젝트의 사용자는 개발자이다. 따라서 최종 결과물보다는 개발 과정 자체가 명확하고 따라하기 쉬워야 한다.
-- **기능의 명확성**: 각 기능(CRUD)은 URL을 통해 명확하게 접근하고 사용할 수 있어야 한다.
+- **기능의 명확성**: 각 기능(CRUD, 댓글, 검색 등)은 URL을 통해 명확하게 접근하고 사용할 수 있어야 한다.
 - **예측 가능한 동작**: 모든 기능은 테스트된 대로 정확하게 동작해야 한다.
 
 ## 4. 기능 요구사항 (Functional Requirements)
 
-- **Post (게시글) 모델**: `title`, `content`, `created_at`, `updated_at` 필드를 포함해야 한다.
-- **URL 라우팅**:
-    - `/`: 게시글 목록 (List View)
-    - `/post/<int:pk>/`: 게시글 상세 (Detail View)
-    - `/post/new/`: 새 게시글 작성 (Create View)
-    - `/post/<int:pk>/edit/`: 게시글 수정 (Update View)
-    - `/post/<int:pk>/delete/`: 게시글 삭제 (Delete View)
+### 4.1. 데이터 모델 (Data Models)
+
+- **`Post` (게시글)**
+  - `author`: 작성자 (User 모델과 연결, ForeignKey)
+  - `title`: 제목 (CharField)
+  - `content`: 내용 (TextField)
+  - `created_at`: 생성일 (DateTimeField, 자동 생성)
+  - `updated_at`: 수정일 (DateTimeField, 자동 갱신)
+  - `tags`: 태그 (Tag 모델과 다대다 관계, ManyToManyField)
+
+- **`Comment` (댓글)**
+  - `post`: 원본 게시글 (Post 모델과 연결, ForeignKey)
+  - `author`: 작성자 이름 (CharField)
+  - `text`: 댓글 내용 (TextField)
+  - `created_at`: 생성일 (DateTimeField, 자동 생성)
+
+- **`Tag` (태그)**
+  - `name`: 태그 이름 (CharField, 고유값)
+
+### 4.2. URL 라우팅 (URL Routing)
+
+- **Post (게시글)**
+  - `GET /`: 게시글 목록
+  - `GET /post/<int:pk>/`: 게시글 상세
+  - `GET, POST /post/new/`: 새 게시글 작성
+  - `GET, POST /post/<int:pk>/edit/`: 게시글 수정
+  - `GET, POST /post/<int:pk>/delete/`: 게시글 삭제
+
+- **Comment (댓글)**
+  - `POST /post/<int:pk>/comment/`: 특정 게시글에 댓글 작성
+
+- **Tag (태그)**
+  - `GET /tag/<str:tag_name>/`: 특정 태그를 포함하는 게시글 목록
+
+- **Search (검색)**
+  - `GET /search/?q=<keyword>`: 키워드로 게시글 검색
