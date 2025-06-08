@@ -2,14 +2,17 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **프로젝트 공식 문서화 (Official Project Documentation)**
-- `docs/` 디렉토리에 `README.md`와 `erd.mmd`를 생성하고, 관련 규칙을 `.clinerules`에 업데이트합니다.
+- **테스트 코드 리팩토링 (Test Code Refactoring)**
+- `blog/tests.py` 파일을 `blog/tests/` 패키지 구조로 리팩토링하여 가독성과 유지보수성을 향상시킵니다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- **`docs(.clinerules)`**: `docs/` 디렉토리 관련 규칙을 `documentation.md`에 추가.
-- **`feat(docs)`**: `docs/erd.mmd` 파일 생성.
-- **`feat(docs)`**: `docs/README.md` 파일 생성.
+- **`refactor(blog)`**: `blog/tests.py`를 `blog/tests/` 디렉토리 구조로 리팩토링.
+  - `blog/tests/test_models.py` 생성
+  - `blog/tests/test_views.py` 생성
+  - `blog/tests/test_forms.py` 생성
+  - `blog/tests/__init__.py` 수정하여 테스트 로더 설정
+- **`docs(.clinerules)`**: `workflow.md`에 테스트 구조 관련 규칙 추가.
 
 ## 3. 다음 단계 (Next Steps)
 

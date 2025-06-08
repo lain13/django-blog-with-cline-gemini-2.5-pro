@@ -3,7 +3,7 @@
 ## 1. 현재 상태 (Current Status)
 
 - **진행률**: 100%
-- **현재 단계**: 13. 프로젝트 공식 문서화 (Official Documentation)
+- **현재 단계**: 15. 테스트 코드 리팩토링 (Test Code Refactoring)
 
 ## 2. 완료된 작업 (What Works)
 
@@ -21,6 +21,7 @@
 - **12. 검색 기능 추가 (TDD)**
 - **13. 태그 기능 추가 (TDD)**
 - **14. 프로젝트 공식 문서화 (Official Documentation)**
+- **15. 테스트 코드 리팩토링 (Test Code Refactoring)**
 
 ## 3. 남은 작업 (What's Left to Build)
 
