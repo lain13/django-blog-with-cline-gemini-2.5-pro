@@ -1,7 +1,49 @@
 import time
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from ..models import Post, Comment, Tag
+from ..models import Post, Comment, Tag, Category
+
+
+class CategoryModelTest(TestCase):
+    """Category 모델 관련 테스트"""
+
+    def test_category_model_can_be_created(self):
+        """Category 모델 인스턴스가 올바르게 생성되는지 테스트"""
+        # Given
+        category = Category.objects.create(name="Programming", slug="programming")
+
+        # When
+        saved_category = Category.objects.get(pk=category.pk)
+
+        # Then
+        self.assertEqual(saved_category.name, "Programming")
+        self.assertEqual(saved_category.slug, "programming")
+
+    def test_category_str_representation(self):
+        """Category 모델의 __str__ 메서드가 올바르게 동작하는지 테스트"""
+        # Given
+        category = Category.objects.create(name="Life", slug="life")
+
+        # When/Then
+        self.assertEqual(str(category), "Life")
+
+    def test_hierarchical_category(self):
+        """계층형 카테고리 관계가 올바르게 설정되는지 테스트"""
+        # Given
+        parent_category = Category.objects.create(name="Tech", slug="tech")
+        child_category = Category.objects.create(
+            name="Python",
+            slug="python",
+            parent=parent_category
+        )
+
+        # When
+        saved_child = Category.objects.get(pk=child_category.pk)
+
+        # Then
+        self.assertIsNotNone(saved_child.parent)
+        self.assertEqual(saved_child.parent, parent_category)
+        self.assertIn(child_category, parent_category.children.all())
 
 
 class TagModelTest(TestCase):
@@ -84,6 +126,20 @@ class PostModelTest(TestCase):
         self.assertEqual(post.tags.count(), 2)
         self.assertIn(tag1, post.tags.all())
         self.assertIn(tag2, post.tags.all())
+
+    def test_post_can_have_category(self):
+        """Post 모델이 Category를 가질 수 있는지 테스트"""
+        # Given
+        post = self.post
+        category = Category.objects.create(name="Test Category", slug="test-category")
+
+        # When
+        post.category = category
+        post.save()
+
+        # Then
+        saved_post = Post.objects.get(pk=post.pk)
+        self.assertEqual(saved_post.category, category)
 
 
 class CommentModelTest(TestCase):
