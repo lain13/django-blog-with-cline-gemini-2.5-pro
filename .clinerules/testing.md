@@ -1,0 +1,12 @@
+# Testing Rules
+
+## 1. 테스트 구조 (Test Structure)
+
+- **테스트 패키지**: 각 앱의 테스트는 `tests` 패키지 내에 작성한다. (e.g., `blog/tests/`)
+- **파일 분리**: 테스트 코드는 기능(모델, 뷰, 폼 등)에 따라 별도의 파일로 분리하여 작성한다. (e.g., `test_models.py`, `test_views.py`)
+- **테스트 실행**: Django의 테스트 검색 기능이 `tests` 패키지 내의 테스트를 발견할 수 있도록 `tests/__init__.py` 파일에서 각 테스트 모듈을 임포트한다.
+
+## 2. 테스트 데이터 (Test Data)
+
+- **데이터 생성 위치**: 테스트 데이터는 각 `TestCase` 클래스의 `setUp` 또는 `setUpTestData` 메서드 내에서 생성한다.
+- **`setUpTestData` 활용**: 여러 테스트 메서드에서 공통으로 사용되는 데이터는 클래스 레벨에서 한 번만 생성되는 `setUpTestData`를 활용하여 테스트 효율성을 높인다.

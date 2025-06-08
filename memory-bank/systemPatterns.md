@@ -43,6 +43,7 @@ graph TD
 
 ## 4. 데이터베이스 스키마 (Database Schema)
 
+### 현재 스키마 (Current Schema)
 ```mermaid
 erDiagram
     POST {
@@ -69,3 +70,63 @@ erDiagram
     POST ||--o{ COMMENT : "has"
     POST }o--o{ TAG : "has"
 ```
+
+### 목표 스키마 (Target Schema for New Features)
+```mermaid
+erDiagram
+    USER {
+        int id PK
+        varchar username
+    }
+
+    POST {
+        int id PK
+        varchar(200) title
+        text content
+        int view_count
+        datetime created_at
+        datetime updated_at
+        int author_id FK
+        int category_id FK
+    }
+
+    COMMENT {
+        int id PK
+        text text
+        datetime created_at
+        int author_id FK
+        int post_id FK
+        int parent_id FK
+    }
+
+    CATEGORY {
+        int id PK
+        varchar(100) name
+        varchar(255) slug
+        int parent_id FK
+    }
+
+    TAG {
+        int id PK
+        varchar(50) name
+    }
+
+    VOTE {
+        int id PK
+        int value "1 for like, -1 for dislike"
+        int user_id FK
+        int post_id FK
+    }
+
+    USER ||--o{ POST : "authors"
+    USER ||--o{ COMMENT : "authors"
+    USER ||--o{ VOTE : "votes"
+
+    POST ||--o{ COMMENT : "has"
+    POST }o--o{ TAG : "tags"
+    POST ||--o{ VOTE : "receives"
+
+    CATEGORY ||--o{ POST : "contains"
+    CATEGORY ||--o{ CATEGORY : "is_parent_of"
+
+    COMMENT ||--o{ COMMENT : "is_reply_to"
