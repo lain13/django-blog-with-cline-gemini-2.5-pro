@@ -2,17 +2,16 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **테스트 코드 리팩토링 (Test Code Refactoring)**
-- `blog/tests.py` 파일을 `blog/tests/` 패키지 구조로 리팩토링하여 가독성과 유지보수성을 향상시킵니다.
+- **검색 기능 강화 및 문서화 (Search Feature Enhancement & Documentation)**
+- 제목, 내용, 태그를 포함하는 통합 검색 기능을 TDD로 구현하고, 검색 결과를 하이라이팅하는 기능을 추가합니다.
+- 관련 개발 패턴을 `.clinerules`에 문서화하고, `memory-bank`를 최신 상태로 업데이트합니다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- **`refactor(blog)`**: `blog/tests.py`를 `blog/tests/` 디렉토리 구조로 리팩토링.
-  - `blog/tests/test_models.py` 생성
-  - `blog/tests/test_views.py` 생성
-  - `blog/tests/test_forms.py` 생성
-  - `blog/tests/__init__.py` 수정하여 테스트 로더 설정
-- **`docs(.clinerules)`**: `workflow.md`에 테스트 구조 관련 규칙 추가.
+- **`feat(blog)`**: 통합 검색 기능 추가 (제목, 내용, 태그 기준).
+- **`feat(blog)`**: 커스텀 템플릿 필터(`highlight`)를 이용한 검색 결과 하이라이팅 기능 구현.
+- **`test(blog)`**: 통합 검색 및 하이라이팅 기능에 대한 테스트 코드 작성.
+- **`docs(.clinerules)`**: `codingStyle.md`에 커스텀 템플릿 필터 사용 규칙 추가.
 
 ## 3. 다음 단계 (Next Steps)
 

@@ -62,8 +62,8 @@ def search(request):
         return render(request, 'blog/search_results.html', context)
 
     results = Post.objects.filter(
-        Q(title__icontains=query) | Q(content__icontains=query)
-    )
+        Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+    ).distinct()
 
     if not results.exists():
         context['message'] = "No posts found."

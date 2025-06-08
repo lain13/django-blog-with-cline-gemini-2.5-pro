@@ -1,3 +1,5 @@
+{% load blog_tags %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,8 +17,8 @@
     <ul>
         {% for post in posts %}
             <li>
-                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-                <p>{{ post.content }}</p>
+                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title|highlight:query }}</a></h2>
+                <p>{{ post.content|highlight:query }}</p>
                 <small>Created: {{ post.created_at }} | Updated: {{ post.updated_at }}</small>
             </li>
         {% empty %}

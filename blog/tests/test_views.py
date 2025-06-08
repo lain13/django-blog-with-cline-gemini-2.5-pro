@@ -332,6 +332,31 @@ class SearchViewTest(TestCase):
         self.assertContains(response, "Please enter a search term.")
         self.assertNotIn('posts', response.context)
 
+    def test_search_by_tag(self):
+        """태그로 검색이 올바르게 동작하는지 테스트"""
+        # Given
+        tag_post = Post.objects.create(title="Tag Post", content="Content for tag")
+        tag = Tag.objects.create(name="unique-tag")
+        tag_post.tags.add(tag)
+
+        # When
+        response = self.client.get(reverse('search'), {'q': 'unique-tag'})
+
+        # Then
+        self.assertContains(response, "Tag Post")
+        self.assertNotContains(response, "Apple Banana")
+
+    def test_search_context_contains_query(self):
+        """검색어가 context에 포함되어 템플릿으로 전달되는지 테스트"""
+        # Given
+        query = "test-query"
+
+        # When
+        response = self.client.get(reverse('search'), {'q': query})
+
+        # Then
+        self.assertEqual(response.context.get('query'), query)
+
 
 class TagFilteredListViewTest(TestCase):
     """태그 필터링 목록 뷰 관련 테스트"""
