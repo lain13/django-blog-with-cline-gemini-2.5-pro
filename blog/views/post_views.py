@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from ..models import Post, Tag
-from ..forms import PostForm
+from .. import forms
 from django.db.models import Q
 
 def post_list(request):
@@ -11,29 +11,28 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     # Note: CommentForm is now handled in comment_views.py, but the detail view still needs to render the page.
     # The form itself will be handled by a separate view/template tag later if needed.
-    from ..forms import CommentForm
-    comment_form = CommentForm()
+    comment_form = forms.CommentForm()
     return render(request, 'blog/post_detail.html', {'post': post, 'comment_form': comment_form})
 
 def post_new(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = forms.PostForm(request.POST)
         if form.is_valid():
             post = form.save()
             return redirect('post_detail', pk=post.pk)
     else:
-        form = PostForm()
+        form = forms.PostForm()
     return render(request, 'blog/post_form.html', {'form': form})
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
+        form = forms.PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save()
             return redirect('post_detail', pk=post.pk)
     else:
-        form = PostForm(instance=post)
+        form = forms.PostForm(instance=post)
     return render(request, 'blog/post_form.html', {'form': form})
 
 def post_delete(request, pk):

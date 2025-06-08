@@ -6,6 +6,7 @@
 - **Fat Models, Thin Views**: 비즈니스 로직은 가능한 모델(Model)에 집중시키고, 뷰(View)는 모델과 템플릿 간의 중개 역할에 집중한다.
 - **모델 분리 (Model Separation)**: `models.py` 파일이 비대해지는 것을 방지하기 위해, 각 모델 클래스는 `models/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/models/post.py`)
 - **뷰 분리 (View Separation)**: `views.py` 파일이 비대해지는 것을 방지하기 위해, 각 기능(또는 모델)과 관련된 뷰는 `views/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/views/post_views.py`)
+- **폼 분리 (Form Separation)**: `forms.py` 파일이 비대해지는 것을 방지하기 위해, 각 폼 클래스는 `forms/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/forms/post_forms.py`)
 
 ## 2. URL 설계 (URL Design)
 

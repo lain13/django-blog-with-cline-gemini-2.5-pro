@@ -24,6 +24,7 @@
 - **15. 테스트 코드 리팩토링 (Test Code Refactoring)**
 - **16. 모델 구조 리팩토링 (Model Structure Refactoring)**: `models.py` 파일을 `models` 패키지로 분리하여 유지보수성을 향상시켰습니다.
 - **17. 뷰 구조 리팩토링 (View Structure Refactoring)**: `views.py` 파일을 `views` 패키지로 분리하여 유지보수성을 향상시켰습니다.
+- **18. 폼 구조 리팩토링 (Form Structure Refactoring)**: `forms.py` 파일을 `forms` 패키지로 분리하여 유지보수성을 향상시켰습니다.
 
 ## 3. 남은 작업 (What's Left to Build)
 

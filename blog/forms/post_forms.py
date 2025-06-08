@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment
+from ..models import Post, Tag
 
 class PostForm(forms.ModelForm):
     tags = forms.CharField(
@@ -29,7 +29,6 @@ class PostForm(forms.ModelForm):
             for tag_name in tag_names:
                 tag_name = tag_name.strip()
                 if tag_name:
-                    from .models import Tag
                     tag, created = Tag.objects.get_or_create(name=tag_name)
                     instance.tags.add(tag)
 
@@ -41,8 +40,3 @@ class PostForm(forms.ModelForm):
             self.save_m2m = save_tags
 
         return instance
-
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('text',)
