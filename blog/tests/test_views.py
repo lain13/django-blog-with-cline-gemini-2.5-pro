@@ -308,10 +308,31 @@ class SearchViewTest(TestCase):
 
     def test_search_by_title(self):
         """제목으로 검색이 올바르게 동작하는지 테스트"""
+        # When
         response = self.client.get(reverse('blog:search'), {'q': 'Apple'})
-        # self.assertContains(response, "Apple Banana", html=True) # FIXME: Temporarily disabled
-        self.assertContains(response, "Second Post") # Content에도 Apple이 있지만, OR 조건이므로 포함되어야 함
-        self.assertNotContains(response, "Third Banana")
+
+        # Then
+        # 1. 응답 상태 코드 및 템플릿 확인
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/search_results.html')
+
+        # 2. 컨텍스트의 쿼리셋 확인 (더 안정적인 방법)
+        self.assertIn('posts', response.context)
+        posts_in_context = response.context['posts']
+        self.assertEqual(len(posts_in_context), 2)
+
+        # 3. 예상되는 포스트가 포함되어 있는지 확인 (순서에 의존하지 않음)
+        titles_in_context = [post.title for post in posts_in_context]
+        self.assertIn("Apple Banana", titles_in_context)
+        self.assertIn("Second Post", titles_in_context)
+        self.assertNotIn("Third Banana", titles_in_context)
+
+        # 4. 렌더링된 HTML 내용 확인 (기존 테스트 유지)
+        # highlight 필터로 인해 마크업이 추가되어 assertContains가 복잡해지므로,
+        # 컨텍스트 데이터 검증으로 대체함.
+        # self.assertContains(response, "Apple Banana", html=True)
+        # self.assertContains(response, "Second Post", html=True)
+        # self.assertNotContains(response, "Third Banana", html=True)
 
     def test_search_by_content(self):
         """내용으로 검색이 올바르게 동작하는지 테스트"""
