@@ -8,11 +8,11 @@
 ## 2. 완료된 작업 (What Works)
 
 - **v1.0**: 기본 블로그 기능 (게시글 CRUD, 댓글, 태그, 검색)
+- **v1.1**: `Post` 모델에 `author` 필드 추가 및 2단계 마이그레이션을 통한 `makemigrations` 문제 해결
 
 ## 3. 남은 작업 (What's Left to Build)
 
-- **1. `makemigrations` 문제 해결**: `Post` 모델에 `author` 필드 추가 시 발생하는 마이그레이션 문제를 해결해야 합니다.
-- **2. 계층형 카테고리 (Hierarchical Category)**
+- **1. 계층형 카테고리 (Hierarchical Category)**
   - [ ] `Category` 모델 정의 (self-referencing FK)
   - [ ] `Post` 모델에 `category` FK 추가
   - [ ] 카테고리 모델/관계 테스트 코드 작성 (TDD)
@@ -34,4 +34,4 @@
 
 ## 4. 알려진 이슈 (Known Issues)
 
-- **`makemigrations` 실패**: 신규 기능 구현을 위해 `Post` 모델에 `author`와 같은 non-nullable 필드를 추가할 때, 기존 데이터에 대한 기본값 설정 문제로 마이그레이션 파일 생성이 실패합니다. 다음 작업 시 이 문제를 우선적으로 해결해야 합니다.
+- (해결됨) `makemigrations` 실패

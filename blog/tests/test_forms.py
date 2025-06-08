@@ -1,10 +1,16 @@
 from django.test import TestCase
+from django.contrib.auth import get_user_model
 from ..models import Post, Tag
 from ..forms import CommentForm, PostForm
 
 
 class PostFormTest(TestCase):
     """PostForm 관련 테스트"""
+
+    @classmethod
+    def setUpTestData(cls):
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='formuser', password='password')
 
     def test_form_has_tags_field(self):
         """폼에 tags 필드가 존재하는지 테스트"""
@@ -20,7 +26,7 @@ class PostFormTest(TestCase):
     def test_form_populates_tags_for_existing_post(self):
         """기존 포스트의 태그를 폼에 올바르게 채우는지 테스트"""
         # Given
-        post = Post.objects.create(title="Test Post", content="Content")
+        post = Post.objects.create(title="Test Post", content="Content", author=self.user)
         tag1 = Tag.objects.create(name="django")
         tag2 = Tag.objects.create(name="python")
         post.tags.add(tag1, tag2)

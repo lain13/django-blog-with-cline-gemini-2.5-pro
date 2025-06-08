@@ -1,5 +1,6 @@
 import time
 from django.test import TestCase
+from django.contrib.auth import get_user_model
 from ..models import Post, Comment, Tag
 
 
@@ -21,16 +22,30 @@ class TagModelTest(TestCase):
 class PostModelTest(TestCase):
     """Post 모델 관련 테스트"""
 
-    def test_post_model_can_be_created(self):
-        """Post 모델 인스턴스가 올바르게 생성되는지 테스트"""
-        # Given
-        post = Post.objects.create(
+    @classmethod
+    def setUpTestData(cls):
+        """테스트를 위한 클래스 레벨 데이터 설정"""
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='testuser', password='password')
+        cls.post = Post.objects.create(
             title="Test Title",
-            content="Test Content"
+            content="Test Content",
+            author=cls.user
         )
 
+    def test_post_has_author(self):
+        """Post 모델에 author 필드가 올바르게 설정되었는지 테스트"""
+        # Given: setUpTestData에서 post 객체 생성
         # When
-        saved_post = Post.objects.get(pk=post.pk)
+        saved_post = Post.objects.get(pk=self.post.pk)
+        # Then
+        self.assertEqual(saved_post.author, self.user)
+
+    def test_post_model_can_be_created(self):
+        """Post 모델 인스턴스가 올바르게 생성되는지 테스트"""
+        # Given: setUpTestData에서 post 객체 생성
+        # When
+        saved_post = Post.objects.get(pk=self.post.pk)
 
         # Then
         self.assertEqual(saved_post.title, "Test Title")
@@ -41,10 +56,7 @@ class PostModelTest(TestCase):
     def test_updated_at_is_updated_on_save(self):
         """게시글이 저장될 때마다 updated_at 필드가 업데이트되는지 테스트"""
         # Given
-        post = Post.objects.create(
-            title="Initial Title",
-            content="Initial Content"
-        )
+        post = self.post
         first_updated_at = post.updated_at
 
         # When
@@ -61,7 +73,7 @@ class PostModelTest(TestCase):
     def test_post_can_have_tags(self):
         """Post 모델이 여러 Tag를 가질 수 있는지 테스트"""
         # Given
-        post = Post.objects.create(title="Post with tags", content="Content")
+        post = self.post
         tag1 = Tag.objects.create(name="tag1")
         tag2 = Tag.objects.create(name="tag2")
 
@@ -77,11 +89,15 @@ class PostModelTest(TestCase):
 class CommentModelTest(TestCase):
     """Comment 모델 관련 테스트"""
 
-    def setUp(self):
-        """테스트를 위한 데이터 사전 생성"""
-        self.post = Post.objects.create(
+    @classmethod
+    def setUpTestData(cls):
+        """테스트를 위한 클래스 레벨 데이터 설정"""
+        User = get_user_model()
+        user = User.objects.create_user(username='commenter', password='password')
+        cls.post = Post.objects.create(
             title="Test Post for Comment",
-            content="Some content"
+            content="Some content",
+            author=user
         )
 
     def test_comment_model_can_be_created(self):

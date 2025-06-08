@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 from ..models import Post, Comment, Tag
 from ..forms import CommentForm
 
@@ -11,10 +12,13 @@ class PostListViewTest(TestCase):
     def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
         # Given
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='listuser', password='password')
         for i in range(5):
             Post.objects.create(
                 title=f"Test Post {i}",
-                content=f"Test Content {i}"
+                content=f"Test Content {i}",
+                author=cls.user
             )
 
     def test_view_url_exists_at_desired_location(self):
@@ -65,12 +69,16 @@ class PostListViewTest(TestCase):
 class PostDetailViewTest(TestCase):
     """Post 상세 뷰 관련 테스트"""
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
         # Given
-        self.post = Post.objects.create(
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='detailuser', password='password')
+        cls.post = Post.objects.create(
             title="A good title",
-            content="Nice body content"
+            content="Nice body content",
+            author=cls.user
         )
 
     def test_view_url_exists_at_desired_location(self):
@@ -147,9 +155,16 @@ class PostDetailViewTest(TestCase):
 class PostCreateViewTest(TestCase):
     """Post 생성 뷰 관련 테스트"""
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
-        self.url = reverse('blog:post_new')
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='createuser', password='password')
+        cls.url = reverse('blog:post_new')
+
+    def setUp(self):
+        """각 테스트 전에 클라이언트 로그인"""
+        self.client.login(username='createuser', password='password')
 
     def test_view_url_exists_at_desired_location(self):
         """생성 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -218,13 +233,21 @@ class PostCreateViewTest(TestCase):
 class PostUpdateViewTest(TestCase):
     """Post 수정 뷰 관련 테스트"""
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
-        self.post = Post.objects.create(
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='updateuser', password='password')
+        cls.post = Post.objects.create(
             title='Original Title',
-            content='Original Content'
+            content='Original Content',
+            author=cls.user
         )
-        self.url = reverse('blog:post_edit', kwargs={'pk': self.post.pk})
+        cls.url = reverse('blog:post_edit', kwargs={'pk': cls.post.pk})
+
+    def setUp(self):
+        """각 테스트 전에 클라이언트 로그인"""
+        self.client.login(username='updateuser', password='password')
 
     def test_view_url_exists_at_desired_location(self):
         """수정 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -290,11 +313,14 @@ class PostUpdateViewTest(TestCase):
 class SearchViewTest(TestCase):
     """검색 뷰 관련 테스트"""
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
-        Post.objects.create(title="Apple Banana", content="Content one")
-        Post.objects.create(title="Second Post", content="Content with Apple")
-        Post.objects.create(title="Third Banana", content="Content three")
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='searchuser', password='password')
+        Post.objects.create(title="Apple Banana", content="Content one", author=cls.user)
+        Post.objects.create(title="Second Post", content="Content with Apple", author=cls.user)
+        Post.objects.create(title="Third Banana", content="Content three", author=cls.user)
 
     def test_search_view_url_exists(self):
         """검색 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -356,7 +382,7 @@ class SearchViewTest(TestCase):
     def test_search_by_tag(self):
         """태그로 검색이 올바르게 동작하는지 테스트"""
         # Given
-        tag_post = Post.objects.create(title="Tag Post", content="Content for tag")
+        tag_post = Post.objects.create(title="Tag Post", content="Content for tag", author=self.user)
         tag = Tag.objects.create(name="unique-tag")
         tag_post.tags.add(tag)
 
@@ -382,20 +408,23 @@ class SearchViewTest(TestCase):
 class TagFilteredListViewTest(TestCase):
     """태그 필터링 목록 뷰 관련 테스트"""
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
         # Given
-        self.tag_python = Tag.objects.create(name="python")
-        self.tag_django = Tag.objects.create(name="django")
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='taguser', password='password')
+        cls.tag_python = Tag.objects.create(name="python")
+        cls.tag_django = Tag.objects.create(name="django")
 
-        self.post1 = Post.objects.create(title="Post 1", content="Content 1")
-        self.post1.tags.add(self.tag_python)
+        cls.post1 = Post.objects.create(title="Post 1", content="Content 1", author=cls.user)
+        cls.post1.tags.add(cls.tag_python)
 
-        self.post2 = Post.objects.create(title="Post 2", content="Content 2")
-        self.post2.tags.add(self.tag_django)
+        cls.post2 = Post.objects.create(title="Post 2", content="Content 2", author=cls.user)
+        cls.post2.tags.add(cls.tag_django)
 
-        self.post3 = Post.objects.create(title="Post 3", content="Content 3")
-        self.post3.tags.add(self.tag_python, self.tag_django)
+        cls.post3 = Post.objects.create(title="Post 3", content="Content 3", author=cls.user)
+        cls.post3.tags.add(cls.tag_python, cls.tag_django)
 
     def test_view_url_exists_at_desired_location(self):
         """태그 필터링 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -439,13 +468,21 @@ class TagFilteredListViewTest(TestCase):
 class PostDeleteViewTest(TestCase):
     """Post 삭제 뷰 관련 테스트"""
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
-        self.post = Post.objects.create(
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='deleteuser', password='password')
+        cls.post = Post.objects.create(
             title='To be deleted',
-            content='Delete me'
+            content='Delete me',
+            author=cls.user
         )
-        self.url = reverse('blog:post_delete', kwargs={'pk': self.post.pk})
+        cls.url = reverse('blog:post_delete', kwargs={'pk': cls.post.pk})
+
+    def setUp(self):
+        """각 테스트 전에 클라이언트 로그인"""
+        self.client.login(username='deleteuser', password='password')
 
     def test_view_url_exists_at_desired_location(self):
         """삭제 확인 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
