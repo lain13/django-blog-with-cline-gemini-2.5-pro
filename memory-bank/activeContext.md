@@ -2,16 +2,19 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **문서 검토 및 `users` 앱 도입 계획 구체화**
-- 사용자 인증 시스템 구현에 앞서, 프로젝트의 아키텍처 원칙과 작업 계획을 명확히 하기 위해 관련 문서를 검토하고 업데이트합니다.
+- **사용자 인증 시스템 (로그인/로그아웃) 구현 완료 및 다음 단계 준비**
+- TDD를 통해 `users` 앱에 로그인 및 로그아웃 기능을 성공적으로 구현했습니다. 이제 다음 작업인 회원가입 기능 구현을 준비합니다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- **`docs(clinerules)`**: `codingStyle.md`에 '앱 분리 원칙'을 추가하여 `users` 앱 분리의 근거를 명문화했습니다.
-- **`docs(memory-bank)`**: `systemPatterns.md`의 아키텍처 설명과 다이어그램을 `users` 앱을 포함하도록 수정했습니다.
-- **`docs(memory-bank)`**: `progress.md`의 '사용자 인증 시스템' 작업 목록을 `users` 앱 기반으로 재구성하고 구체화했습니다.
+- **`feat(users)`**: `users` 앱 생성 및 `settings.py` 등록
+- **`feat(users)`**: `users.urls` 생성 및 `config.urls`에 연동
+- **`feat(users)`**: TDD를 통해 로그인/로그아웃 기능 구현 완료 (`LoginView`, `LogoutView` 활용)
+- **`fix(tests)`**: 로그아웃 테스트 시 `GET` 대신 `POST`를 사용하도록 수정
+- **`fix(settings)`**: `LOGOUT_REDIRECT_URL`을 설정하여 로그아웃 후 리다이렉트 문제 해결
+- **`docs(memory-bank)`**: `progress.md`에 로그인/로그아웃 기능 완료 상태 반영
 
 ## 3. 다음 단계 (Next Steps)
 
-- **사용자 인증 시스템 구현 시작**
-  - `memory-bank/progress.md`에 새로 정의된 계획에 따라, `users` 앱 생성부터 시작하여 사용자 인증 시스템 개발을 진행합니다.
+- **TDD: 회원가입 기능 구현**
+  - 다음 태스크에서 `progress.md`에 정의된 계획에 따라 회원가입 기능 개발을 시작합니다.

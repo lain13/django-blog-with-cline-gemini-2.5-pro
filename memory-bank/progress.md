@@ -17,9 +17,9 @@
 ## 3. 남은 작업 (What's Left to Build)
 
 - **1. 사용자 인증 시스템 (User Authentication) - `users` 앱**
-  - [ ] `users` 앱 생성 및 `settings.py` 등록
-  - [ ] `users.urls` 생성 및 `config.urls`에 연동
-  - [ ] TDD: 로그인/로그아웃 기능 구현 (Django 내장 `LoginView`, `LogoutView` 활용)
+  - [x] `users` 앱 생성 및 `settings.py` 등록
+  - [x] `users.urls` 생성 및 `config.urls`에 연동
+  - [x] TDD: 로그인/로그아웃 기능 구현 (Django 내장 `LoginView`, `LogoutView` 활용)
   - [ ] TDD: 회원가입 기능 구현 (Django 내장 `UserCreationForm` 활용)
   - [ ] `login.html`, `signup.html` 템플릿 작성
   - [ ] 네비게이션 바에 로그인/로그아웃/회원가입 링크 추가
