@@ -5,7 +5,7 @@
 이 프로젝트는 Django 프레임워크의 기본 아키텍처인 **MVT (Model-View-Template)** 패턴을 따른다.
 
 - **Model**: 데이터베이스의 구조를 정의한다. `blog/models/` 패키지 내에 각 모델(`Post`, `Comment`, `Tag`)을 개별 파일로 분리하여 관리한다.
-- **View**: 비즈니스 로직을 처리한다. 사용자의 요청(Request)을 받아 필요한 데이터를 모델에서 가져와 가공한 후, 템플릿에 전달하여 응답(Response)을 생성한다. `blog/views.py`에 구현된다.
+- **View**: 비즈니스 로직을 처리한다. 사용자의 요청(Request)을 받아 필요한 데이터를 모델에서 가져와 가공한 후, 템플릿에 전달하여 응답(Response)을 생성한다. `blog/views/` 패키지 내에 각 기능(`post_views.py`, `comment_views.py`)을 개별 파일로 분리하여 관리한다.
 - **Template**: 사용자에게 보여지는 UI를 담당한다. View로부터 전달받은 데이터를 HTML에 렌더링한다. `blog/templates/` 디렉토리 내에 위치한다.
 
 ## 2. 디자인 패턴 (Design Patterns)

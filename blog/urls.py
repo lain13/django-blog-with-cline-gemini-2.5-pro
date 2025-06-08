@@ -1,13 +1,13 @@
 from django.urls import path
-from . import views
+from .views import post_views, comment_views
 
 urlpatterns = [
-    path('', views.post_list, name='post_list'),
-    path('post/<int:pk>/', views.post_detail, name='post_detail'),
-    path('post/new/', views.post_new, name='post_new'),
-    path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
-    path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
-    path('post/<int:pk>/comment/', views.add_comment_to_post, name='add_comment_to_post'),
-    path('search/', views.search, name='search'),
-    path('tag/<str:tag_name>/', views.post_list_by_tag, name='post_list_by_tag'),
+    path('', post_views.post_list, name='post_list'),
+    path('post/<int:pk>/', post_views.post_detail, name='post_detail'),
+    path('post/new/', post_views.post_new, name='post_new'),
+    path('post/<int:pk>/edit/', post_views.post_edit, name='post_edit'),
+    path('post/<int:pk>/delete/', post_views.post_delete, name='post_delete'),
+    path('post/<int:pk>/comment/', comment_views.add_comment_to_post, name='add_comment_to_post'),
+    path('search/', post_views.search, name='search'),
+    path('tag/<str:tag_name>/', post_views.post_list_by_tag, name='post_list_by_tag'),
 ]
