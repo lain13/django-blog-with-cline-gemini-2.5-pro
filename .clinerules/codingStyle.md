@@ -4,6 +4,7 @@
 
 - **MVT (Model-View-Template)**: Django의 기본 MVT 패턴을 충실히 따른다.
 - **Fat Models, Thin Views**: 비즈니스 로직은 가능한 모델(Model)에 집중시키고, 뷰(View)는 모델과 템플릿 간의 중개 역할에 집중한다.
+- **모델 분리 (Model Separation)**: `models.py` 파일이 비대해지는 것을 방지하기 위해, 각 모델 클래스는 `models/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/models/post.py`)
 
 ## 2. URL 설계 (URL Design)
 
