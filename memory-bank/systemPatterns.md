@@ -46,12 +46,19 @@ graph TD
 ### 현재 스키마 (Current Schema)
 ```mermaid
 erDiagram
+    USER {
+        int id PK
+        varchar username
+    }
+
     POST {
         int id PK
         varchar(200) title
         text content
         datetime created_at
         datetime updated_at
+        int author_id FK
+        int category_id FK
     }
 
     COMMENT {
@@ -67,8 +74,18 @@ erDiagram
         varchar(50) name
     }
 
+    CATEGORY {
+        int id PK
+        varchar(100) name
+        varchar(255) slug
+        int parent_id FK
+    }
+
+    USER ||--o{ POST : "authors"
     POST ||--o{ COMMENT : "has"
     POST }o--o{ TAG : "has"
+    CATEGORY ||--o{ POST : "contains"
+    CATEGORY ||--o{ CATEGORY : "is_parent_of"
 ```
 
 ### 목표 스키마 (Target Schema for New Features)

@@ -6,12 +6,13 @@
   - v1.0: 100% 완료
   - v1.1: 50% 완료
 
-- **현재 단계**: 신규 기능 개발 계획 수립
+- **현재 단계**: 사용자 인증 시스템 구현 착수 예정
 
 ## 2. 완료된 작업 (What Works)
 
 - **v1.0**: 기본 블로그 기능 (게시글 CRUD, 댓글, 태그, 검색)
 - **v1.1**: `Post` 모델에 `author` 필드 추가 및 2단계 마이그레이션을 통한 `makemigrations` 문제 해결
+- **v1.2**: 계층형 카테고리 기능 (모델, 뷰, 템플릿, 테스트 포함)
 
 ## 3. 남은 작업 (What's Left to Build)
 
@@ -24,10 +25,10 @@
   - [ ] 네비게이션 바에 로그인/로그아웃 링크 추가
   - [ ] 사용자별 권한 검증 (본인 게시글만 수정/삭제 가능)
 - **2. 계층형 카테고리 (Hierarchical Category)**
-  - [ ] `Category` 모델 정의 (self-referencing FK)
-  - [ ] `Post` 모델에 `category` FK 추가
-  - [ ] 카테고리 모델/관계 테스트 코드 작성 (TDD) - (실패하는 테스트 작성 완료)
-  - [ ] 카테고리별 포스트 목록 뷰/템플릿 구현
+  - [x] `Category` 모델 정의 (self-referencing FK)
+  - [x] `Post` 모델에 `category` FK 추가
+  - [x] 카테고리 모델/관계 테스트 코드 작성 (TDD) - (Red-Green 사이클 완료)
+  - [x] 카테고리별 포스트 목록 뷰/템플릿 구현
 - **3. 댓글 시스템 개선 (Nested Comments)**
   - [ ] `Comment` 모델 수정 (`author` FK, `parent` self-referencing FK, updated_at 필드 추가)
   - [ ] 댓글 모델 테스트 코드 작성 (TDD)

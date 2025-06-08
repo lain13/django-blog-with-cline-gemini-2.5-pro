@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 
+from .category import Category
 from .tag import Tag
 
 
@@ -15,6 +16,13 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='posts'
+    )
     tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):

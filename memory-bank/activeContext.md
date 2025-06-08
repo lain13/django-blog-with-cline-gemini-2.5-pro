@@ -2,21 +2,21 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **계층형 카테고리 기능 개발 (Hierarchical Category Feature Development)**
-- TDD의 첫 단계인 **실패하는 테스트 코드 작성 완료**. (`blog/tests/test_models.py`)
-- 가상 환경 활성화의 중요성을 인지하고, 다음 단계에서 테스트를 실행할 준비.
+- **사용자 인증 시스템 개발 (User Authentication System Development)**
+- 계층형 카테고리 기능의 마지막 단계인 뷰와 템플릿 구현을 완료했으며, 이제 새로운 기능인 사용자 인증 시스템 구현을 시작할 준비가 되었습니다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- **`test(model)`**: `Category` 모델과 `Post.category` 필드에 대한 실패하는 테스트 케이스 추가.
-- **`fix(model)`**: `Post` 모델에 `author` ForeignKey 필드 추가 (`null=False`).
-- **`fix(migration)`**: 2단계 마이그레이션 전략 사용, 기존 `Post` 데이터에 기본 `author` 할당 및 `makemigrations` 문제 해결.
-- **`refactor(test)`**: `author` 필드 추가에 따라 `test_models.py`, `test_views.py`, `test_forms.py` 테스트 코드 리팩토링.
-- **`refactor(view)`**: `PostCreateView`가 요청 보낸 사용자를 `author`로 자동 할당하도록 수정.
-- **`docs(memory-bank)`**: `activeContext.md`와 `progress.md` 현재 상태에 맞게 업데이트.
+- **`feat(view)`**: TDD 사이클(Red-Green)을 통해 `CategoryPostListView`를 구현하여 카테고리별 게시글 목록 기능을 완성했습니다.
+- **`feat(url)`**: `blog/urls/` 패키지 내에 `category_urls.py`를 추가하고, `__init__.py`를 수정하여 카테고리 URL을 프로젝트에 통합했습니다.
+- **`test(view)`**: `CategoryPostListView`에 대한 실패하는 테스트를 먼저 작성하고, 기능 구현 후 테스트가 통과함을 확인했습니다.
+- **`fix(url)`**: `NoReverseMatch` 오류 해결을 위해 `blog/urls/__init__.py`가 URL 설정의 중심이 되도록 구조를 수정하고 정리했습니다.
+- **`docs(memory-bank)`**: `activeContext.md`와 `progress.md`를 현재 상태에 맞게 업데이트했습니다.
 
 ## 3. 다음 단계 (Next Steps)
 
-- **실패하는 테스트(Red) 확인**
-  - **중요**: `venv\Scripts\activate` 명령으로 가상 환경을 반드시 활성화한 후, `python manage.py test blog`를 실행하여 `Category` 모델이 없어 테스트가 실패하는지(Red) 확인한다.
-  - 이 확인 작업은 다음 태스크에서 진행한다.
+- **사용자 인증 시스템 구현**
+  - **TDD (Red)**: Django의 내장 `AuthenticationForm`을 사용한 로그인 뷰에 대한 실패하는 테스트(`test_views.py` 또는 신규 `test_auth.py`)를 작성합니다.
+  - **URL 설계**: `login/`, `logout/` URL을 `users/urls.py` (신규 앱 `users` 생성 후) 또는 `blog/urls/auth_urls.py`에 정의합니다.
+  - **뷰 구현**: 로그인/로그아웃 기능을 처리하는 뷰를 작성합니다.
+  - **템플릿 생성**: `login.html` 템플릿을 생성합니다.

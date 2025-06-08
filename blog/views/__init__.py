@@ -1,1 +1,3 @@
-# This file makes the `views` directory a Python package.
+from . import post_views
+from . import comment_views
+from . import category_views

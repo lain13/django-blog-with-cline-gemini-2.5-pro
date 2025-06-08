@@ -1,8 +1,3 @@
-from .urls.post_urls import urlpatterns as post_urls
-from .urls.comment_urls import urlpatterns as comment_urls
-
-app_name = 'blog'
-
-urlpatterns = []
-urlpatterns += post_urls
-urlpatterns += comment_urls
+# This file is intentionally left blank.
+# URL configurations are now managed in the `urls` package (`blog/urls/__init__.py`).
+from .urls import *
