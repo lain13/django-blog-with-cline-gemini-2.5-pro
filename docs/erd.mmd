@@ -1,0 +1,24 @@
+erDiagram
+    POST {
+        int id PK
+        varchar(200) title
+        text content
+        datetime created_at
+        datetime updated_at
+    }
+
+    COMMENT {
+        int id PK
+        varchar(200) author
+        text text
+        datetime created_at
+        int post_id FK
+    }
+
+    TAG {
+        int id PK
+        varchar(50) name
+    }
+
+    POST ||--o{ COMMENT : "has"
+    POST }o--o{ TAG : "has"

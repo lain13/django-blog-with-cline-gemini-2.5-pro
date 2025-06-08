@@ -3,7 +3,7 @@
 ## 1. 현재 상태 (Current Status)
 
 - **진행률**: 100%
-- **현재 단계**: 12. 프로젝트 완료 (Project Completion)
+- **현재 단계**: 13. 프로젝트 공식 문서화 (Official Documentation)
 
 ## 2. 완료된 작업 (What Works)
 
@@ -20,6 +20,7 @@
 - **11. 댓글 기능 추가 (TDD)**
 - **12. 검색 기능 추가 (TDD)**
 - **13. 태그 기능 추가 (TDD)**
+- **14. 프로젝트 공식 문서화 (Official Documentation)**
 
 ## 3. 남은 작업 (What's Left to Build)
 
