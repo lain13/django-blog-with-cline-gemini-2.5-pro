@@ -10,7 +10,7 @@
     <div>
         <strong>Tags:</strong>
         {% for tag in post.tags.all %}
-            <a href="{% url 'post_list_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+            <a href="{% url 'blog:post_list_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
         {% empty %}
             <span>No tags.</span>
         {% endfor %}
@@ -24,14 +24,14 @@
     {% endfor %}
     <hr>
     <h3>Add a comment</h3>
-    <form method="POST" action="{% url 'add_comment_to_post' pk=post.pk %}">
+    <form method="POST" action="{% url 'blog:add_comment_to_post' pk=post.pk %}">
         {% csrf_token %}
         {{ comment_form.as_p }}
         <button type="submit">Add Comment</button>
     </form>
     <hr>
-    <a href="{% url 'post_list' %}">목록으로</a>
-    <a href="{% url 'post_edit' pk=post.pk %}">수정하기</a>
-    <a href="{% url 'post_delete' pk=post.pk %}">삭제하기</a>
+    <a href="{% url 'blog:post_list' %}">목록으로</a>
+    <a href="{% url 'blog:post_edit' pk=post.pk %}">수정하기</a>
+    <a href="{% url 'blog:post_delete' pk=post.pk %}">삭제하기</a>
 </body>
 </html>

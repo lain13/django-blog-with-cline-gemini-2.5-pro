@@ -15,6 +15,7 @@
     2.  **Green**: 테스트를 통과하는 최소한의 코드를 작성한다.
     3.  **Refactor**: 코드의 구조를 개선한다.
 - **Fat Models, Thin Views**: 가능한 한 비즈니스 로직은 모델(Model)에 집중시키고, 뷰(View)는 모델과 템플릿을 연결하는 역할에 충실하도록 유지한다.
+- **Class-Based Views (CBV)**: `ListView`, `DetailView`, `CreateView` 등 Django의 제네릭 클래스 기반 뷰를 적극적으로 활용하여 코드의 재사용성을 높이고 구조를 명확하게 한다.
 - **URL 분리**: 프로젝트의 최상위 `urls.py`는 각 앱의 `urls.py`를 `include`하는 역할만 담당하여 URL 관리를 분산시킨다.
 
 ## 3. 컴포넌트 관계 (Component Relationships)

@@ -27,14 +27,14 @@ class PostListViewTest(TestCase):
     def test_view_url_accessible_by_name(self):
         """'post_list' URL name으로 뷰에 접근 가능한지 테스트"""
         # When
-        response = self.client.get(reverse('post_list'))
+        response = self.client.get(reverse('blog:post_list'))
         # Then
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
         """뷰가 올바른 템플릿을 사용하는지 테스트"""
         # When
-        response = self.client.get(reverse('post_list'))
+        response = self.client.get(reverse('blog:post_list'))
         # Then
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'blog/post_list.html')
@@ -42,7 +42,7 @@ class PostListViewTest(TestCase):
     def test_pagination_is_correct(self):
         """포스트 목록이 컨텍스트에 포함되어 있고, 모든 포스트가 표시되는지 테스트"""
         # When
-        response = self.client.get(reverse('post_list'))
+        response = self.client.get(reverse('blog:post_list'))
         # Then
         self.assertEqual(response.status_code, 200)
         self.assertTrue('posts' in response.context)
@@ -56,7 +56,7 @@ class PostListViewTest(TestCase):
         post.tags.add(tag1)
 
         # When
-        response = self.client.get(reverse('post_list'))
+        response = self.client.get(reverse('blog:post_list'))
 
         # Then
         self.assertContains(response, "tag1")
@@ -83,14 +83,14 @@ class PostDetailViewTest(TestCase):
     def test_view_url_accessible_by_name(self):
         """'post_detail' URL name으로 뷰에 접근 가능한지 테스트"""
         # When
-        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        response = self.client.get(reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
         # Then
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
         """뷰가 올바른 템플릿을 사용하는지 테스트"""
         # When
-        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        response = self.client.get(reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
         # Then
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'blog/post_detail.html')
@@ -98,7 +98,7 @@ class PostDetailViewTest(TestCase):
     def test_view_displays_correct_content(self):
         """뷰가 포스트의 제목과 내용을 올바르게 표시하는지 테스트"""
         # When
-        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        response = self.client.get(reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
         # Then
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.content)
@@ -111,7 +111,7 @@ class PostDetailViewTest(TestCase):
         self.post.tags.add(tag1, tag2)
 
         # When
-        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        response = self.client.get(reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
 
         # Then
         self.assertContains(response, "tag1")
@@ -120,7 +120,7 @@ class PostDetailViewTest(TestCase):
     def test_comment_form_is_displayed(self):
         """상세 페이지에 댓글 폼이 표시되는지 테스트"""
         # When
-        response = self.client.get(reverse('post_detail', kwargs={'pk': self.post.pk}))
+        response = self.client.get(reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
         # Then
         self.assertIsInstance(response.context['comment_form'], CommentForm)
 
@@ -134,14 +134,14 @@ class PostDetailViewTest(TestCase):
         }
 
         # When
-        response = self.client.post(reverse('add_comment_to_post', kwargs={'pk': self.post.pk}), data=comment_data)
+        response = self.client.post(reverse('blog:add_comment_to_post', kwargs={'pk': self.post.pk}), data=comment_data)
 
         # Then
         self.assertEqual(self.post.comments.count(), initial_comment_count + 1)
         new_comment = self.post.comments.last()
         self.assertEqual(new_comment.author, 'Test Author')
         self.assertEqual(new_comment.text, 'A new comment')
-        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
+        self.assertRedirects(response, reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
 
 
 class PostCreateViewTest(TestCase):
@@ -149,7 +149,7 @@ class PostCreateViewTest(TestCase):
 
     def setUp(self):
         """테스트를 위한 데이터 사전 생성"""
-        self.url = reverse('post_new')
+        self.url = reverse('blog:post_new')
 
     def test_view_url_exists_at_desired_location(self):
         """생성 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -189,7 +189,7 @@ class PostCreateViewTest(TestCase):
         self.assertEqual(new_post.content, 'New Test Content')
 
         # 3. 생성 후 상세 페이지로 리다이렉트되는지 확인
-        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': new_post.pk}))
+        self.assertRedirects(response, reverse('blog:post_detail', kwargs={'pk': new_post.pk}))
 
     def test_post_creation_with_tags(self):
         """태그와 함께 새로운 포스트를 성공적으로 생성하는지 테스트"""
@@ -212,7 +212,7 @@ class PostCreateViewTest(TestCase):
         self.assertIn('django', tag_names)
         self.assertIn('tdd', tag_names)
         self.assertIn('python', tag_names)
-        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': new_post.pk}))
+        self.assertRedirects(response, reverse('blog:post_detail', kwargs={'pk': new_post.pk}))
 
 
 class PostUpdateViewTest(TestCase):
@@ -224,7 +224,7 @@ class PostUpdateViewTest(TestCase):
             title='Original Title',
             content='Original Content'
         )
-        self.url = reverse('post_edit', kwargs={'pk': self.post.pk})
+        self.url = reverse('blog:post_edit', kwargs={'pk': self.post.pk})
 
     def test_view_url_exists_at_desired_location(self):
         """수정 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -255,7 +255,7 @@ class PostUpdateViewTest(TestCase):
 
         # Then
         # 1. 수정 후 상세 페이지로 리다이렉트되는지 확인
-        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
+        self.assertRedirects(response, reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
 
         # 2. 포스트 내용이 실제로 수정되었는지 확인
         self.post.refresh_from_db()
@@ -278,7 +278,7 @@ class PostUpdateViewTest(TestCase):
         response = self.client.post(self.url, data=updated_data)
 
         # Then
-        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
+        self.assertRedirects(response, reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
         self.post.refresh_from_db()
         tag_names = {tag.name for tag in self.post.tags.all()}
         self.assertEqual(self.post.tags.count(), 2)
@@ -298,37 +298,37 @@ class SearchViewTest(TestCase):
 
     def test_search_view_url_exists(self):
         """검색 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
-        response = self.client.get(reverse('search'))
+        response = self.client.get(reverse('blog:search'))
         self.assertEqual(response.status_code, 200)
 
     def test_search_view_uses_correct_template(self):
         """검색 뷰가 올바른 템플릿을 사용하는지 테스트"""
-        response = self.client.get(reverse('search'))
+        response = self.client.get(reverse('blog:search'))
         self.assertTemplateUsed(response, 'blog/search_results.html')
 
     def test_search_by_title(self):
         """제목으로 검색이 올바르게 동작하는지 테스트"""
-        response = self.client.get(reverse('search'), {'q': 'Apple'})
+        response = self.client.get(reverse('blog:search'), {'q': 'Apple'})
         # self.assertContains(response, "Apple Banana", html=True) # FIXME: Temporarily disabled
         self.assertContains(response, "Second Post") # Content에도 Apple이 있지만, OR 조건이므로 포함되어야 함
         self.assertNotContains(response, "Third Banana")
 
     def test_search_by_content(self):
         """내용으로 검색이 올바르게 동작하는지 테스트"""
-        response = self.client.get(reverse('search'), {'q': 'Content one'})
+        response = self.client.get(reverse('blog:search'), {'q': 'Content one'})
         self.assertContains(response, "Apple Banana")
         self.assertNotContains(response, "Second Post")
         self.assertNotContains(response, "Third Banana")
 
     def test_search_no_results(self):
         """검색 결과가 없을 때를 올바르게 처리하는지 테스트"""
-        response = self.client.get(reverse('search'), {'q': 'NonExistentTerm'})
+        response = self.client.get(reverse('blog:search'), {'q': 'NonExistentTerm'})
         self.assertContains(response, "No posts found.")
         self.assertNotContains(response, "Apple Banana")
 
     def test_search_empty_query(self):
         """검색어가 비어있을 때 모든 포스트를 보여주지 않는지 테스트"""
-        response = self.client.get(reverse('search'), {'q': ''})
+        response = self.client.get(reverse('blog:search'), {'q': ''})
         self.assertContains(response, "Please enter a search term.")
         self.assertNotIn('posts', response.context)
 
@@ -340,7 +340,7 @@ class SearchViewTest(TestCase):
         tag_post.tags.add(tag)
 
         # When
-        response = self.client.get(reverse('search'), {'q': 'unique-tag'})
+        response = self.client.get(reverse('blog:search'), {'q': 'unique-tag'})
 
         # Then
         self.assertContains(response, "Tag Post")
@@ -352,7 +352,7 @@ class SearchViewTest(TestCase):
         query = "test-query"
 
         # When
-        response = self.client.get(reverse('search'), {'q': query})
+        response = self.client.get(reverse('blog:search'), {'q': query})
 
         # Then
         self.assertEqual(response.context.get('query'), query)
@@ -386,21 +386,21 @@ class TagFilteredListViewTest(TestCase):
     def test_view_url_accessible_by_name(self):
         """'post_list_by_tag' URL name으로 뷰에 접근 가능한지 테스트"""
         # When
-        response = self.client.get(reverse('post_list_by_tag', args=[self.tag_python.name]))
+        response = self.client.get(reverse('blog:post_list_by_tag', args=[self.tag_python.name]))
         # Then
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
         """뷰가 올바른 템플릿(post_list.html)을 사용하는지 테스트"""
         # When
-        response = self.client.get(reverse('post_list_by_tag', args=[self.tag_python.name]))
+        response = self.client.get(reverse('blog:post_list_by_tag', args=[self.tag_python.name]))
         # Then
         self.assertTemplateUsed(response, 'blog/post_list.html')
 
     def test_filters_posts_by_tag(self):
         """뷰가 태그에 따라 포스트를 올바르게 필터링하는지 테스트"""
         # When
-        response = self.client.get(reverse('post_list_by_tag', args=[self.tag_python.name]))
+        response = self.client.get(reverse('blog:post_list_by_tag', args=[self.tag_python.name]))
         # Then
         self.assertContains(response, self.post1.title)
         self.assertNotContains(response, self.post2.title)
@@ -410,7 +410,7 @@ class TagFilteredListViewTest(TestCase):
     def test_non_existent_tag_returns_not_found(self):
         """존재하지 않는 태그로 접근 시 404를 반환하는지 테스트"""
         # When
-        response = self.client.get(reverse('post_list_by_tag', args=['non-existent-tag']))
+        response = self.client.get(reverse('blog:post_list_by_tag', args=['non-existent-tag']))
         # Then
         self.assertEqual(response.status_code, 404)
 
@@ -424,7 +424,7 @@ class PostDeleteViewTest(TestCase):
             title='To be deleted',
             content='Delete me'
         )
-        self.url = reverse('post_delete', kwargs={'pk': self.post.pk})
+        self.url = reverse('blog:post_delete', kwargs={'pk': self.post.pk})
 
     def test_view_url_exists_at_desired_location(self):
         """삭제 확인 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -451,7 +451,7 @@ class PostDeleteViewTest(TestCase):
 
         # Then
         # 1. 삭제 후 목록 페이지로 리다이렉트되는지 확인
-        self.assertRedirects(response, reverse('post_list'))
+        self.assertRedirects(response, reverse('blog:post_list'))
 
         # 2. 포스트 개수가 1 감소했는지 확인
         self.assertEqual(Post.objects.count(), initial_post_count - 1)

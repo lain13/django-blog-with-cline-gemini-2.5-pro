@@ -26,6 +26,7 @@
 - **17. 뷰 구조 리팩토링 (View Structure Refactoring)**: `views.py` 파일을 `views` 패키지로 분리하여 유지보수성을 향상시켰습니다.
 - **18. 폼 구조 리팩토링 (Form Structure Refactoring)**: `forms.py` 파일을 `forms` 패키지로 분리하여 유지보수성을 향상시켰습니다.
 - **19. URL 구조 리팩토링 (URL Structure Refactoring)**: `urls.py` 파일을 `urls` 패키지로 분리하여 유지보수성을 향상시켰습니다.
+- **20. 뷰 리팩토링 (View Refactoring)**: 모든 함수 기반 뷰(FBV)를 클래스 기반 뷰(CBV)로 리팩토링하여 코드의 재사용성과 가독성을 개선했습니다.
 
 ## 3. 남은 작업 (What's Left to Build)
 

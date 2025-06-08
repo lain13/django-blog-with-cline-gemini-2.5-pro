@@ -9,7 +9,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Save</button>
-        <a href="{% url 'post_list' %}">Cancel</a>
+        <a href="{% url 'blog:post_list' %}">Cancel</a>
     </form>
 </body>
 </html>

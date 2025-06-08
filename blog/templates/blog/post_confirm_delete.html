@@ -8,7 +8,7 @@
     <form method="POST">
         {% csrf_token %}
         <button type="submit">Confirm</button>
-        <a href="{% url 'post_detail' pk=post.pk %}">Cancel</a>
+        <a href="{% url 'blog:post_detail' pk=post.pk %}">Cancel</a>
     </form>
 </body>
 </html>

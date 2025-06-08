@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Search Results for "{{ query }}"</h1>
-    <a href="{% url 'post_list' %}">Back to Post List</a>
+    <a href="{% url 'blog:post_list' %}">Back to Post List</a>
     <hr>
 
     {% if message %}
@@ -17,7 +17,7 @@
     <ul>
         {% for post in posts %}
             <li>
-                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title|highlight:query }}</a></h2>
+                <h2><a href="{% url 'blog:post_detail' pk=post.pk %}">{{ post.title|highlight:query }}</a></h2>
                 <p>{{ post.content|highlight:query }}</p>
                 <small>Created: {{ post.created_at }} | Updated: {{ post.updated_at }}</small>
             </li>

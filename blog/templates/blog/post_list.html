@@ -5,9 +5,9 @@
 </head>
 <body>
     <h1>Blog Posts</h1>
-    <a href="{% url 'post_new' %}">New Post</a>
+    <a href="{% url 'blog:post_new' %}">New Post</a>
 
-    <form action="{% url 'search' %}" method="get">
+    <form action="{% url 'blog:search' %}" method="get">
         <input type="text" name="q" placeholder="Search Posts...">
         <button type="submit">Search</button>
     </form>
@@ -16,12 +16,12 @@
     <ul>
         {% for post in posts %}
             <li>
-                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                <h2><a href="{% url 'blog:post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
                 <p>{{ post.content }}</p>
                 <div>
                     <strong>Tags:</strong>
                     {% for tag in post.tags.all %}
-                        <a href="{% url 'post_list_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                        <a href="{% url 'blog:post_list_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                     {% empty %}
                         <span>No tags.</span>
                     {% endfor %}

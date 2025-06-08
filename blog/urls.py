@@ -1,6 +1,8 @@
-from django.urls import path, include
+from .urls.post_urls import urlpatterns as post_urls
+from .urls.comment_urls import urlpatterns as comment_urls
 
-urlpatterns = [
-    path('', include('blog.urls.post_urls')),
-    path('', include('blog.urls.comment_urls')),
-]
+app_name = 'blog'
+
+urlpatterns = []
+urlpatterns += post_urls
+urlpatterns += comment_urls

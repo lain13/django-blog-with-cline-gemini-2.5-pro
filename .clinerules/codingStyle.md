@@ -4,6 +4,7 @@
 
 - **MVT (Model-View-Template)**: Django의 기본 MVT 패턴을 충실히 따른다.
 - **Fat Models, Thin Views**: 비즈니스 로직은 가능한 모델(Model)에 집중시키고, 뷰(View)는 모델과 템플릿 간의 중개 역할에 집중한다.
+- **CBV 우선 사용 (Prioritize Class-Based Views)**: `ListView`, `DetailView`, `CreateView`, `UpdateView`, `DeleteView` 등 Django의 제네릭 CBV를 최대한 활용하여 코드의 재사용성을 높이고 가독성을 개선한다. 복잡한 로직이 필요한 경우에만 함수 기반 뷰(FBV) 사용을 고려한다.
 - **모델 분리 (Model Separation)**: `models.py` 파일이 비대해지는 것을 방지하기 위해, 각 모델 클래스는 `models/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/models/post.py`)
 - **뷰 분리 (View Separation)**: `views.py` 파일이 비대해지는 것을 방지하기 위해, 각 기능(또는 모델)과 관련된 뷰는 `views/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/views/post_views.py`)
 - **폼 분리 (Form Separation)**: `forms.py` 파일이 비대해지는 것을 방지하기 위해, 각 폼 클래스는 `forms/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/forms/post_forms.py`)
