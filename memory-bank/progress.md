@@ -18,7 +18,7 @@
   - [ ] 카테고리 모델/관계 테스트 코드 작성 (TDD)
   - [ ] 카테고리별 포스트 목록 뷰/템플릿 구현
 - **3. 댓글 시스템 개선 (Nested Comments)**
-  - [ ] `Comment` 모델 수정 (`author` FK, `parent` self-referencing FK)
+  - [ ] `Comment` 모델 수정 (`author` FK, `parent` self-referencing FK, updated_at 필드 추가)
   - [ ] 댓글 모델 테스트 코드 작성 (TDD)
   - [ ] 댓글 생성/수정/삭제 로직 및 뷰/템플릿 업데이트
 - **4. 조회수 카운터 (View Count)**

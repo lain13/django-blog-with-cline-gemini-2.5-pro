@@ -1,5 +1,7 @@
 # Coding Style Rules
 
+이 문서는 일관성과 품질을 보장하기 위해 프로젝트의 코딩 스타일과 규칙을 정의합니다.
+
 ## 1. 아키텍처 패턴 (Architectural Patterns)
 
 - **MVT (Model-View-Template)**: Django의 기본 MVT 패턴을 충실히 따른다.

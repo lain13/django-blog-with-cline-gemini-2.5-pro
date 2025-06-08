@@ -1,5 +1,7 @@
 # Environment Rules
 
+이 문서는 일관성을 보장하기 위해 프로젝트의 개발, 테스트 및 프로덕션 환경 규칙을 정의합니다.
+
 ## 1. 개발 환경 (Development Environment)
 
 - **OS**: Windows 11

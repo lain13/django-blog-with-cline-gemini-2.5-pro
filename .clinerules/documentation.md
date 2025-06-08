@@ -1,5 +1,7 @@
 # Documentation Rules
 
+이 문서는 유지보수성과 협업을 향상시키기 위해 프로젝트의 문서화 규칙을 정의합니다.
+
 ## 1. 문서화 대상 (Documentation Target)
 
 - **`memory-bank/`**: 프로젝트의 진행 과정, 의사결정 등 내부적인 내용을 기록한다.

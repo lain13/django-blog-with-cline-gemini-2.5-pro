@@ -11,6 +11,11 @@
     2.  **Green**: 테스트를 통과하는 최소한의 코드를 작성한다.
     3.  **Refactor**: 중복을 제거하고 코드 구조를 개선한다.
 
+- **작업 실행 원칙 (Execution Principles)**:
+    1.  **최소 단위 작업 (Atomic Tasks)**: `progress.md`에 명시된 작업 항목(e.g., `Category` 모델 정의)을 가장 작은 논리적 단위로 분해하여 실행합니다. (e.g., 필드 하나 추가, 메서드 하나 정의)
+    2.  **순차적 진행 (Sequential Progress)**: 하나의 TDD 사이클(Red-Green-Refactor)이 완전히 종료된 후에 다음 사이클로 넘어갑니다.
+    3.  **문서화 (Documentation)**: 하나의 주요 구성요소(e.g., 모델 전체, 뷰 전체) 개발이 완료될 때마다 `activeContext.md`와 `progress.md`를 업데이트하여 진행 상황을 명확히 기록합니다.
+
 ## 2. 버전 관리 (Version Control)
 
 - **Tool**: Git
