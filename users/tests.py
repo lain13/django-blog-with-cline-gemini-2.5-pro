@@ -26,3 +26,34 @@ class AuthViewTest(TestCase):
         # Check if the user is logged out
         response = self.client.get(reverse('blog:post_list'))
         self.assertFalse(response.context['user'].is_authenticated)
+
+
+class SignUpViewTest(TestCase):
+    def test_signup_view_uses_correct_template(self):
+        """
+        회원가입 페이지가 'users/signup.html' 템플릿을 사용하는지 테스트
+        """
+        response = self.client.get(reverse('users:signup'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'users/signup.html')
+
+    def test_signup_creates_new_user(self):
+        """
+        회원가입 시 새로운 사용자가 생성되는지 테스트
+        """
+        # The other test class creates a user, so we check the count increases
+        initial_user_count = User.objects.count()
+        response = self.client.post(
+            reverse('users:signup'),
+            {
+                'username': 'newuser',
+                'password1': 'ComplexPassword123!',
+                'password2': 'ComplexPassword123!'
+            }
+        )
+        # Check if the user count has increased by 1
+        self.assertEqual(User.objects.count(), initial_user_count + 1)
+        # Check for redirect to login page
+        self.assertRedirects(response, reverse('users:login'))
+        # Check if the new user was actually created
+        self.assertTrue(User.objects.filter(username='newuser').exists())
