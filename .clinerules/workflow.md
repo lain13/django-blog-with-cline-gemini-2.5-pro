@@ -1,10 +1,10 @@
 # Workflow Rules
 
-이 문서를 개발 프로세스의 일관성과 품질을 유지하기 위해 필요한 규칙들을 명기합니다.
+이 문서를 개발 프로세스의 일관성과 품질을 유지하기 위해 필요한 규칙들을 명기한다.
 
 ## 1. 개발 프로세스 (Development Process)
 
-- **작업 계획 가이드**: `memory-bank`의 내용을 바탕으로 작업을 계획하기 전에는, `.clinerules` 디렉토리의 규칙들을 먼저 확인하고 숙지합니다.
+- **작업 계획 가이드**: `memory-bank`의 내용을 바탕으로 작업을 계획하기 전에는, `.clinerules` 디렉토리의 규칙들을 먼저 확인하고 숙지한다.
 
 - **TDD (Test-Driven Development)**: 모든 기능은 다음의 Red-Green-Refactor 사이클을 엄격히 따른다.
     1.  **Red**: 실패하는 테스트를 먼저 작성한다. (`*test*.py`)
@@ -12,9 +12,9 @@
     3.  **Refactor**: 중복을 제거하고 코드 구조를 개선한다.
 
 - **작업 실행 원칙 (Execution Principles)**:
-    1.  **최소 단위 작업 (Atomic Tasks)**: `progress.md`에 명시된 작업 항목(e.g., `Category` 모델 정의)을 가장 작은 논리적 단위로 분해하여 실행합니다. (e.g., 필드 하나 추가, 메서드 하나 정의)
-    2.  **순차적 진행 (Sequential Progress)**: 하나의 TDD 사이클(Red-Green-Refactor)이 완전히 종료된 후에 다음 사이클로 넘어갑니다.
-    3.  **문서화 (Documentation)**: 하나의 주요 구성요소(e.g., 모델 전체, 뷰 전체) 개발이 완료될 때마다 `activeContext.md`와 `progress.md`를 업데이트하여 진행 상황을 명확히 기록합니다.
+    1.  **최소 단위 작업 (Atomic Tasks)**: `progress.md`에 명시된 작업 항목(e.g., `Category` 모델 정의)을 가장 작은 논리적 단위로 분해하여 실행한다. (e.g., 필드 하나 추가, 메서드 하나 정의)
+    2.  **순차적 진행 (Sequential Progress)**: 하나의 TDD 사이클(Red-Green-Refactor)이 완전히 종료된 후에 다음 사이클로 넘어간다.
+    3.  **문서화 (Documentation)**: 하나의 주요 구성요소(e.g., 모델 전체, 뷰 전체) 개발이 완료될 때마다 `activeContext.md`와 `progress.md`를 업데이트하여 진행 상황을 명확히 기록한다.
 
 ## 2. 버전 관리 (Version Control)
 
@@ -43,7 +43,4 @@
 - **Non-nullable 필드 추가 시 주의사항**: 기존 데이터가 있는 테이블에 `null=False`인 필드를 추가할 때는 반드시 기본값(`default`)을 설정하거나, `null=True`로 필드를 추가한 뒤 데이터 마이그레이션을 통해 기존 레코드의 값을 채우고, 이후 `null=False`로 변경하는 **2단계 마이그레이션(Two-Phase Migration)** 전략을 사용한다.
 
 ## 4. 테스트 구조 (Test Structure)
-
-- **테스트 패키지**: 각 앱의 테스트는 `tests` 패키지 내에 작성한다. (e.g., `blog/tests/`)
-- **파일 분리**: 테스트 코드는 기능(모델, 뷰, 폼 등)에 따라 별도의 파일로 분리하여 작성한다. (e.g., `test_models.py`, `test_views.py`)
-- **테스트 실행**: Django의 테스트 검색 기능이 `tests` 패키지 내의 테스트를 발견할 수 있도록 `tests/__init__.py` 파일에서 각 테스트 모듈을 임포트한다.
+- 모든 테스트 코드 작성 및 실행은 `testing.md` 파일에 정의된 규칙을 따른다.
