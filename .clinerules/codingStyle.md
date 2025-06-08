@@ -11,6 +11,7 @@
 - **뷰 분리 (View Separation)**: `views.py` 파일이 비대해지는 것을 방지하기 위해, 각 기능(또는 모델)과 관련된 뷰는 `views/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/views/post_views.py`)
 - **폼 분리 (Form Separation)**: `forms.py` 파일이 비대해지는 것을 방지하기 위해, 각 폼 클래스는 `forms/` 디렉토리 내의 개별 파일로 분리하여 관리한다. (예: `blog/forms/post_forms.py`)
 - **User 모델 참조 (User Model Reference)**: 모델에서 사용자를 참조할 때는 `from django.conf import settings` 후 `settings.AUTH_USER_MODEL`을 사용한다. 이는 커스텀 User 모델로의 변경 가능성을 열어두어 유연성을 높이는 Django의 공식 권장 방식이다.
+- **앱 분리 원칙 (App Separation Principle)**: 기능적 책임을 기준으로 앱을 분리한다. 예를 들어, 블로그 콘텐츠 관리는 `blog` 앱, 사용자 인증 및 관리는 `users` 앱으로 분리하여 재사용성과 유지보수성을 높인다.
 
 ## 2. URL 설계 (URL Design)
 

@@ -2,11 +2,11 @@
 
 ## 1. 시스템 아키텍처 (System Architecture)
 
-이 프로젝트는 Django 프레임워크의 기본 아키텍처인 **MVT (Model-View-Template)** 패턴을 따른다.
+이 프로젝트는 Django 프레임워크의 기본 아키텍처인 **MVT (Model-View-Template)** 패턴과 **앱 분리 원칙(App Separation Principle)**을 따른다.
 
-- **Model**: 데이터베이스의 구조를 정의한다. `blog/models/` 패키지 내에 각 모델(`Post`, `Comment`, `Tag`)을 개별 파일로 분리하여 관리한다.
-- **View**: 비즈니스 로직을 처리한다. 사용자의 요청(Request)을 받아 필요한 데이터를 모델에서 가져와 가공한 후, 템플릿에 전달하여 응답(Response)을 생성한다. `blog/views/` 패키지 내에 각 기능(`post_views.py`, `comment_views.py`)을 개별 파일로 분리하여 관리한다.
-- **Template**: 사용자에게 보여지는 UI를 담당한다. View로부터 전달받은 데이터를 HTML에 렌더링한다. `blog/templates/` 디렉토리 내에 위치한다.
+- **`blog` App**: 블로그의 핵심 기능인 게시글, 댓글, 카테고리, 태그 등 콘텐츠와 관련된 기능을 담당한다.
+- **`users` App**: 사용자 인증(로그인, 로그아웃, 회원가입) 및 계정 관리 기능을 담당한다.
+- 각 앱은 독립적인 Model, View, Template, URL, Form, Test 구조를 가진다.
 
 ## 2. 디자인 패턴 (Design Patterns)
 
@@ -26,12 +26,27 @@ graph TD
         URL[URL 요청]
     end
 
-    subgraph "Django"
-        URL_Resolver[URL Resolver] --> View[View]
-        View --> Model[Model]
-        View --> Template[Template]
-        Model --> DB[(Database)]
-        Template --> Rendered_HTML[Rendered HTML]
+    subgraph "Django Project"
+        URL_Resolver[URL Resolver]
+
+        subgraph "users App"
+            direction LR
+            Users_URL[urls.py] --> Users_View[views.py]
+            Users_View --> Users_Template[templates]
+            Users_View --> Auth_Model[Django Auth Model]
+        end
+
+        subgraph "blog App"
+            direction LR
+            Blog_URL[urls.py] --> Blog_View[views.py]
+            Blog_View --> Blog_Model[models.py]
+            Blog_View --> Blog_Template[templates]
+            Blog_Model --> DB[(Database)]
+        end
+
+        URL_Resolver --> Users_URL
+        URL_Resolver --> Blog_URL
+        Auth_Model --> DB
     end
 
     subgraph "User Response"
@@ -39,7 +54,9 @@ graph TD
     end
 
     URL --> URL_Resolver
-    Rendered_HTML --> Response
+    Users_Template --> Response
+    Blog_Template --> Response
+```
 
 ## 4. 데이터베이스 스키마 (Database Schema)
 
