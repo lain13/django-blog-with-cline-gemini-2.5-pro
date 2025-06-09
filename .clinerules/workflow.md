@@ -16,6 +16,14 @@
     2.  **순차적 진행 (Sequential Progress)**: 하나의 TDD 사이클(Red-Green-Refactor)이 완전히 종료된 후에 다음 사이클로 넘어간다.
     3.  **문서화 (Documentation)**: 하나의 주요 구성요소(e.g., 모델 전체, 뷰 전체) 개발이 완료될 때마다 `activeContext.md`와 `progress.md`를 업데이트하여 진행 상황을 명확히 기록한다.
 
+- **선행 리팩토링 원칙 (Principle of Upfront Refactoring)**: 새로운 기능이 기존 코드의 구조적 변경을 요구할 경우, 기능 구현에 앞서 구조를 개선하는 리팩토링 작업을 먼저 식별하고 실행하는 것을 우선으로 한다.
+
+- **작업 완료의 정의 (Definition of Done)**: 모든 작업은 아래의 '작업 완료 검증 체크리스트'를 통과해야만 '완료'로 간주한다.
+    1.  **기능 요구사항 충족 (Functional Requirements Met)**: 작업의 핵심 기능이 TDD에 따라 구현되고 모든 관련 테스트가 통과했는가?
+    2.  **시스템 일관성 확인 (System Consistency Check)**: 변경 사항이 영향을 미치는 모든 부분에서 시스템이 일관성을 유지하는가? (예: `base.html` 수정 시, 이를 상속하는 **모든** 페이지에서 올바르게 보이는가?)
+    3.  **문서 최신화 (Documentation Updated)**: `progress.md`, `activeContext.md` 등 관련 문서가 모두 최신 상태로 업데이트되었는가?
+    4.  **최종 검증 (Final Verification)**: 개발 서버를 실행하는 등, 최종 사용자 관점에서 변경 사항이 의도대로 작동하는지 확인했는가?
+
 ## 2. 버전 관리 (Version Control)
 
 - **Tool**: Git

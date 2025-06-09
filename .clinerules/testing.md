@@ -5,7 +5,7 @@
 ## 1. 테스트 구조 (Test Structure)
 
 - **테스트 패키지**: 각 앱의 테스트는 `tests` 패키지 내에 작성한다. (e.g., `blog/tests/`)
-- **파일 분리**: 테스트 코드는 기능(모델, 뷰, 폼 등)에 따라 별도의 파일로 분리하여 작성한다. (e.g., `test_models.py`, `test_views.py`)
+- **파일 분리**: 테스트 코드는 기능(모델, 뷰, 템플릿, 폼 등)에 따라 별도의 파일로 분리하여 작성한다. (e.g., `test_models.py`, `test_views.py`, `test_templates.py`)
 - **테스트 실행**: Django의 테스트 검색 기능이 `tests` 패키지 내의 테스트를 발견할 수 있도록 `tests/__init__.py` 파일에서 각 테스트 모듈을 임포트한다.
 
 ## 2. 테스트 데이터 (Test Data)
