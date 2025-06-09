@@ -16,7 +16,10 @@
 
 ## 3. 남은 작업 (What's Left to Build)
 
-- **1. 사용자 인증 시스템 (User Authentication) - `users` 앱**
+- **1. 템플릿 시스템 리팩토링 (Template System Refactoring)**
+  - [x] TDD: `blog` 앱의 모든 주요 템플릿이 `base.html`을 상속하도록 리팩토링
+  - [x] TDD: 템플릿 상속 구조를 검증하는 테스트(`test_templates.py`) 추가
+- **2. 사용자 인증 시스템 (User Authentication) - `users` 앱**
   - [x] `users` 앱 생성 및 `settings.py` 등록
   - [x] `users.urls` 생성 및 `config.urls`에 연동
   - [x] TDD: 로그인/로그아웃 기능 구현 (Django 내장 `LoginView`, `LogoutView` 활용)
@@ -25,26 +28,26 @@
   - [x] 네비게이션 바에 로그인/로그아웃/회원가입 링크 추가
   - [ ] TDD: `blog` 앱의 게시글 작성/수정/삭제 기능에 로그인 권한 적용
   - [ ] TDD: 본인 게시글만 수정/삭제할 수 있도록 권한 검증 로직 추가
-- **2. 계층형 카테고리 (Hierarchical Category)**
+- **3. 계층형 카테고리 (Hierarchical Category)**
   - [x] `Category` 모델 정의 (self-referencing FK)
   - [x] `Post` 모델에 `category` FK 추가
   - [x] 카테고리 모델/관계 테스트 코드 작성 (TDD) - (Red-Green 사이클 완료)
   - [x] 카테고리별 포스트 목록 뷰/템플릿 구현
-- **3. 댓글 시스템 개선 (Nested Comments)**
+- **4. 댓글 시스템 개선 (Nested Comments)**
   - [ ] `Comment` 모델 수정 (`author` FK, `parent` self-referencing FK, updated_at 필드 추가)
   - [ ] 댓글 모델 테스트 코드 작성 (TDD)
   - [ ] 댓글 생성/수정/삭제 로직 및 뷰/템플릿 업데이트
-- **4. 조회수 카운터 (View Count)**
+- **5. 조회수 카운터 (View Count)**
   - [ ] `Post` 모델에 `view_count` 필드 추가
   - [ ] 중복 방지 로직을 포함한 조회수 증가 메서드 모델에 구현
   - [ ] 조회수 기능 테스트 코드 작성 (TDD)
   - [ ] 상세 페이지 뷰에 조회수 증가 로직 적용
-- **5. 좋아요/싫어요 기능 (Like/Dislike System)**
+- **6. 좋아요/싫어요 기능 (Like/Dislike System)**
   - [ ] `Vote` 모델 정의 (`User` FK, `Post` FK, `value` field)
   - [ ] `Post` 모델에 `votes` 관계 추가
   - [ ] `Vote` 모델 테스트 코드 작성 (TDD)
   - [ ] 좋아요/싫어요 처리 뷰/로직 구현 (AJAX)
-- **6. RSS 피드 기능 (RSS Feed)**
+- **7. RSS 피드 기능 (RSS Feed)**
   - [ ] Django의 `syndication` 프레임워크를 활용한 RSS 피드 클래스 구현
   - [ ] 최신 게시글 RSS 피드 생성 (`/rss/` 또는 `/feed/`)
   - [ ] 카테고리별 RSS 피드 지원 (`/rss/category/<category>/`)

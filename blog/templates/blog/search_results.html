@@ -1,11 +1,9 @@
+{% extends "blog/base.html" %}
 {% load blog_tags %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Results</title>
-</head>
-<body>
+{% block title %}Search Results for "{{ query }}"{% endblock %}
+
+{% block content %}
     <h1>Search Results for "{{ query }}"</h1>
     <a href="{% url 'blog:post_list' %}">Back to Post List</a>
     <hr>
@@ -27,5 +25,4 @@
             {% endif %}
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

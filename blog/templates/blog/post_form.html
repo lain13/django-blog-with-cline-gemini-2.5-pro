@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>New Post</title>
-</head>
-<body>
+{% extends "blog/base.html" %}
+
+{% block title %}{% if form.instance.pk %}Edit Post{% else %}New Post{% endif %}{% endblock %}
+
+{% block content %}
     <h1>New Post</h1>
     <form method="POST">
         {% csrf_token %}
@@ -11,5 +10,4 @@
         <button type="submit">Save</button>
         <a href="{% url 'blog:post_list' %}">Cancel</a>
     </form>
-</body>
-</html>
+{% endblock %}
