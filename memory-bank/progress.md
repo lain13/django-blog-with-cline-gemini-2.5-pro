@@ -83,10 +83,10 @@
 ## 4. 알려진 이슈 (Known Issues)
 
 ### 현재 알려진 이슈 (Current Issues)
- - [ ] 로그인을 하면 `Page not found` 에러가 발생함
- - [ ] 목록에서 Logout 링크를 클릭하면 `HTTP ERROR 405` 에러가 발생함
+ - 없음
 
 ### 과거에 해결된 이슈 (Resolved Issues)
+ - **로그인/로그아웃 오류**: 로그인 시 `Page not found` 오류 및 로그아웃 시 `HTTP 405` 오류를 해결했습니다. (`settings.py`에 `LOGIN_REDIRECT_URL` 추가 및 `base.html`의 로그아웃 링크를 POST 방식으로 수정)
  - **`makemigrations` 실패**: Non-nullable 필드(`author`) 추가 시 `makemigrations`가 실패했으나, 2단계 마이그레이션 전략을 도입하여 해결했습니다. (관련 커밋: `6fecd16b`, `2599705c`)
  - **간헐적으로 실패하는 테스트**: `SearchView`의 비결정적 결과 순서로 인해 테스트가 간헐적으로 실패했으나, `order_by()`를 추가하고 테스트 방식을 개선하여 해결했습니다. (관련 커밋: `ca14c3e0`)
  - **템플릿 상속 구조 부재**: 초기 템플릿에 `base.html` 상속이 누락되어 UI 일관성이 부족했으나, 템플릿 리팩토링을 통해 해결했습니다. (관련 커밋: `9b375d9`, `19a7774`)

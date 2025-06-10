@@ -122,6 +122,7 @@ STATIC_URL = 'static/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Login redirect
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'users:login'
 
 # Default primary key field type
