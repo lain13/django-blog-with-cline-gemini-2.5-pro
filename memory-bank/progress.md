@@ -49,7 +49,11 @@
   - [x] `Vote` 모델 테스트 코드 작성 (TDD)
   - [x] 좋아요/싫어요 처리 뷰/로직 구현 (AJAX)
   - [ ] 좋아요/싫어요 카운트를 별도로 처리하기
-- **7. RSS 피드 기능 (RSS Feed)**
+- **7. 테스트 구조 리팩토링 (Test Structure Refactoring)**
+  - [x] 테스트 파일 분리 규칙 구체화 (`.clinerules/testing.md`)
+  - [x] 리팩토링 계획 문서화 (`activeContext.md`, `progress.md`)
+  - [ ] `test_views.py` 파일을 기능/모델 단위로 분리 실행
+- **8. RSS 피드 기능 (RSS Feed)**
   - [ ] Django의 `syndication` 프레임워크를 활용한 RSS 피드 클래스 구현
   - [ ] 최신 게시글 RSS 피드 생성 (`/rss/` 또는 `/feed/`)
   - [ ] 카테고리별 RSS 피드 지원 (`/rss/category/<category>/`)
@@ -84,7 +88,7 @@
 ## 4. 알려진 이슈 (Known Issues)
 
 ### 현재 알려진 이슈 (Current Issues)
- - test_views.py 파일이 너무 커서져서 수정하기 어렵다.
+ - **[리팩토링 계획 완료]** `test_views.py` 파일이 너무 커서 수정하기 어려움. (다음 Task에서 분리 작업 예정)
  - 좋아요/싫어요 카운트가 하나이기 때문에 구분하기 어렵다.
 
 ### 과거에 해결된 이슈 (Resolved Issues)
