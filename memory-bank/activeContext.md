@@ -16,9 +16,8 @@
 ## 3. 다음 단계 (Next Steps)
 
 - **TDD를 통한 댓글 시스템 개선 구현**
-  - 다음 Task에서는 아래의 TDD 사이클에 따라 `blog` 앱의 댓글 시스템을 개선합니다.
-  1.  **Red**: `Comment` 모델 변경사항(`author` FK, `parent` self-referencing FK, `updated_at` 필드)을 검증하는 **실패하는 테스트**를 `blog/tests/test_models.py`에 작성합니다.
-  2.  **Green**: `blog/models/comment.py` 모델을 수정하여 테스트를 통과시킵니다.
-  3.  **Red**: 익명 사용자가 아닌 로그인한 사용자만 댓글을 작성할 수 있는지, 그리고 본인의 댓글만 수정/삭제할 수 있는지 검증하는 **실패하는 테스트**를 `blog/tests/test_views.py`에 작성합니다.
-  4.  **Green**: 댓글 관련 뷰(`Create`, `Update`, `Delete`)를 수정하여 테스트를 통과시킵니다.
-  5.  **Refactor**: 전체 테스트가 통과하는지 확인하고 코드를 정리합니다.
+  - `Comment` 모델 개선 및 관련 테스트 작성을 완료했습니다.
+  - 다음 Task에서는 아래의 TDD 사이클에 따라 댓글 관련 뷰의 인증/권한 제어를 구현합니다.
+  1.  **Red**: 익명 사용자가 아닌 로그인한 사용자만 댓글을 작성할 수 있는지, 그리고 본인의 댓글만 수정/삭제할 수 있는지 검증하는 **실패하는 테스트**를 `blog/tests/test_views.py`에 작성합니다.
+  2.  **Green**: 댓글 관련 뷰(`Create`, `Update`, `Delete`)를 수정하여 테스트를 통과시킵니다.
+  3.  **Refactor**: 전체 테스트가 통과하는지 확인하고 코드를 정리합니다.
