@@ -13,6 +13,11 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
 
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset)
+        post.increase_view_count()
+        return post
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = forms.PostForm

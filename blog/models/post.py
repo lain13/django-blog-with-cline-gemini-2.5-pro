@@ -14,6 +14,7 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=200)
     content = models.TextField()
+    view_count = models.PositiveIntegerField(default=0, verbose_name="조회수")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(
@@ -27,3 +28,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def increase_view_count(self):
+        """조회수를 1 증가시킵니다."""
+        self.view_count += 1
+        self.save(update_fields=['view_count'])

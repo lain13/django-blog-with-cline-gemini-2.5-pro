@@ -145,6 +145,33 @@ class PostDetailViewTest(TestCase):
         self.assertEqual(new_comment.text, 'A new comment')
         self.assertRedirects(response, reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
 
+    def test_view_increases_view_count(self):
+        """상세 페이지에 접근할 때마다 조회수가 1씩 증가하는지 테스트"""
+        # Given
+        initial_view_count = self.post.view_count
+        url = reverse('blog:post_detail', kwargs={'pk': self.post.pk})
+
+        # When
+        response = self.client.get(url)
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+        self.post.refresh_from_db()
+        self.assertEqual(self.post.view_count, initial_view_count + 1)
+
+    def test_view_displays_view_count(self):
+        """상세 페이지에 조회수가 올바르게 표시되는지 테스트"""
+        # Given
+        url = reverse('blog:post_detail', kwargs={'pk': self.post.pk})
+
+        # When
+        response = self.client.get(url)
+
+        # Then
+        self.assertEqual(response.status_code, 200)
+        # 뷰가 호출되면서 조회수는 1이 되어야 합니다.
+        self.assertContains(response, "Views: 1")
+
 
 class PostCreateViewTest(TestCase):
     """Post 생성 뷰 관련 테스트"""

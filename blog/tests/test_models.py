@@ -141,6 +141,25 @@ class PostModelTest(TestCase):
         saved_post = Post.objects.get(pk=post.pk)
         self.assertEqual(saved_post.category, category)
 
+    def test_post_has_initial_view_count(self):
+        """Post 모델 생성 시 view_count가 0으로 초기화되는지 테스트"""
+        # Given: setUpTestData에서 post 객체 생성
+        # When
+        saved_post = Post.objects.get(pk=self.post.pk)
+        # Then
+        self.assertEqual(saved_post.view_count, 0)
+
+    def test_increase_view_count(self):
+        """increase_view_count 메서드가 조회수를 1 증가시키는지 테스트"""
+        # Given
+        post = self.post
+        self.assertEqual(post.view_count, 0)
+        # When
+        post.increase_view_count()
+        post.refresh_from_db()
+        # Then
+        self.assertEqual(post.view_count, 1)
+
 
 class CommentModelTest(TestCase):
     """Comment 모델 관련 테스트"""
