@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Sum
 
 from .category import Category
 from .tag import Tag
@@ -33,3 +34,8 @@ class Post(models.Model):
         """조회수를 1 증가시킵니다."""
         self.view_count += 1
         self.save(update_fields=['view_count'])
+
+    def get_vote_count(self):
+        """게시글의 총 투표 수를 반환합니다 (좋아요 - 싫어요)."""
+        # self.votes는 Vote 모델의 related_name='votes'에서 온다.
+        return self.votes.aggregate(total_votes=Sum('value'))['total_votes'] or 0

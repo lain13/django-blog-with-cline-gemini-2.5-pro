@@ -44,10 +44,11 @@
   - [x] 조회수 기능 테스트 코드 작성 (TDD)
   - [x] 상세 페이지 뷰에 조회수 증가 로직 적용
 - **6. 좋아요/싫어요 기능 (Like/Dislike System)**
-  - [ ] `Vote` 모델 정의 (`User` FK, `Post` FK, `value` field)
-  - [ ] `Post` 모델에 `votes` 관계 추가
-  - [ ] `Vote` 모델 테스트 코드 작성 (TDD)
-  - [ ] 좋아요/싫어요 처리 뷰/로직 구현 (AJAX)
+  - [x] `Vote` 모델 정의 (`User` FK, `Post` FK, `value` field)
+  - [x] `Post` 모델에 `votes` 관계 추가
+  - [x] `Vote` 모델 테스트 코드 작성 (TDD)
+  - [x] 좋아요/싫어요 처리 뷰/로직 구현 (AJAX)
+  - [ ] 좋아요/싫어요 카운트를 별도로 처리하기
 - **7. RSS 피드 기능 (RSS Feed)**
   - [ ] Django의 `syndication` 프레임워크를 활용한 RSS 피드 클래스 구현
   - [ ] 최신 게시글 RSS 피드 생성 (`/rss/` 또는 `/feed/`)
@@ -83,7 +84,8 @@
 ## 4. 알려진 이슈 (Known Issues)
 
 ### 현재 알려진 이슈 (Current Issues)
- - 없음
+ - test_views.py 파일이 너무 커서져서 수정하기 어렵다.
+ - 좋아요/싫어요 카운트가 하나이기 때문에 구분하기 어렵다.
 
 ### 과거에 해결된 이슈 (Resolved Issues)
  - **로그인/로그아웃 오류**: 로그인 시 `Page not found` 오류 및 로그아웃 시 `HTTP 405` 오류를 해결했습니다. (`settings.py`에 `LOGIN_REDIRECT_URL` 추가 및 `base.html`의 로그아웃 링크를 POST 방식으로 수정)

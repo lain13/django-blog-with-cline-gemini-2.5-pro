@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from ..models import Post, Tag
+from ..models import Post, Tag, Vote
 from .. import forms
 from django.db.models import Q
 
@@ -17,6 +17,13 @@ class PostDetailView(DetailView):
         post = super().get_object(queryset)
         post.increase_view_count()
         return post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            user_vote = Vote.objects.filter(user=self.request.user, post=self.object).first()
+            context['user_vote'] = user_vote
+        return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post

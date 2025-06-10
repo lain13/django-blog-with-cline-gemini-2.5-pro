@@ -7,6 +7,18 @@
     <h1>{{ post.title }}</h1>
     <p><small>Created: {{ post.created_at }} | Updated: {{ post.updated_at }} | Views: {{ post.view_count }}</small></p>
     <p>{{ post.content }}</p>
+
+    <div id="vote-section" data-post-id="{{ post.pk }}" data-vote-url="{% url 'blog:post_vote' pk=post.pk %}">
+        <button id="like-btn" class="btn {% if user_vote and user_vote.value == 1 %}btn-primary{% else %}btn-secondary{% endif %}">
+            Like
+        </button>
+        <button id="dislike-btn" class="btn {% if user_vote and user_vote.value == -1 %}btn-danger{% else %}btn-secondary{% endif %}">
+            Dislike
+        </button>
+        <span id="vote-count">Total votes: {{ post.get_vote_count }}</span>
+    </div>
+    <hr>
+
     <div>
         <strong>Tags:</strong>
         {% for tag in post.tags.all %}
@@ -42,4 +54,87 @@
     <a href="{% url 'blog:post_list' %}">목록으로</a>
     <a href="{% url 'blog:post_edit' pk=post.pk %}">수정하기</a>
     <a href="{% url 'blog:post_delete' pk=post.pk %}">삭제하기</a>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const voteSection = document.getElementById('vote-section');
+    if (!voteSection) return;
+
+    const postId = voteSection.dataset.postId;
+    const voteUrl = voteSection.dataset.voteUrl;
+    const likeBtn = document.getElementById('like-btn');
+    const dislikeBtn = document.getElementById('dislike-btn');
+    const voteCountSpan = document.getElementById('vote-count');
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    function handleVote(value) {
+        fetch(voteUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({ value: value })
+        })
+        .then(response => {
+            if (response.status === 401) {
+                window.location.href = "{% url 'users:login' %}?next=" + window.location.pathname;
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data) {
+                voteCountSpan.textContent = 'Total votes: ' + data.vote_count;
+                updateButtonStates(data.liked, data.disliked);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function updateButtonStates(liked, disliked) {
+        if (liked) {
+            likeBtn.classList.remove('btn-secondary');
+            likeBtn.classList.add('btn-primary');
+        } else {
+            likeBtn.classList.remove('btn-primary');
+            likeBtn.classList.add('btn-secondary');
+        }
+
+        if (disliked) {
+            dislikeBtn.classList.remove('btn-secondary');
+            dislikeBtn.classList.add('btn-danger');
+        } else {
+            dislikeBtn.classList.remove('btn-danger');
+            dislikeBtn.classList.add('btn-secondary');
+        }
+    }
+
+    likeBtn.addEventListener('click', function() {
+        handleVote('like');
+    });
+
+    dislikeBtn.addEventListener('click', function() {
+        handleVote('dislike');
+    });
+});
+</script>
 {% endblock %}

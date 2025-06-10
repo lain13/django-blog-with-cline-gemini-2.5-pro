@@ -72,6 +72,7 @@ erDiagram
         int id PK
         varchar(200) title
         text content
+        int view_count
         datetime created_at
         datetime updated_at
         int author_id FK
@@ -80,10 +81,11 @@ erDiagram
 
     COMMENT {
         int id PK
-        varchar(200) author
         text text
         datetime created_at
+        int author_id FK
         int post_id FK
+        int parent_id FK
     }
 
     TAG {
@@ -98,11 +100,25 @@ erDiagram
         int parent_id FK
     }
 
+    VOTE {
+        int id PK
+        int value "1 for like, -1 for dislike"
+        int user_id FK
+        int post_id FK
+    }
+
     USER ||--o{ POST : "authors"
+    USER ||--o{ COMMENT : "authors"
+    USER ||--o{ VOTE : "votes"
+
     POST ||--o{ COMMENT : "has"
-    POST }o--o{ TAG : "has"
+    POST }o--o{ TAG : "tags"
+    POST ||--o{ VOTE : "receives"
+
     CATEGORY ||--o{ POST : "contains"
     CATEGORY ||--o{ CATEGORY : "is_parent_of"
+
+    COMMENT ||--o{ COMMENT : "is_reply_to"
 ```
 
 ### 목표 스키마 (Target Schema for New Features)
