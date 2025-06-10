@@ -36,7 +36,7 @@
 - **4. 댓글 시스템 개선 (Nested Comments)**
   - [x] `Comment` 모델 수정 (`author` FK, `parent` self-referencing FK, updated_at 필드 추가)
   - [x] 댓글 모델 테스트 코드 작성 (TDD)
-  - [ ] 댓글 생성/수정/삭제 로직 및 뷰/템플릿 업데이트
+  - [x] 댓글 생성/수정/삭제 로직 및 뷰/템플릿 업데이트 (인증/권한 적용)
 - **5. 조회수 카운터 (View Count)**
   - [ ] `Post` 모델에 `view_count` 필드 추가
   - [ ] 중복 방지 로직을 포함한 조회수 증가 메서드 모델에 구현

@@ -1,6 +1,7 @@
 from django import template
 from django.utils.safestring import mark_safe
 import re
+from ..forms import CommentForm
 
 register = template.Library()
 
@@ -19,3 +20,12 @@ def highlight(text, query):
     )
     
     return mark_safe(highlighted_text)
+
+@register.inclusion_tag('blog/includes/comment_form_include.html', takes_context=True)
+def comment_form_tag(context, post):
+    """댓글 폼을 렌더링하는 템플릿 태그"""
+    return {
+        'form': CommentForm(),
+        'post': post,
+        'user': context['user']
+    }

@@ -28,6 +28,7 @@ class TemplateInheritanceTest(TestCase):
         """
         post_form 뷰가 렌더링하는 페이지에 base.html의 title 태그가 포함되어 있는지 확인
         """
+        self.client.login(username='testuser', password='password')
         response = self.client.get(reverse('blog:post_new'))
         self.assertContains(response, '<title>Django TDD Blog</title>')
 
@@ -35,6 +36,7 @@ class TemplateInheritanceTest(TestCase):
         """
         post_confirm_delete 뷰가 렌더링하는 페이지에 base.html의 title 태그가 포함되어 있는지 확인
         """
+        self.client.login(username='testuser', password='password')
         response = self.client.get(reverse('blog:post_delete', kwargs={'pk': self.post.pk}))
         self.assertContains(response, '<title>Django TDD Blog</title>')
 

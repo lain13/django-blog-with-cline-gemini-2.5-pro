@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 from .post import Post
 
@@ -21,3 +22,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.author.username}: {self.text}'
+
+    def get_absolute_url(self):
+        """댓글이 달린 포스트의 상세 페이지로 이동"""
+        return reverse('blog:post_detail', kwargs={'pk': self.post.pk})
