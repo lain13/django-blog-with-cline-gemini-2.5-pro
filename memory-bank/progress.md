@@ -52,7 +52,7 @@
 - **7. 테스트 구조 리팩토링 (Test Structure Refactoring)**
   - [x] 테스트 파일 분리 규칙 구체화 (`.clinerules/testing.md`)
   - [x] 리팩토링 계획 문서화 (`activeContext.md`, `progress.md`)
-  - [ ] `test_views.py` 파일을 기능/모델 단위로 분리 실행
+  - [x] `test_views.py` 파일을 기능/모델 단위로 분리 실행
 - **8. RSS 피드 기능 (RSS Feed)**
   - [ ] Django의 `syndication` 프레임워크를 활용한 RSS 피드 클래스 구현
   - [ ] 최신 게시글 RSS 피드 생성 (`/rss/` 또는 `/feed/`)

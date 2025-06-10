@@ -1,9 +1,7 @@
-import json
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from ..models import Post, Comment, Tag, Category, Vote
-from ..forms import CommentForm
+from ..models import Post, Tag, Category
 
 
 class PostListViewTest(TestCase):
@@ -125,26 +123,6 @@ class PostDetailViewTest(TestCase):
         # Then
         self.assertContains(response, "tag1")
         self.assertContains(response, "tag2")
-
-    def test_comment_creation(self):
-        """로그인한 사용자가 새로운 댓글을 성공적으로 생성하는지 테스트"""
-        # Given
-        self.client.login(username='detailuser', password='password')
-        initial_comment_count = self.post.comments.count()
-        comment_data = {
-            'text': 'A new comment'
-        }
-        url = reverse('blog:comment_new', kwargs={'pk': self.post.pk})
-
-        # When
-        response = self.client.post(url, data=comment_data)
-
-        # Then
-        self.assertEqual(self.post.comments.count(), initial_comment_count + 1)
-        new_comment = self.post.comments.last()
-        self.assertEqual(new_comment.author, self.user)
-        self.assertEqual(new_comment.text, 'A new comment')
-        self.assertRedirects(response, reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
 
     def test_view_increases_view_count(self):
         """상세 페이지에 접근할 때마다 조회수가 1씩 증가하는지 테스트"""
@@ -374,13 +352,6 @@ class SearchViewTest(TestCase):
         self.assertIn("Apple Banana", titles_in_context)
         self.assertIn("Second Post", titles_in_context)
         self.assertNotIn("Third Banana", titles_in_context)
-
-        # 4. 렌더링된 HTML 내용 확인 (기존 테스트 유지)
-        # highlight 필터로 인해 마크업이 추가되어 assertContains가 복잡해지므로,
-        # 컨텍스트 데이터 검증으로 대체함.
-        # self.assertContains(response, "Apple Banana", html=True)
-        # self.assertContains(response, "Second Post", html=True)
-        # self.assertNotContains(response, "Third Banana", html=True)
 
     def test_search_by_content(self):
         """내용으로 검색이 올바르게 동작하는지 테스트"""
@@ -629,167 +600,3 @@ class CategoryPostListViewTest(TestCase):
         response = self.client.get(reverse('blog:post_list_by_category', args=['non-existent-category']))
         # Then
         self.assertEqual(response.status_code, 404)
-
-
-class CommentProtectionTest(TestCase):
-    """댓글 생성, 수정, 삭제에 대한 접근 제어 테스트"""
-    @classmethod
-    def setUpTestData(cls):
-        User = get_user_model()
-        cls.user1 = User.objects.create_user(username='commentuser1', password='password')
-        cls.user2 = User.objects.create_user(username='commentuser2', password='password')
-        cls.post = Post.objects.create(author=cls.user1, title='Post for Comments', content='Content')
-        cls.comment = Comment.objects.create(post=cls.post, author=cls.user1, text='A comment to be tested')
-
-    def test_authentication_required_for_comment_create(self):
-        """로그인하지 않은 사용자가 댓글 생성 시도 시 로그인 페이지로 리다이렉트되는지 테스트"""
-        # Given
-        url = reverse('blog:comment_new', kwargs={'pk': self.post.pk})
-        comment_data = {'text': 'This should not be created'}
-        
-        # When
-        response = self.client.post(url, data=comment_data)
-        
-        # Then
-        self.assertRedirects(response, f"{reverse('users:login')}?next={url}")
-
-    def test_authentication_required_for_comment_update(self):
-        """로그인하지 않은 사용자가 댓글 수정 시도 시 로그인 페이지로 리다이렉트되는지 테스트"""
-        # Given
-        url = reverse('blog:comment_edit', kwargs={'pk': self.comment.pk})
-        
-        # When
-        response = self.client.get(url)
-        
-        # Then
-        self.assertRedirects(response, f"{reverse('users:login')}?next={url}")
-
-    def test_authentication_required_for_comment_delete(self):
-        """로그인하지 않은 사용자가 댓글 삭제 시도 시 로그인 페이지로 리다이렉트되는지 테스트"""
-        # Given
-        url = reverse('blog:comment_delete', kwargs={'pk': self.comment.pk})
-        
-        # When
-        response = self.client.get(url)
-        
-        # Then
-        self.assertRedirects(response, f"{reverse('users:login')}?next={url}")
-
-    def test_author_required_for_comment_update(self):
-        """작성자가 아닌 사용자가 댓글 수정 시도 시 403 오류가 발생하는지 테스트"""
-        # Given
-        self.client.login(username='commentuser2', password='password')
-        url = reverse('blog:comment_edit', kwargs={'pk': self.comment.pk})
-        
-        # When
-        response = self.client.get(url)
-        
-        # Then
-        self.assertEqual(response.status_code, 403)
-
-    def test_author_required_for_comment_delete(self):
-        """작성자가 아닌 사용자가 댓글 삭제 시도 시 403 오류가 발생하는지 테스트"""
-        # Given
-        self.client.login(username='commentuser2', password='password')
-        url = reverse('blog:comment_delete', kwargs={'pk': self.comment.pk})
-        
-        # When
-        response = self.client.get(url)
-        
-        # Then
-        self.assertEqual(response.status_code, 403)
-
-
-class VoteViewTest(TestCase):
-    """좋아요/싫어요 뷰 관련 테스트"""
-
-    @classmethod
-    def setUpTestData(cls):
-        User = get_user_model()
-        cls.user = User.objects.create_user(username='voteuser', password='password')
-        cls.post = Post.objects.create(author=cls.user, title='Vote Post', content='Content')
-        cls.url = reverse('blog:post_vote', kwargs={'pk': cls.post.pk})
-
-    def test_vote_requires_login(self):
-        """로그인하지 않은 사용자가 투표 시도 시 에러를 반환하는지 테스트"""
-        # When
-        response = self.client.post(self.url, json.dumps({'value': 'like'}), content_type='application/json', HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        # Then
-        self.assertEqual(response.status_code, 401) # Unauthorized
-
-    def test_like_a_post(self):
-        """로그인한 사용자가 '좋아요'를 성공적으로 하는지 테스트"""
-        # Given
-        self.client.login(username='voteuser', password='password')
-        # When
-        response = self.client.post(
-            self.url,
-            json.dumps({'value': 'like'}),
-            content_type='application/json',
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
-        )
-        # Then
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.content)
-        self.assertTrue(data['liked'])
-        self.assertFalse(data['disliked'])
-        self.assertEqual(data['vote_count'], 1)
-        self.assertTrue(Vote.objects.filter(user=self.user, post=self.post, value=Vote.LIKE).exists())
-
-    def test_dislike_a_post(self):
-        """로그인한 사용자가 '싫어요'를 성공적으로 하는지 테스트"""
-        # Given
-        self.client.login(username='voteuser', password='password')
-        # When
-        response = self.client.post(
-            self.url,
-            json.dumps({'value': 'dislike'}),
-            content_type='application/json',
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
-        )
-        # Then
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.content)
-        self.assertFalse(data['liked'])
-        self.assertTrue(data['disliked'])
-        self.assertEqual(data['vote_count'], -1)
-        self.assertTrue(Vote.objects.filter(user=self.user, post=self.post, value=Vote.DISLIKE).exists())
-
-    def test_toggle_like(self):
-        """'좋아요'를 다시 눌렀을 때 투표가 취소되는지 테스트"""
-        # Given
-        self.client.login(username='voteuser', password='password')
-        Vote.objects.create(user=self.user, post=self.post, value=Vote.LIKE)
-        # When
-        response = self.client.post(
-            self.url,
-            json.dumps({'value': 'like'}),
-            content_type='application/json',
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
-        )
-        # Then
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.content)
-        self.assertFalse(data['liked'])
-        self.assertEqual(data['vote_count'], 0)
-        self.assertFalse(Vote.objects.filter(user=self.user, post=self.post).exists())
-
-    def test_change_vote_from_like_to_dislike(self):
-        """'좋아요'에서 '싫어요'로 투표를 변경하는지 테스트"""
-        # Given
-        self.client.login(username='voteuser', password='password')
-        Vote.objects.create(user=self.user, post=self.post, value=Vote.LIKE)
-        # When
-        response = self.client.post(
-            self.url,
-            json.dumps({'value': 'dislike'}),
-            content_type='application/json',
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
-        )
-        # Then
-        self.assertEqual(response.status_code, 200)
-        data = json.loads(response.content)
-        self.assertFalse(data['liked'])
-        self.assertTrue(data['disliked'])
-        self.assertEqual(data['vote_count'], -1)
-        self.assertTrue(Vote.objects.filter(user=self.user, post=self.post, value=Vote.DISLIKE).exists())
