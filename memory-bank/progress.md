@@ -26,8 +26,8 @@
   - [x] TDD: 회원가입 기능 구현 (Django 내장 `UserCreationForm` 활용)
   - [x] `login.html`, `signup.html` 템플릿 작성
   - [x] 네비게이션 바에 로그인/로그아웃/회원가입 링크 추가
-  - [ ] TDD: `blog` 앱의 게시글 작성/수정/삭제 기능에 로그인 권한 적용
-  - [ ] TDD: 본인 게시글만 수정/삭제할 수 있도록 권한 검증 로직 추가
+  - [x] TDD: `blog` 앱의 게시글 작성/수정/삭제 기능에 로그인 권한 적용
+  - [x] TDD: 본인 게시글만 수정/삭제할 수 있도록 권한 검증 로직 추가
 - **3. 계층형 카테고리 (Hierarchical Category)**
   - [x] `Category` 모델 정의 (self-referencing FK)
   - [x] `Post` 모델에 `category` FK 추가

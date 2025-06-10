@@ -465,6 +465,52 @@ class TagFilteredListViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
+class PostProtectionTest(TestCase):
+    """게시글 생성, 수정, 삭제에 대한 접근 제어 테스트"""
+    @classmethod
+    def setUpTestData(cls):
+        User = get_user_model()
+        cls.user = User.objects.create_user(username='testuser', password='password')
+        cls.post = Post.objects.create(author=cls.user, title='Test Post', content='Test Content')
+
+    def test_authentication_required_for_post_new(self):
+        """로그인하지 않은 사용자가 새 글 작성 페이지 접근 시 로그인 페이지로 리다이렉트되는지 테스트"""
+        response = self.client.get(reverse('blog:post_new'))
+        self.assertRedirects(response, f"{reverse('users:login')}?next={reverse('blog:post_new')}")
+
+    def test_authentication_required_for_post_edit(self):
+        """로그인하지 않은 사용자가 글 수정 페이지 접근 시 로그인 페이지로 리다이렉트되는지 테스트"""
+        url = reverse('blog:post_edit', kwargs={'pk': self.post.pk})
+        response = self.client.get(url)
+        self.assertRedirects(response, f"{reverse('users:login')}?next={url}")
+
+    def test_authentication_required_for_post_delete(self):
+        """로그인하지 않은 사용자가 글 삭제 페이지 접근 시 로그인 페이지로 리다이렉트되는지 테스트"""
+        url = reverse('blog:post_delete', kwargs={'pk': self.post.pk})
+        response = self.client.get(url)
+        self.assertRedirects(response, f"{reverse('users:login')}?next={url}")
+
+    def test_author_required_for_post_edit(self):
+        """작성자가 아닌 사용자가 글 수정 페이지 접근 시 403 오류가 발생하는지 테스트"""
+        other_user = get_user_model().objects.create_user(username='otheruser', password='password')
+        self.client.login(username='otheruser', password='password')
+        
+        url = reverse('blog:post_edit', kwargs={'pk': self.post.pk})
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 403)
+
+    def test_author_required_for_post_delete(self):
+        """작성자가 아닌 사용자가 글 삭제 페이지 접근 시 403 오류가 발생하는지 테스트"""
+        other_user = get_user_model().objects.create_user(username='otheruser2', password='password')
+        self.client.login(username='otheruser2', password='password')
+
+        url = reverse('blog:post_delete', kwargs={'pk': self.post.pk})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 403)
+
+
 class PostDeleteViewTest(TestCase):
     """Post 삭제 뷰 관련 테스트"""
 

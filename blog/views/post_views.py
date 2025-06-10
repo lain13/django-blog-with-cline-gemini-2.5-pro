@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from ..models import Post, Tag
 from .. import forms
@@ -17,7 +18,7 @@ class PostDetailView(DetailView):
         context['comment_form'] = forms.CommentForm()
         return context
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = forms.PostForm
 
@@ -28,14 +29,19 @@ class PostCreateView(CreateView):
     def get_success_url(self):
         return reverse('blog:post_detail', kwargs={'pk': self.object.pk})
 
-class PostUpdateView(UpdateView):
+class AuthorRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+class PostUpdateView(AuthorRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Post
     form_class = forms.PostForm
 
     def get_success_url(self):
         return reverse('blog:post_detail', kwargs={'pk': self.object.pk})
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(AuthorRequiredMixin, LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
 
