@@ -50,9 +50,25 @@
   - [x] 좋아요/싫어요 처리 뷰/로직 구현 (AJAX)
   - [ ] 좋아요/싫어요 카운트를 별도로 처리하기
 - **7. 테스트 구조 리팩토링 (Test Structure Refactoring)**
-  - [x] 테스트 파일 분리 규칙 구체화 (`.clinerules/testing.md`)
-  - [x] 리팩토링 계획 문서화 (`activeContext.md`, `progress.md`)
-  - [x] `test_views.py` 파일을 기능/모델 단위로 분리 실행
+  - [ ] **계획 수립 및 문서화 (Planning & Documentation)**
+    - [x] `activeContext.md`에 리팩토링 계획 반영
+    - [x] `.clinerules/testing.md`에 파일 분리 예시 추가
+    - [x] `.clinerules/workflow.md`에 선행 리팩토링 원칙 추가
+    - [x] `progress.md`에 상세 리팩토링 계획 반영
+  - [ ] **`test_models.py` 분리 (Separate `test_models.py`)**
+    - [ ] `test_category_model.py` 생성 및 관련 테스트 이동
+    - [ ] `test_tag_model.py` 생성 및 관련 테스트 이동
+    - [ ] `test_post_model.py` 생성 및 관련 테스트 이동
+    - [ ] `test_comment_model.py` 생성 및 관련 테스트 이동
+    - [ ] `test_vote_model.py` 생성 및 관련 테스트 이동
+    - [ ] 기존 `test_models.py` 파일 삭제
+  - [ ] **`test_views.py` 분리 (Separate `test_views.py`)**
+    - [ ] `test_search_views.py` 생성 및 관련 테스트 이동
+    - [ ] `test_tag_views.py` 생성 및 관련 테스트 이동
+    - [ ] `test_category_views.py` 생성 및 관련 테스트 이동
+    - [ ] `test_post_views.py`는 Post CRUD 관련 테스트만 남도록 정리
+  - [ ] **`tests/__init__.py` 업데이트 (Update `tests/__init__.py`)**
+    - [ ] 분리된 모든 테스트 파일이 인식되도록 임포트 구문 수정
 - **8. RSS 피드 기능 (RSS Feed)**
   - [ ] Django의 `syndication` 프레임워크를 활용한 RSS 피드 클래스 구현
   - [ ] 최신 게시글 RSS 피드 생성 (`/rss/` 또는 `/feed/`)
