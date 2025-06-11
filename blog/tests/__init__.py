@@ -15,3 +15,4 @@ from .test_forms import *
 from .test_templates import *
 from .test_templatetags import *
 from .test_rss_feed import *
+from .test_pagination import *

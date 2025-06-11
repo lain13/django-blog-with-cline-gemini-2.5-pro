@@ -77,14 +77,14 @@
   - [ ] 카테고리별 RSS 피드 지원 (`/rss/category/<category>/`)
   - [ ] RSS 피드 메타데이터 최적화 (제목, 설명, 게시일, 작성자 등)
 - **8. 페이징 기능 (Pagination)**
-  - [ ] ListView 기반 뷰에 Django 기본 페이징 기능 적용 (Paginator, page_obj)
-  - [ ] 템플릿에 페이지 네비게이션 UI 추가 (has_previous, has_next, page_obj.paginator.page_range)
-  - [ ] 페이지 번호 쿼리스트링(?page=2)을 고려한 테스트 케이스 작성 (TDD)
-  - [ ] 태그별, 카테고리별, 검색결과 페이지에도 페이징 적용
-  - [ ] UX 향상을 위한 페이지 번호 하이라이트 및 비활성화 처리
-  - [ ] 페이지당 게시글 수 설정 (기본값: 10개, 설정값으로 조정 가능하게)
-  - [ ] 검색 결과와 페이징 동시 적용 시 쿼리스트링 보존 로직 추가 (?page=2&query=foo)
-  - [ ] 페이징 관련 테스트 코드 작성: 페이지 경계 테스트(첫 페이지, 마지막 페이지 등), 존재하지 않는 페이지 접근 시 graceful fallback
+  - [x] ListView 기반 뷰에 Django 기본 페이징 기능 적용 (Paginator, page_obj)
+  - [x] 템플릿에 페이지 네비게이션 UI 추가 (has_previous, has_next, page_obj.paginator.page_range)
+  - [x] 페이지 번호 쿼리스트링(?page=2)을 고려한 테스트 케이스 작성 (TDD)
+  - [x] 태그별, 카테고리별, 검색결과 페이지에도 페이징 적용
+  - [x] UX 향상을 위한 페이지 번호 하이라이트 및 비활성화 처리
+  - [x] 페이지당 게시글 수 설정 (기본값: 10개, 설정값으로 조정 가능하게)
+  - [x] 검색 결과와 페이징 동시 적용 시 쿼리스트링 보존 로직 추가 (?page=2&query=foo)
+  - [x] 페이징 관련 테스트 코드 작성: 페이지 경계 테스트(첫 페이지, 마지막 페이지 등), 존재하지 않는 페이지 접근 시 graceful fallback
 - **9. 리캡차 기능**
   - [ ] django-recaptcha 패키지를 사용하여 Google reCAPTCHA v2/v3 통합
   - [ ] API 키는 .env 파일에 분리하여 관리
