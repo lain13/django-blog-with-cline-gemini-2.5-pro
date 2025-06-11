@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import Sum
+from django.urls import reverse
 
 from .category import Category
 from .tag import Tag
@@ -29,6 +30,14 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        """게시글의 상세 페이지 URL을 반환합니다."""
+        return reverse('blog:post_detail', kwargs={'pk': self.pk})
+
+    def get_vote_count(self):
+        """게시글의 총 투표 수를 반환합니다. (좋아요 - 싫어요 아님)"""
+        return self.votes.count()
 
     def increase_view_count(self):
         """조회수를 1 증가시킵니다."""

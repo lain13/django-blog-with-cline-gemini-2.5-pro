@@ -70,11 +70,11 @@
   - [x] **`tests/__init__.py` 업데이트 (Update `tests/__init__.py`)**
     - [x] 분리된 모든 테스트 파일이 인식되도록 임포트 구문 수정
 - **8. RSS 피드 기능 (RSS Feed)**
-  - [ ] Django의 `syndication` 프레임워크를 활용한 RSS 피드 클래스 구현
-  - [ ] 최신 게시글 RSS 피드 생성 (`/rss/` 또는 `/feed/`)
+  - [x] RSS 피드 테스트 코드 작성 (TDD)
+  - [x] Django의 `syndication` 프레임워크를 활용한 RSS 피드 클래스 구현
+  - [x] 최신 게시글 RSS 피드 생성 (`/feed/`)
+  - [x] RSS 피드 링크를 템플릿에 추가 (HTML `<link>` 태그)
   - [ ] 카테고리별 RSS 피드 지원 (`/rss/category/<category>/`)
-  - [ ] RSS 피드 테스트 코드 작성 (TDD)
-  - [ ] RSS 피드 링크를 템플릿에 추가 (HTML `<link>` 태그)
   - [ ] RSS 피드 메타데이터 최적화 (제목, 설명, 게시일, 작성자 등)
 - **8. 페이징 기능 (Pagination)**
   - [ ] ListView 기반 뷰에 Django 기본 페이징 기능 적용 (Paginator, page_obj)

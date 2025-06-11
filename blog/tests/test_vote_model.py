@@ -48,7 +48,8 @@ class VoteModelTest(TestCase):
         self.post.refresh_from_db()
 
         # Then
-        self.assertEqual(self.post.get_vote_count(), 2)
+        self.assertEqual(self.post.like_count, 2)
+        self.assertEqual(self.post.dislike_count, 0)
 
         # Given
         Vote.objects.create(user=get_user_model().objects.create_user('user3'), post=self.post, value=Vote.DISLIKE)
@@ -57,7 +58,9 @@ class VoteModelTest(TestCase):
         self.post.refresh_from_db()
 
         # Then
-        self.assertEqual(self.post.get_vote_count(), 1)
+        self.assertEqual(self.post.like_count, 2)
+        self.assertEqual(self.post.dislike_count, 1)
+        self.assertEqual(self.post.get_vote_count(), 3) # 총 투표 수 확인
 
     def test_user_cannot_vote_twice_on_same_post(self):
         """한 사용자가 같은 게시물에 중복으로 투표할 수 없는지 테스트"""
