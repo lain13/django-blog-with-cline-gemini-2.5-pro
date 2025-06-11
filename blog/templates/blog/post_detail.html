@@ -10,12 +10,11 @@
 
     <div id="vote-section" data-post-id="{{ post.pk }}" data-vote-url="{% url 'blog:post_vote' pk=post.pk %}">
         <button id="like-btn" class="btn {% if user_vote and user_vote.value == 1 %}btn-primary{% else %}btn-secondary{% endif %}">
-            Like
+            Like (<span id="like-count">{{ post.like_count }}</span>)
         </button>
         <button id="dislike-btn" class="btn {% if user_vote and user_vote.value == -1 %}btn-danger{% else %}btn-secondary{% endif %}">
-            Dislike
+            Dislike (<span id="dislike-count">{{ post.dislike_count }}</span>)
         </button>
-        <span id="vote-count">Total votes: {{ post.get_vote_count }}</span>
     </div>
     <hr>
 
@@ -66,7 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const voteUrl = voteSection.dataset.voteUrl;
     const likeBtn = document.getElementById('like-btn');
     const dislikeBtn = document.getElementById('dislike-btn');
-    const voteCountSpan = document.getElementById('vote-count');
+    const likeCountSpan = document.getElementById('like-count');
+    const dislikeCountSpan = document.getElementById('dislike-count');
 
     function getCookie(name) {
         let cookieValue = null;
@@ -103,7 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             if (data) {
-                voteCountSpan.textContent = 'Total votes: ' + data.vote_count;
+                likeCountSpan.textContent = data.like_count;
+                dislikeCountSpan.textContent = data.dislike_count;
                 updateButtonStates(data.liked, data.disliked);
             }
         })

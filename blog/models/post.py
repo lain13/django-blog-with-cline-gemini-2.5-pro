@@ -35,7 +35,12 @@ class Post(models.Model):
         self.view_count += 1
         self.save(update_fields=['view_count'])
 
-    def get_vote_count(self):
-        """게시글의 총 투표 수를 반환합니다 (좋아요 - 싫어요)."""
-        # self.votes는 Vote 모델의 related_name='votes'에서 온다.
-        return self.votes.aggregate(total_votes=Sum('value'))['total_votes'] or 0
+    @property
+    def like_count(self):
+        """게시글의 좋아요 수를 반환합니다."""
+        return self.votes.filter(value=1).count()
+
+    @property
+    def dislike_count(self):
+        """게시글의 싫어요 수를 반환합니다."""
+        return self.votes.filter(value=-1).count()

@@ -48,7 +48,7 @@
   - [x] `Post` 모델에 `votes` 관계 추가
   - [x] `Vote` 모델 테스트 코드 작성 (TDD)
   - [x] 좋아요/싫어요 처리 뷰/로직 구현 (AJAX)
-  - [ ] 좋아요/싫어요 카운트를 별도로 처리하기
+  - [x] 좋아요/싫어요 카운트를 별도로 처리하기
 - **7. 테스트 구조 리팩토링 (Test Structure Refactoring)**
   - [x] **계획 수립 및 문서화 (Planning & Documentation)**
     - [x] `activeContext.md`에 리팩토링 계획 반영
@@ -105,9 +105,9 @@
 
 ### 현재 알려진 이슈 (Current Issues)
  - **[리팩토링 계획 완료]** `test_views.py` 파일이 너무 커서 수정하기 어려움. (다음 Task에서 분리 작업 예정)
- - 좋아요/싫어요 카운트가 하나이기 때문에 구분하기 어렵다.
 
 ### 과거에 해결된 이슈 (Resolved Issues)
+ - **좋아요/싫어요 카운트 분리**: `Vote` 모델의 `value` 필드 하나로 집계되던 것을 `like_count`와 `dislike_count`로 분리하여 명확하게 표시하도록 개선했습니다.
  - **로그인/로그아웃 오류**: 로그인 시 `Page not found` 오류 및 로그아웃 시 `HTTP 405` 오류를 해결했습니다. (`settings.py`에 `LOGIN_REDIRECT_URL` 추가 및 `base.html`의 로그아웃 링크를 POST 방식으로 수정)
  - **`makemigrations` 실패**: Non-nullable 필드(`author`) 추가 시 `makemigrations`가 실패했으나, 2단계 마이그레이션 전략을 도입하여 해결했습니다. (관련 커밋: `6fecd16b`, `2599705c`)
  - **간헐적으로 실패하는 테스트**: `SearchView`의 비결정적 결과 순서로 인해 테스트가 간헐적으로 실패했으나, `order_by()`를 추가하고 테스트 방식을 개선하여 해결했습니다. (관련 커밋: `ca14c3e0`)

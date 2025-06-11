@@ -1,7 +1,7 @@
 import time
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from ..models import Post, Tag, Category
+from ..models import Post, Tag, Category, Vote
 
 
 class PostModelTest(TestCase):
@@ -102,3 +102,20 @@ class PostModelTest(TestCase):
         post.refresh_from_db()
         # Then
         self.assertEqual(post.view_count, 1)
+
+    def test_like_and_dislike_count_properties(self):
+        """like_count와 dislike_count가 정확한 값을 반환하는지 테스트"""
+        # Given
+        post = self.post
+        user2 = get_user_model().objects.create_user(username='user2', password='password')
+        user3 = get_user_model().objects.create_user(username='user3', password='password')
+
+        # When
+        # 좋아요 2개, 싫어요 1개 생성
+        Vote.objects.create(post=post, user=self.user, value=Vote.LIKE)
+        Vote.objects.create(post=post, user=user2, value=Vote.LIKE)
+        Vote.objects.create(post=post, user=user3, value=Vote.DISLIKE)
+
+        # Then
+        self.assertEqual(post.like_count, 2)
+        self.assertEqual(post.dislike_count, 1)

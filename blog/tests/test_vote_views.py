@@ -38,7 +38,8 @@ class VoteViewTest(TestCase):
         data = json.loads(response.content)
         self.assertTrue(data['liked'])
         self.assertFalse(data['disliked'])
-        self.assertEqual(data['vote_count'], 1)
+        self.assertEqual(data['like_count'], 1)
+        self.assertEqual(data['dislike_count'], 0)
         self.assertTrue(Vote.objects.filter(user=self.user, post=self.post, value=Vote.LIKE).exists())
 
     def test_dislike_a_post(self):
@@ -57,7 +58,8 @@ class VoteViewTest(TestCase):
         data = json.loads(response.content)
         self.assertFalse(data['liked'])
         self.assertTrue(data['disliked'])
-        self.assertEqual(data['vote_count'], -1)
+        self.assertEqual(data['like_count'], 0)
+        self.assertEqual(data['dislike_count'], 1)
         self.assertTrue(Vote.objects.filter(user=self.user, post=self.post, value=Vote.DISLIKE).exists())
 
     def test_toggle_like(self):
@@ -76,7 +78,8 @@ class VoteViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
         self.assertFalse(data['liked'])
-        self.assertEqual(data['vote_count'], 0)
+        self.assertEqual(data['like_count'], 0)
+        self.assertEqual(data['dislike_count'], 0)
         self.assertFalse(Vote.objects.filter(user=self.user, post=self.post).exists())
 
     def test_change_vote_from_like_to_dislike(self):
@@ -96,5 +99,6 @@ class VoteViewTest(TestCase):
         data = json.loads(response.content)
         self.assertFalse(data['liked'])
         self.assertTrue(data['disliked'])
-        self.assertEqual(data['vote_count'], -1)
+        self.assertEqual(data['like_count'], 0)
+        self.assertEqual(data['dislike_count'], 1)
         self.assertTrue(Vote.objects.filter(user=self.user, post=self.post, value=Vote.DISLIKE).exists())

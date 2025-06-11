@@ -40,7 +40,8 @@ class VoteView(LoginRequiredMixin, View):
         user_vote = Vote.objects.filter(user=request.user, post=post).first()
 
         return JsonResponse({
-            'vote_count': post.get_vote_count(),
+            'like_count': post.like_count,
+            'dislike_count': post.dislike_count,
             'liked': user_vote.value == Vote.LIKE if user_vote else False,
             'disliked': user_vote.value == Vote.DISLIKE if user_vote else False,
         })
