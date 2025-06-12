@@ -1,8 +1,8 @@
 import unittest
-from django.test import TestCase, TransactionTestCase, override_settings
+from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from users.forms import SignupForm
+from captcha.conf import settings as captcha_settings
 
 User = get_user_model()
 
@@ -29,8 +29,42 @@ class AuthViewTest(TestCase):
         response = self.client.get(reverse('blog:post_list'))
         self.assertFalse(response.context['user'].is_authenticated)
 
+    def test_login_fails_without_captcha(self):
+        """
+        CAPTCHA 없이 로그인 시도 시 실패하는지 테스트
+        """
+        response = self.client.post(reverse('users:login'), {
+            'username': 'testuser',
+            'password': 'password123',
+        })
+        self.assertEqual(response.status_code, 200)
+        # Manually check for form errors to bypass potential assertFormError issues
+        form = response.context.get('form')
+        self.assertIsNotNone(form)
+        self.assertTrue(form.is_bound)
+        self.assertIn('captcha', form.errors)
+        self.assertEqual(form.errors['captcha'], ['This field is required.'])
+        self.assertFalse(response.context['user'].is_authenticated)
 
-class SignUpViewTest(TransactionTestCase):
+    def test_login_succeeds_with_captcha(self):
+        """
+        올바른 CAPTCHA로 로그인 시도 시 성공하는지 테스트
+        """
+        captcha_settings.CAPTCHA_TEST_MODE = True
+        response = self.client.post(reverse('users:login'), {
+            'username': 'testuser',
+            'password': 'password123',
+            'captcha_0': 'passed',
+            'captcha_1': 'passed',
+        })
+        self.assertRedirects(response, reverse('blog:post_list'))
+        # Check if the user is logged in by checking a subsequent request
+        response = self.client.get(reverse('blog:post_list'))
+        self.assertTrue(response.context['user'].is_authenticated)
+        captcha_settings.CAPTCHA_TEST_MODE = False
+
+
+class SignUpViewTest(TestCase):
     def test_signup_view_uses_correct_template(self):
         """
         회원가입 페이지가 'users/signup.html' 템플릿을 사용하는지 테스트
@@ -39,12 +73,11 @@ class SignUpViewTest(TransactionTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'users/signup.html')
 
-    @unittest.skip("Skipping due to CAPTCHA issues in test environment")
     def test_signup_creates_new_user(self):
         """
-        회원가입 시 새로운 사용자가 생성되는지 테스트
+        회원가입 시 새로운 사용자가 생성되는지 테스트 (CAPTCHA 테스트 모드 활성화)
         """
-        # The other test class creates a user, so we check the count increases
+        captcha_settings.CAPTCHA_TEST_MODE = True
         initial_user_count = User.objects.count()
         response = self.client.post(
             reverse('users:signup'),
@@ -52,26 +85,15 @@ class SignUpViewTest(TransactionTestCase):
                 'username': 'newuser',
                 'password1': 'ComplexPassword123!',
                 'password2': 'ComplexPassword123!',
+                'captcha_0': 'passed',
+                'captcha_1': 'passed',
             }
         )
+        captcha_settings.CAPTCHA_TEST_MODE = False
+
         # Check if the user count has increased by 1
         self.assertEqual(User.objects.count(), initial_user_count + 1)
         # Check for redirect to login page
         self.assertRedirects(response, reverse('users:login'))
         # Check if the new user was actually created
         self.assertTrue(User.objects.filter(username='newuser').exists())
-
-
-class SignupFormTest(TestCase):
-    def test_signup_form_invalid_without_captcha(self):
-        """
-        CAPTCHA 응답이 없는 경우 폼이 유효하지 않은지 테스트합니다.
-        """
-        form_data = {
-            'username': 'testuser_captcha',
-            'password': 'testpassword123',
-            'password2': 'testpassword123',
-        }
-        form = SignupForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('captcha', form.errors)

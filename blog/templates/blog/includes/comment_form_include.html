@@ -1,5 +1,15 @@
 <form method="POST" action="{% url 'blog:comment_new' pk=post.pk %}">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+    <p>
+        {{ form.text.label_tag }}<br>
+        {{ form.text }}
+        {{ form.text.errors }}
+    </p>
+    <p>
+        {{ form.captcha.label_tag }}<br>
+        {{ form.captcha }}
+        {{ form.captcha.errors }}
+    </p>
     <button type="submit">Add Comment</button>
 </form>

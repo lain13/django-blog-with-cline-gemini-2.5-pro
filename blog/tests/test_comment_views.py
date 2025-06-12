@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from captcha.conf import settings as captcha_settings
 from ..models import Post, Comment
 
 
@@ -21,10 +22,13 @@ class CommentViewTest(TestCase):
     def test_comment_creation(self):
         """로그인한 사용자가 새로운 댓글을 성공적으로 생성하는지 테스트"""
         # Given
+        captcha_settings.CAPTCHA_TEST_MODE = True
         self.client.login(username='commentviewuser', password='password')
         initial_comment_count = self.post.comments.count()
         comment_data = {
-            'text': 'A new comment'
+            'text': 'A new comment',
+            'captcha_0': 'passed',
+            'captcha_1': 'passed',
         }
         url = reverse('blog:comment_new', kwargs={'pk': self.post.pk})
 
@@ -32,11 +36,36 @@ class CommentViewTest(TestCase):
         response = self.client.post(url, data=comment_data)
 
         # Then
+        captcha_settings.CAPTCHA_TEST_MODE = False
         self.assertEqual(self.post.comments.count(), initial_comment_count + 1)
         new_comment = self.post.comments.last()
         self.assertEqual(new_comment.author, self.user)
         self.assertEqual(new_comment.text, 'A new comment')
         self.assertRedirects(response, reverse('blog:post_detail', kwargs={'pk': self.post.pk}))
+
+    def test_comment_creation_fails_without_captcha(self):
+        """CAPTCHA 없이 댓글 생성 시도 시 실패하는지 테스트"""
+        # Given
+        self.client.login(username='commentviewuser', password='password')
+        initial_comment_count = self.post.comments.count()
+        comment_data = {
+            'text': 'A comment without captcha'
+        }
+        url = reverse('blog:comment_new', kwargs={'pk': self.post.pk})
+
+        # When
+        response = self.client.post(url, data=comment_data)
+
+        # Then
+        self.assertEqual(self.post.comments.count(), initial_comment_count)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/comment_form.html')
+        # Check for form error manually
+        form = response.context.get('form')
+        self.assertIsNotNone(form)
+        self.assertTrue(form.is_bound)
+        self.assertIn('captcha', form.errors)
+        self.assertEqual(form.errors['captcha'], ['This field is required.'])
 
 
 class CommentProtectionTest(TestCase):

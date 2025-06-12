@@ -91,12 +91,13 @@
     - [x] `settings.py`에 `captcha` 앱 등록 및 `urls.py`에 연동
   - [x] **TDD: 회원가입 폼 적용**
     - [x] 회원가입 폼에 CAPTCHA 필드 적용
-  - **[TODO] CAPTCHA 구현 리팩토링 및 안정화**
-    - [ ] **테스트 구조 복원**: `users/tests.py`를 `users/tests/` 패키지 구조로 복원
-    - [ ] **건너뛴 테스트 해결**: `@unittest.skip` 처리된 `test_signup_creates_new_user` 테스트 해결
-    - [ ] **코드 일관성 점검**: CAPTCHA 관련 코드 전반의 일관성 점검 및 리팩토링
+  - **[DONE] CAPTCHA 구현 리팩토링 및 안정화**
+    - [x] **테스트 구조 복원**: `users/tests.py`를 `users/tests/` 패키지 구조로 복원
+    - [x] **건너뛴 테스트 해결**: `@unittest.skip` 처리된 `test_signup_creates_new_user` 테스트 해결
+    - [x] **코드 일관성 점검**: CAPTCHA 관련 코드 전반의 일관성 점검 및 리팩토링
   - **[TODO] TDD: 로그인/댓글 폼 적용**
-    - [ ] 로그인, 댓글 작성 폼에 CAPTCHA 필드 적용
+    - [x] TDD: 로그인 폼에 CAPTCHA 필드 적용
+    - [x] TDD: 댓글 작성 폼에 CAPTCHA 필드 적용
     - [ ] API 키는 .env 파일에 분리하여 관리
     - [ ] 유효성 검사는 clean() 또는 form_valid() 메서드에서 처리
     - [ ] 실패 시 표준 Django 폼 에러 메시지 표시
