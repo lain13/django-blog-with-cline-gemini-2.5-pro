@@ -2,17 +2,19 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **다음 기능 구현 준비 (Preparing for Next Feature)**
-- `progress.md`에 정의된 다음 작업인 **리캡차(reCAPTCHA) 기능** 구현을 준비합니다.
+- **CAPTCHA 기능 구현 리팩토링 및 안정화 계획 수립**
+- 이전 Task에서 발생한 문제들을 회고하고, `django-simple-captcha` 구현 코드를 전반적으로 점검하여 안정화하는 것을 다음 목표로 설정했습니다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- **페이지네이션 기능 구현 완료**: TDD 사이클에 따라 `ListView`를 사용하는 모든 뷰(게시글 목록, 카테고리별, 태그별, 검색 결과)에 페이지네이션 기능을 구현하고, 관련 테스트를 완료했습니다.
-- **RSS 피드 기능 구현 완료**: TDD 사이클에 따라 최신 게시글을 제공하는 기본 RSS 피드(`LatestPostsFeed`)를 구현하고, `base.html`에 링크를 추가했습니다.
-- **테스트 코드 리팩토링 완료**: `test_views.py`와 `test_models.py`를 기능/모델 단위로 분리하는 작업을 완료했습니다.
+- **CAPTCHA Task 회고 완료**:
+    - `memory-bank/retrospective/captcha_task_review.md`에 문제 원인 분석 및 개선 방안을 문서화했습니다.
+    - `.clinerules/workflow.md`와 `.clinerules/testing.md`에 '선행 기술 검증', 'TDD 예외 처리', '협업 및 도움 요청' 등의 규칙을 추가하여 개발 프로세스를 강화했습니다.
 
 ## 3. 다음 단계 (Next Steps)
 
-- `progress.md`를 참고하여 **리캡차(reCAPTCHA) 기능** 구현을 시작합니다.
-- `django-recaptcha` 패키지 설치 및 설정을 진행합니다.
-- 회원가입, 로그인, 댓글 작성 폼에 reCAPTCHA 적용을 위한 TDD 사이클을 시작합니다.
+- `progress.md`에 추가된 "CAPTCHA 구현 리팩토링 및 안정화" 계획에 따라 다음 Task를 진행합니다.
+- **주요 목표**:
+    1.  `users/tests/` 테스트 구조를 프로젝트 규칙에 맞게 복원합니다.
+    2.  `@unittest.skip` 처리된 테스트를 해결합니다.
+    3.  CAPTCHA 관련 코드의 전반적인 일관성을 점검하고 리팩토링합니다.

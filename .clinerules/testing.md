@@ -12,6 +12,7 @@
         - `test_views.py` → `test_post_views.py`, `test_search_views.py`, `test_tag_views.py` 등
     - **기타**: `test_forms.py` 등 다른 테스트 파일도 복잡해질 경우 동일한 원칙에 따라 분리한다.
 - **테스트 실행**: Django의 테스트 검색 기능이 `tests` 패키지 내의 테스트를 발견할 수 있도록 `tests/__init__.py` 파일에서 각 테스트 모듈을 임포트한다.
+    - **주의**: `__init__.py` 파일 내에서 테스트 모듈을 임포트할 때는 순환 참조(Circular Dependency)가 발생하지 않도록 주의해야 한다. 예를 들어, `from .test_views import *`와 같은 와일드카드 임포트보다는 `from . import test_post_views`와 같이 모듈을 직접 임포하는 것이 권장된다.
 
 ## 2. 테스트 데이터 (Test Data)
 

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'users',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,7 @@ LOGIN_URL = 'users:login'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Google reCAPTCHA settings
+RECAPTCHA_PUBLIC_KEY = ''  # Add your reCAPTCHA public key here
+RECAPTCHA_PRIVATE_KEY = ''  # Add your reCAPTCHA private key here
