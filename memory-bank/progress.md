@@ -74,8 +74,8 @@
   - [x] Django의 `syndication` 프레임워크를 활용한 RSS 피드 클래스 구현
   - [x] 최신 게시글 RSS 피드 생성 (`/feed/`)
   - [x] RSS 피드 링크를 템플릿에 추가 (HTML `<link>` 태그)
-  - [ ] 카테고리별 RSS 피드 지원 (`/rss/category/<category>/`)
-  - [ ] RSS 피드 메타데이터 최적화 (제목, 설명, 게시일, 작성자 등)
+  - [x] 카테고리별 RSS 피드 지원 (`/rss/category/<category>/`)
+  - [x] RSS 피드 메타데이터 최적화 (제목, 설명, 게시일, 작성자 등)
 - **8. 페이징 기능 (Pagination)**
   - [x] ListView 기반 뷰에 Django 기본 페이징 기능 적용 (Paginator, page_obj)
   - [x] 템플릿에 페이지 네비게이션 UI 추가 (has_previous, has_next, page_obj.paginator.page_range)
@@ -105,9 +105,20 @@
     - [ ] 기본 단위 테스트 및 폼 유효성 테스트 추가 (TDD 기반)
     - [ ] UX 고려: 로딩 최적화 및 접근성(A11Y) 기본 확보
 - **10. REST API 기능**
-  - [ ] Django REST Framework (DRF) 활용
-  - [ ] 인증 시스템: Token 또는 JWT 인증
-  - [ ] 주요 API 엔드포인트: 게시글, 댓글, 카테고리, 태그 등
+  - [x] **환경 설정 (DRF Setup)**
+    - [x] `djangorestframework` 패키지 설치 및 `requirements.txt` 업데이트
+    - [x] `settings.py`에 `rest_framework` 및 `captcha` 앱 등록
+  - [x] **TDD: `Post` 목록 API 구현 (`/api/posts/`)**
+    - [x] `PostListAPIView` 및 `PostSerializer` 구현
+    - [x] `blog/urls/api_urls.py` 설정 및 `config/urls.py` 연동
+    - [x] `blog/tests/test_api_views.py` 작성 및 테스트 통과
+  - [x] **TDD: `Post` 상세 API 구현 (`/api/posts/<pk>/`)**
+    - [x] `PostDetailAPIView` 구현 및 URL 연동
+    - [x] 상세 조회 기능 테스트 통과
+  - [x] **인증 시스템: Token 인증**
+    - [x] TDD: `rest_framework.authtoken`을 사용한 토큰 기반 인증 구현
+    - [x] TDD: 인증된 사용자만 게시글을 생성할 수 있도록 `IsAuthenticatedOrReadOnly` 권한 적용
+  - [ ] 주요 API 엔드포인트: 댓글, 카테고리, 태그 등
   - [ ] 고급 기능: 검색, 필터링, 정렬, 페이징
   - [ ] 문서화: Swagger/OpenAPI 자동 문서 생성
 

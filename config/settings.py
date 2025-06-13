@@ -37,8 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',
     'users',
+    'blog',
+
+    # Third-party apps
+    'rest_framework',
+    'rest_framework.authtoken',
     'captcha',
 ]
 
@@ -134,3 +138,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Google reCAPTCHA settings
 RECAPTCHA_PUBLIC_KEY = ''  # Add your reCAPTCHA public key here
 RECAPTCHA_PRIVATE_KEY = ''  # Add your reCAPTCHA private key here
+
+# Django REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}

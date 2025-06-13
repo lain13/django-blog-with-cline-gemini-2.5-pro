@@ -16,3 +16,4 @@ from .test_templates import *
 from .test_templatetags import *
 from .test_rss_feed import *
 from .test_pagination import *
+from .test_api_views import *
