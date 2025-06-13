@@ -123,13 +123,14 @@
       - [x] TDD: `IsOwnerOrReadOnly` 커스텀 권한 클래스 구현 및 적용
     - [x] **Phase 2: URL 구조 개선 (URL Structure Refinement)**
       - [x] `users/urls/api_urls.py` 등 API용 URL 분리
+      - [x] `config/urls.py`에 `/api/posts/`, `/api/users/` 경로 설정
     - [x] **Phase 3: 테스트 코드 리팩토링 (Test Code Refactoring)**
       - [x] 테스트 내 인증 로직을 `authenticate()` 헬퍼 메서드로 추상화
     - [x] **Phase 4: Serializer 구조화 (Serializer Structuring)**
       - [x] `UserSerializer` 도입 및 `PostSerializer`와 관계 재정의
-  - [ ] 주요 API 엔드포인트: 댓글, 카테고리, 태그 등
-  - [ ] 고급 기능: 검색, 필터링, 정렬, 페이징
-  - [ ] 문서화: Swagger/OpenAPI 자동 문서 생성
+  - [ ] **주요 API 엔드포인트: 댓글, 카테고리, 태그 등**
+  - [ ] **고급 기능: 검색, 필터링, 정렬, 페이징**
+  - [ ] **문서화: Swagger/OpenAPI 자동 문서 생성**
 - **11. 리팩토링**
   - [ ] 코드들이 일관성을 가지도록 리팩토링
   - [ ] 중복된 코드 삭제

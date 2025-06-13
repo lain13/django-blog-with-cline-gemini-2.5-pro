@@ -2,25 +2,23 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **REST API 리팩토링 계획 반영 및 실행 (Reflecting and Executing REST API Refactoring Plan)**
-- 기존에 구현된 토큰 인증 시스템을 회고하고, 코드의 유지보수성, 확장성, 일관성을 높이기 위한 리팩토링을 준비합니다.
+- **문서 최신화 및 최종 검증 (Documentation Update & Final Verification)**
+- API 리팩토링 작업 완료 후, 코드와 문서의 일관성을 맞추고 시스템의 안정성을 최종 확인합니다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- **리팩토링 계획 수립 완료**:
-    - 기존 API 인증 시스템의 코드(`views`, `serializers`, `tests`, `urls`)를 검토했습니다.
-    - `.clinerules` 및 모범 사례를 기반으로 권한 체계, URL 구조, 테스트 코드, Serializer 구조 개선을 위한 4단계 리팩토링 계획을 수립했습니다.
-    - 사용자와 계획에 대한 합의를 완료했습니다.
+- **API 리팩토링 완료**:
+    - 기존 계획에 따라 권한 체계, URL 구조, 테스트 코드, Serializer 구조 개선을 완료했습니다.
+    - `IsOwnerOrReadOnly` 권한 클래스 적용, API URL 구조 분리 (`/api/posts/`, `/api/users/`), 테스트 헬퍼 메서드 확인, `UserSerializer` 연동 등 모든 작업이 코드에 반영되어 있음을 확인했습니다.
+- **문서-코드 불일치 발견**:
+    - `activeContext.md`와 `progress.md`의 내용이 실제 코드 상태와 일치하지 않음을 발견했습니다.
 
 ## 3. 다음 단계 (Next Steps)
 
-- 수립된 리팩토링 계획을 `progress.md`에 반영하고, 순서대로 실행합니다.
-- **주요 목표**:
-    1.  **Phase 1: 권한 체계 강화 (Permission System Enhancement)**
-        - TDD: `IsOwnerOrReadOnly` 커스텀 권한 클래스를 구현하여 자신의 객체만 수정/삭제할 수 있도록 보장합니다.
-    2.  **Phase 2: URL 구조 개선 (URL Structure Refinement)**
-        - API 관련 URL을 `users/urls/api_urls.py` 등으로 분리하여 책임과 역할을 명확히 합니다.
-    3.  **Phase 3: 테스트 코드 리팩토링 (Test Code Refactoring)**
-        - 테스트 내 중복된 인증 로직을 `authenticate()` 헬퍼 메서드로 추상화하여 가독성과 재사용성을 높입니다.
-    4.  **Phase 4: Serializer 구조화 (Serializer Structuring)**
-        - `UserSerializer`를 도입하여 `PostSerializer`와의 관계를 재정의하고, 응답 데이터 구조의 유연성을 확보합니다.
+- **1. `progress.md` 업데이트**:
+    - REST API 기능 관련 항목을 모두 '완료'([x]) 상태로 변경하여 현재 코드 상태를 정확히 반영합니다.
+- **2. 최종 기능 검증**:
+    - Django 개발 서버를 실행하고, API가 의도대로 작동하는지 최종적으로 검증합니다. (e.g., `runserver`)
+    - 모든 테스트가 통과하는지 확인합니다. (`test`)
+- **3. 다음 작업 계획 수립**:
+    - `progress.md`의 "남은 작업" 목록을 검토하고 다음 리팩토링 또는 기능 개발 계획을 수립합니다.

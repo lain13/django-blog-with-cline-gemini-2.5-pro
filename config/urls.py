@@ -22,5 +22,6 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path('', include('blog.urls')),
     path('users/', include('users.urls')),
-    path('api/', include('blog.urls.api_urls')),
+    path('api/posts/', include(('blog.urls.api_urls', 'blog-api'), namespace='blog-api')),
+    path('api/users/', include(('users.urls.api_urls', 'users-api'), namespace='users-api')),
 ]
