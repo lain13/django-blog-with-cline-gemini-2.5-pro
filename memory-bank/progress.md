@@ -118,9 +118,24 @@
   - [x] **인증 시스템: Token 인증**
     - [x] TDD: `rest_framework.authtoken`을 사용한 토큰 기반 인증 구현
     - [x] TDD: 인증된 사용자만 게시글을 생성할 수 있도록 `IsAuthenticatedOrReadOnly` 권한 적용
+  - [x] **API 시스템 리팩토링 (API System Refactoring)**
+    - [x] **Phase 1: 권한 체계 강화 (Permission System Enhancement)**
+      - [x] TDD: `IsOwnerOrReadOnly` 커스텀 권한 클래스 구현 및 적용
+    - [x] **Phase 2: URL 구조 개선 (URL Structure Refinement)**
+      - [x] `users/urls/api_urls.py` 등 API용 URL 분리
+    - [x] **Phase 3: 테스트 코드 리팩토링 (Test Code Refactoring)**
+      - [x] 테스트 내 인증 로직을 `authenticate()` 헬퍼 메서드로 추상화
+    - [x] **Phase 4: Serializer 구조화 (Serializer Structuring)**
+      - [x] `UserSerializer` 도입 및 `PostSerializer`와 관계 재정의
   - [ ] 주요 API 엔드포인트: 댓글, 카테고리, 태그 등
   - [ ] 고급 기능: 검색, 필터링, 정렬, 페이징
   - [ ] 문서화: Swagger/OpenAPI 자동 문서 생성
+- **11. 리팩토링**
+  - [ ] 코드들이 일관성을 가지도록 리팩토링
+  - [ ] 중복된 코드 삭제
+  - [ ] 테스트코드들이 일관성을 가지도록 리팩토링
+  - [ ] 중복된 테스트코드 삭제
+  - [ ] requirement.txt에서 불필요한 패키지 삭제
 
 ## 4. 알려진 이슈 (Known Issues)
 

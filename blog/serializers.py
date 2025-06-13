@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from .models import Post
+from users.serializers import UserSerializer
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
+    author = UserSerializer(read_only=True)
 
     class Meta:
         model = Post
