@@ -133,6 +133,13 @@
   - [x] **문서화: Swagger/OpenAPI 자동 문서 생성**
 - **11. 리팩토링**
   - [ ] **코드 일관성 리팩토링**: 프로젝트 전반의 코드 스타일, 명명 규칙 등을 `.clinerules/codingStyle.md`에 따라 일관성 있게 수정합니다.
+    - [x] **`users` 앱 폼 구조 개선**: `users/forms.py`를 기능 단위로 분리합니다.
+      - [x] `users/forms/` 디렉토리 생성
+      - [x] `users/forms/auth_forms.py` 생성 및 `LoginForm`, `SignupForm` 이동
+      - [x] `users/forms/__init__.py` 생성 및 폼 임포트 설정
+      - [x] `users/views/auth_views.py`의 임포트 경로 수정
+      - [x] `users/tests/test_user_forms.py`의 임포트 경로 수정
+      - [x] 기존 `users/forms.py` 파일 삭제
   - [ ] **중복 코드 제거**: Helper 함수, Mixin 등을 활용하여 반복되는 로직을 추상화하고 제거합니다.
   - [ ] **테스트 코드 리팩토링**: 테스트 코드 내 중복을 제거하고, `setUp` 및 `setUpTestData`를 최적화하여 테스트 효율성을 높입니다.
   - [x] **`requirements.txt` 정리**: 현재 사용하지 않는 불필요한 패키지가 있다면 제거합니다.
