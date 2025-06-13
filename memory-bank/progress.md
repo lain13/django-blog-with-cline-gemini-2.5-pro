@@ -95,15 +95,15 @@
     - [x] **테스트 구조 복원**: `users/tests.py`를 `users/tests/` 패키지 구조로 복원
     - [x] **건너뛴 테스트 해결**: `@unittest.skip` 처리된 `test_signup_creates_new_user` 테스트 해결
     - [x] **코드 일관성 점검**: CAPTCHA 관련 코드 전반의 일관성 점검 및 리팩토링
-  - **[TODO] TDD: 로그인/댓글 폼 적용**
+  - **[DONE] TDD: 로그인/댓글 폼 적용**
     - [x] TDD: 로그인 폼에 CAPTCHA 필드 적용
     - [x] TDD: 댓글 작성 폼에 CAPTCHA 필드 적용
-    - [ ] API 키는 .env 파일에 분리하여 관리
-    - [ ] 유효성 검사는 clean() 또는 form_valid() 메서드에서 처리
-    - [ ] 실패 시 표준 Django 폼 에러 메시지 표시
-    - [ ] 관리자(admin) 페이지에는 reCAPTCHA 제외 (편의성 고려)
-    - [ ] 기본 단위 테스트 및 폼 유효성 테스트 추가 (TDD 기반)
-    - [ ] UX 고려: 로딩 최적화 및 접근성(A11Y) 기본 확보
+    - [x] API 키는 .env 파일에 분리하여 관리
+    - [x] 유효성 검사는 clean() 또는 form_valid() 메서드에서 처리
+    - [x] 실패 시 표준 Django 폼 에러 메시지 표시
+    - [x] 관리자(admin) 페이지에는 reCAPTCHA 제외 (편의성 고려)
+    - [x] 기본 단위 테스트 및 폼 유효성 테스트 추가 (TDD 기반)
+    - [x] UX 고려: 로딩 최적화 및 접근성(A11Y) 기본 확보
 - **10. REST API 기능**
   - [x] **환경 설정 (DRF Setup)**
     - [x] `djangorestframework` 패키지 설치 및 `requirements.txt` 업데이트
@@ -128,15 +128,35 @@
       - [x] 테스트 내 인증 로직을 `authenticate()` 헬퍼 메서드로 추상화
     - [x] **Phase 4: Serializer 구조화 (Serializer Structuring)**
       - [x] `UserSerializer` 도입 및 `PostSerializer`와 관계 재정의
-  - [ ] **주요 API 엔드포인트: 댓글, 카테고리, 태그 등**
-  - [ ] **고급 기능: 검색, 필터링, 정렬, 페이징**
-  - [ ] **문서화: Swagger/OpenAPI 자동 문서 생성**
+  - [x] **주요 API 엔드포인트: 댓글, 카테고리, 태그 등**
+  - [x] **고급 기능: 검색, 필터링, 정렬, 페이징**
+  - [x] **문서화: Swagger/OpenAPI 자동 문서 생성**
 - **11. 리팩토링**
-  - [ ] 코드들이 일관성을 가지도록 리팩토링
-  - [ ] 중복된 코드 삭제
-  - [ ] 테스트코드들이 일관성을 가지도록 리팩토링
-  - [ ] 중복된 테스트코드 삭제
-  - [ ] requirement.txt에서 불필요한 패키지 삭제
+  - [ ] **코드 일관성 리팩토링**: 프로젝트 전반의 코드 스타일, 명명 규칙 등을 `.clinerules/codingStyle.md`에 따라 일관성 있게 수정합니다.
+  - [ ] **중복 코드 제거**: Helper 함수, Mixin 등을 활용하여 반복되는 로직을 추상화하고 제거합니다.
+  - [ ] **테스트 코드 리팩토링**: 테스트 코드 내 중복을 제거하고, `setUp` 및 `setUpTestData`를 최적화하여 테스트 효율성을 높입니다.
+  - [x] **`requirements.txt` 정리**: 현재 사용하지 않는 불필요한 패키지가 있다면 제거합니다.
+- **12. 국제화 (Internationalization - i18n)**
+  - [ ] **1. 환경 설정 (Setup)**
+    - [ ] `settings.py`에 국제화 관련 설정 추가 (`LANGUAGES`, `LANGUAGE_CODE`, `LOCALE_PATHS`, `MIDDLEWARE`).
+  - [ ] **2. TDD: URL 국제화**
+    - [ ] `config/urls.py`에 `i18n_patterns`를 적용하여 URL에 언어 코드가 포함되도록 수정 (`/ko/`, `/en/`).
+    - [ ] 언어 코드에 따라 올바른 페이지로 라우팅되는지 검증하는 테스트 작성.
+  - [ ] **3. TDD: 템플릿 번역**
+    - [ ] `base.html` 등 주요 템플릿에 `{% load i18n %}` 태그 추가.
+    - [ ] 네비게이션, 버튼, 제목 등 정적 텍스트를 `{% trans "text" %}` 또는 `{% blocktrans %}` 태그로 감싸 번역 대상으로 지정.
+    - [ ] 언어 설정에 따라 템플릿의 텍스트가 올바르게 번역되어 표시되는지 검증하는 테스트 작성.
+  - [ ] **4. TDD: 모델 및 뷰 번역**
+    - [ ] `Post`, `Category` 등 모델의 `verbose_name`이나 선택지(choices)와 같이 사용자에게 표시되는 부분을 `gettext_lazy`를 사용하여 번역.
+    - [ ] 뷰에서 전달하는 메시지(e.g., `messages.success`)를 `gettext`를 사용하여 번역.
+    - [ ] 모델과 뷰의 번역이 올바르게 적용되는지 검증하는 테스트 작성.
+  - [ ] **5. 번역 파일 생성 및 관리**
+    - [ ] `python manage.py makemessages -l ko -l en` 명령어로 번역 파일(`.po`) 생성.
+    - [ ] 생성된 `.po` 파일에 각 언어에 맞는 번역 텍스트 작성.
+    - [ ] `python manage.py compilemessages` 명령어로 번역 파일 컴파일.
+  - [ ] **6. 언어 전환 기능 구현**
+    - [ ] 사용자가 언어를 선택할 수 있는 UI (e.g., 드롭다운 메뉴)를 `base.html`에 추가.
+    - [ ] 언어 전환을 처리하는 뷰와 URL 구현.
 
 ## 4. 알려진 이슈 (Known Issues)
 
