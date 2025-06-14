@@ -147,7 +147,7 @@
   - [x] **테스트 코드 리팩토링**: 테스트 코드 내 중복을 제거하고, `setUp` 및 `setUpTestData`를 최적화하여 테스트 효율성을 높입니다.
     - [x] **테스트 헬퍼 모듈 도입**: `blog/tests/helpers.py`를 생성하여 `create_user`, `create_post` 등 공통 함수를 추가했습니다.
     - [x] **`blog` 앱 뷰 테스트 리팩토링**: `test_post_views.py`, `test_comment_views.py`, `test_vote_views.py`에 헬퍼 함수를 적용하여 중복 코드를 제거했습니다.
-    - [x] **`users` 앱 테스트 리팩토링**: `users` 앱 테스트에 헬퍼 함수를 적용합니다.
+    - [x] **`users` 앱 테스트 리팩토링**: `users` 앱 테스트에 헬퍼 함수를 적용했습니다. (`test_user_views.py` 분석 결과, 이미 헬퍼 함수를 적절히 사용하고 있어 추가 수정 불필요)
   - [x] **`requirements.txt` 정리**: 현재 사용하지 않는 불필요한 패키지가 있다면 제거합니다.
 - **12. 국제화 (Internationalization - i18n)**
   - [ ] **1. 환경 설정 (Setup)**
