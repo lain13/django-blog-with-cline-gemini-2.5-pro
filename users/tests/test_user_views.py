@@ -3,12 +3,13 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from captcha.conf import settings as captcha_settings
+from blog.tests.helpers import create_user
 
 User = get_user_model()
 
 class AuthViewTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='password123')
+        self.user = create_user(username='testuser', password='password123')
 
     def test_login_view_uses_correct_template(self):
         """

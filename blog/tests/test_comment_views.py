@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 from captcha.conf import settings as captcha_settings
-from ..models import Post, Comment
+from ..models import Comment
+from .helpers import create_user, create_post
 
 
 class CommentViewTest(TestCase):
@@ -11,13 +11,8 @@ class CommentViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
-        User = get_user_model()
-        cls.user = User.objects.create_user(username='commentviewuser', password='password')
-        cls.post = Post.objects.create(
-            title="A good title for comment test",
-            content="Nice body content for comment test",
-            author=cls.user
-        )
+        cls.user = create_user(username='commentviewuser')
+        cls.post = create_post(cls.user, title="A good title for comment test")
 
     def test_comment_creation(self):
         """로그인한 사용자가 새로운 댓글을 성공적으로 생성하는지 테스트"""
@@ -72,10 +67,9 @@ class CommentProtectionTest(TestCase):
     """댓글 생성, 수정, 삭제에 대한 접근 제어 테스트"""
     @classmethod
     def setUpTestData(cls):
-        User = get_user_model()
-        cls.user1 = User.objects.create_user(username='commentuser1', password='password')
-        cls.user2 = User.objects.create_user(username='commentuser2', password='password')
-        cls.post = Post.objects.create(author=cls.user1, title='Post for Comments', content='Content')
+        cls.user1 = create_user(username='commentuser1')
+        cls.user2 = create_user(username='commentuser2')
+        cls.post = create_post(cls.user1, title='Post for Comments')
         cls.comment = Comment.objects.create(post=cls.post, author=cls.user1, text='A comment to be tested')
 
     def test_authentication_required_for_comment_create(self):

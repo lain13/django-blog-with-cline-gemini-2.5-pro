@@ -1,8 +1,8 @@
 import json
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-from ..models import Post, Vote
+from ..models import Vote
+from .helpers import create_user, create_post
 
 
 class VoteViewTest(TestCase):
@@ -10,9 +10,8 @@ class VoteViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        User = get_user_model()
-        cls.user = User.objects.create_user(username='voteuser', password='password')
-        cls.post = Post.objects.create(author=cls.user, title='Vote Post', content='Content')
+        cls.user = create_user(username='voteuser')
+        cls.post = create_post(cls.user, title='Vote Post')
         cls.url = reverse('blog:post_vote', kwargs={'pk': cls.post.pk})
 
     def test_vote_requires_login(self):

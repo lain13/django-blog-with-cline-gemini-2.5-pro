@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-from ..models import Post, Tag, Category
+from ..models import Post, Tag
+from .helpers import create_user, create_post
 
 
 class PostListViewTest(TestCase):
@@ -11,14 +11,9 @@ class PostListViewTest(TestCase):
     def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
         # Given
-        User = get_user_model()
-        cls.user = User.objects.create_user(username='listuser', password='password')
+        cls.user = create_user(username='listuser')
         for i in range(5):
-            Post.objects.create(
-                title=f"Test Post {i}",
-                content=f"Test Content {i}",
-                author=cls.user
-            )
+            create_post(author=cls.user, title=f"Test Post {i}")
 
     def test_view_url_exists_at_desired_location(self):
         """루트 URL(/)에 뷰가 존재하는지 테스트"""
@@ -72,13 +67,8 @@ class PostDetailViewTest(TestCase):
     def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
         # Given
-        User = get_user_model()
-        cls.user = User.objects.create_user(username='detailuser', password='password')
-        cls.post = Post.objects.create(
-            title="A good title",
-            content="Nice body content",
-            author=cls.user
-        )
+        cls.user = create_user(username='detailuser')
+        cls.post = create_post(cls.user, title="A good title")
 
     def test_view_url_exists_at_desired_location(self):
         """상세 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -158,13 +148,12 @@ class PostCreateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
-        User = get_user_model()
-        cls.user = User.objects.create_user(username='createuser', password='password')
+        cls.user = create_user(username='createuser')
         cls.url = reverse('blog:post_new')
 
     def setUp(self):
         """각 테스트 전에 클라이언트 로그인"""
-        self.client.login(username='createuser', password='password')
+        self.client.login(username=self.user.username, password='password')
 
     def test_view_url_exists_at_desired_location(self):
         """생성 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
@@ -236,18 +225,13 @@ class PostUpdateViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """테스트를 위한 데이터 사전 생성"""
-        User = get_user_model()
-        cls.user = User.objects.create_user(username='updateuser', password='password')
-        cls.post = Post.objects.create(
-            title='Original Title',
-            content='Original Content',
-            author=cls.user
-        )
+        cls.user = create_user(username='updateuser')
+        cls.post = create_post(cls.user, title='Original Title')
         cls.url = reverse('blog:post_edit', kwargs={'pk': cls.post.pk})
 
     def setUp(self):
         """각 테스트 전에 클라이언트 로그인"""
-        self.client.login(username='updateuser', password='password')
+        self.client.login(username=self.user.username, password='password')
 
     def test_view_url_exists_at_desired_location(self):
         """수정 뷰 URL에 접근 시 200 응답을 반환하는지 테스트"""
