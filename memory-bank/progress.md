@@ -133,6 +133,7 @@
   - [x] **문서화: Swagger/OpenAPI 자동 문서 생성**
 - **11. 리팩토링**
   - [ ] **코드 일관성 리팩토링**: 프로젝트 전반의 코드 스타일, 명명 규칙 등을 `.clinerules/codingStyle.md`에 따라 일관성 있게 수정합니다.
+    - [x] **임포트 순서 정리 (1차)**: `users/views/auth_views.py`, `blog/views/post_views.py`, `blog/models/post.py` 파일의 임포트 구문을 규칙에 맞게 수정했습니다.
     - [x] **`users` 앱 폼 구조 개선**: `users/forms.py`를 기능 단위로 분리합니다.
       - [x] `users/forms/` 디렉토리 생성
       - [x] `users/forms/auth_forms.py` 생성 및 `LoginForm`, `SignupForm` 이동

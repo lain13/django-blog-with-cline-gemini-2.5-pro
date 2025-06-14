@@ -1,10 +1,17 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from ..models import Post, Tag, Vote
-from .. import forms
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.urls import reverse, reverse_lazy
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
+
+from .. import forms
+from ..models import Post, Tag, Vote
 
 class PostListView(ListView):
     model = Post

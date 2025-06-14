@@ -1,6 +1,7 @@
+from django.contrib.auth.views import LoginView as AuthLoginView
 from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib.auth.views import LoginView as AuthLoginView
+
 from .. import forms
 
 class SignUpView(generic.CreateView):
