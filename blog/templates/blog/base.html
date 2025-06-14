@@ -1,9 +1,10 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django TDD Blog</title>
+    <title>{% trans "TDD Blog" %}</title>
     <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url 'blog:post_feed' %}">
 </head>
 <body>

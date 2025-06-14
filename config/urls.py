@@ -16,12 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.i18n import i18n_patterns
 
+# 다국어 지원이 필요 없는 URL
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),
-    path('', include('blog.urls')),
-    path('users/', include('users.urls')),
     path('api/posts/', include(('blog.urls.api_urls', 'blog-api'), namespace='blog-api')),
     path('api/users/', include(('users.urls.api_urls', 'users-api'), namespace='users-api')),
 ]
+
+# 다국어 지원이 필요한 URL
+urlpatterns += i18n_patterns(
+    path('', include('blog.urls')),
+    path('users/', include('users.urls')),
+)
