@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -12,6 +12,7 @@ from django.views.generic import (
 
 from .. import forms
 from ..models import Post, Tag, Vote
+from ..permissions import AuthorRequiredMixin
 
 class PostListView(ListView):
     model = Post
@@ -44,11 +45,6 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('blog:post_detail', kwargs={'pk': self.object.pk})
-
-class AuthorRequiredMixin(UserPassesTestMixin):
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
 
 class PostUpdateView(AuthorRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Post

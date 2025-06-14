@@ -1,15 +1,10 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView
 
 from ..forms import CommentForm
 from ..models import Comment, Post
-
-class AuthorRequiredMixin(UserPassesTestMixin):
-    """작성자만 접근을 허용하는 믹스인"""
-    def test_func(self):
-        obj = self.get_object()
-        return obj.author == self.request.user
+from ..permissions import AuthorRequiredMixin
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
     """댓글 생성 뷰"""
@@ -25,7 +20,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('blog:post_detail', kwargs={'pk': self.kwargs['pk']})
 
-class CommentUpdateView(AuthorRequiredMixin, UpdateView):
+class CommentUpdateView(AuthorRequiredMixin, LoginRequiredMixin, UpdateView):
     """댓글 수정 뷰"""
     model = Comment
     form_class = CommentForm
@@ -34,7 +29,7 @@ class CommentUpdateView(AuthorRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('blog:post_detail', kwargs={'pk': self.object.post.pk})
 
-class CommentDeleteView(AuthorRequiredMixin, DeleteView):
+class CommentDeleteView(AuthorRequiredMixin, LoginRequiredMixin, DeleteView):
     """댓글 삭제 뷰"""
     model = Comment
     template_name = 'blog/comment_confirm_delete.html'

@@ -141,7 +141,9 @@
       - [x] `users/views/auth_views.py`의 임포트 경로 수정
       - [x] `users/tests/test_user_forms.py`의 임포트 경로 수정
       - [x] 기존 `users/forms.py` 파일 삭제
-  - [ ] **중복 코드 제거**: Helper 함수, Mixin 등을 활용하여 반복되는 로직을 추상화하고 제거합니다.
+  - [x] **중복 코드 제거**: Helper 함수, Mixin 등을 활용하여 반복되는 로직을 추상화하고 제거합니다.
+    - [x] `AuthorRequiredMixin`을 `blog/permissions.py`로 통합하여 뷰 코드의 중복 제거
+    - [x] 누락되었던 `IsOwnerOrReadOnly` 권한 클래스를 `blog/permissions.py`에 추가하여 API 기능 복원
   - [ ] **테스트 코드 리팩토링**: 테스트 코드 내 중복을 제거하고, `setUp` 및 `setUpTestData`를 최적화하여 테스트 효율성을 높입니다.
   - [x] **`requirements.txt` 정리**: 현재 사용하지 않는 불필요한 패키지가 있다면 제거합니다.
 - **12. 국제화 (Internationalization - i18n)**
