@@ -1,8 +1,9 @@
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from ..models import Comment, Post
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, UpdateView
+
 from ..forms import CommentForm
+from ..models import Comment, Post
 
 class AuthorRequiredMixin(UserPassesTestMixin):
     """작성자만 접근을 허용하는 믹스인"""

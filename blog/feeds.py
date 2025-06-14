@@ -1,7 +1,8 @@
 from django.contrib.syndication.views import Feed
-from django.urls import reverse
 from django.shortcuts import get_object_or_404
-from .models import Post, Category
+from django.urls import reverse
+
+from .models import Category, Post
 
 class LatestPostsFeed(Feed):
     title = "My Django Blog"
