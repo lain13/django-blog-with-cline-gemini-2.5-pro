@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-14 10:13+0900\n"
+"POT-Creation-Date: 2025-06-14 10:30+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: .\blog\models\category.py:5
+msgid "name"
+msgstr ""
+
+#: .\blog\models\category.py:14
+msgid "category"
+msgstr ""
+
+#: .\blog\models\category.py:15
+msgid "categories"
+msgstr ""
+
 #: .\blog\templates\blog\base.html:7
 msgid "TDD Blog"
 msgstr "TDD Blog"
+
+#: .\blog\views\post_views.py:47
+msgid "New post has been created successfully."
+msgstr ""
 
 #: .\config\settings.py:124
 msgid "English"

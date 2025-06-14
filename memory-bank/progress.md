@@ -159,17 +159,18 @@
     - [x] `base.html` 등 주요 템플릿에 `{% load i18n %}` 태그 추가.
     - [x] 네비게이션, 버튼, 제목 등 정적 텍스트를 `{% trans "text" %}` 또는 `{% blocktrans %}` 태그로 감싸 번역 대상으로 지정.
     - [x] 언어 설정에 따라 템플릿의 텍스트가 올바르게 번역되어 표시되는지 검증하는 테스트 작성.
-  - [ ] **4. TDD: 모델 및 뷰 번역**
-    - [ ] `Post`, `Category` 등 모델의 `verbose_name`이나 선택지(choices)와 같이 사용자에게 표시되는 부분을 `gettext_lazy`를 사용하여 번역.
-    - [ ] 뷰에서 전달하는 메시지(e.g., `messages.success`)를 `gettext`를 사용하여 번역.
-    - [ ] 모델과 뷰의 번역이 올바르게 적용되는지 검증하는 테스트 작성.
+  - [x] **4. TDD: 모델 및 뷰 번역**
+    - [x] `Post`, `Category` 등 모델의 `verbose_name`이나 선택지(choices)와 같이 사용자에게 표시되는 부분을 `gettext_lazy`를 사용하여 번역.
+    - [x] 뷰에서 전달하는 메시지(e.g., `messages.success`)를 `gettext`를 사용하여 번역.
+    - [x] 모델과 뷰의 번역이 올바르게 적용되는지 검증하는 테스트 작성.
   - [x] **5. 번역 파일 생성 및 관리**
     - [x] `python manage.py makemessages -l ko -l en` 명령어로 번역 파일(`.po`) 생성.
     - [x] 생성된 `.po` 파일에 각 언어에 맞는 번역 텍스트 작성.
     - [x] `python manage.py compilemessages` 명령어로 번역 파일 컴파일.
-  - [ ] **6. 언어 전환 기능 구현**
-    - [ ] 사용자가 언어를 선택할 수 있는 UI (e.g., 드롭다운 메뉴)를 `base.html`에 추가.
-    - [ ] 언어 전환을 처리하는 뷰와 URL 구현.
+  - [x] **6. 언어 전환 기능 구현**
+    - [x] 사용자가 언어를 선택할 수 있는 UI (e.g., 드롭다운 메뉴)를 `base.html`에 추가.
+    - [x] 언어 전환을 처리하는 뷰와 URL 구현.
+    - [x] TDD: 언어 전환 기능 검증 테스트 추가
 
 ## 4. 알려진 이슈 (Known Issues)
 

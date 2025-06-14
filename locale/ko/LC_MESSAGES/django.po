@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-14 10:13+0900\n"
+"POT-Creation-Date: 2025-06-14 10:30+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\blog\views\post_views.py:45
+msgid "New post has been created successfully."
+msgstr "새 포스트가 성공적으로 작성되었습니다."
+
+#: .\blog\models\category.py:5
+msgid "name"
+msgstr "이름"
+
+#: .\blog\models\category.py:14
+msgid "category"
+msgstr "카테고리"
+
+#: .\blog\models\category.py:15
+msgid "categories"
+msgstr "카테고리"
 
 #: .\blog\templates\blog\base.html:7
 msgid "TDD Blog"

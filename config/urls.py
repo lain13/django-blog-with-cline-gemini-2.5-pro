@@ -20,6 +20,7 @@ from django.conf.urls.i18n import i18n_patterns
 
 # 다국어 지원이 필요 없는 URL
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),
     path('api/posts/', include(('blog.urls.api_urls', 'blog-api'), namespace='blog-api')),

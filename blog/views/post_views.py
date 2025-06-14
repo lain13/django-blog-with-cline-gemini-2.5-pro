@@ -1,6 +1,8 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     ListView,
@@ -41,7 +43,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        messages.success(self.request, gettext('New post has been created successfully.'))
+        return response
 
     def get_success_url(self):
         return reverse('blog:post_detail', kwargs={'pk': self.object.pk})
