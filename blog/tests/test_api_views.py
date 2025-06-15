@@ -156,6 +156,35 @@ class PostAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Post.objects.count(), 15)
 
+    def test_post_list_filtering_by_category(self):
+        """
+        GET /api/posts/?category__name=<category_name> - 카테고리 이름으로 필터링되어야 합니다.
+        """
+        category = Category.objects.create(name='Test Category', slug='test-category')
+        Post.objects.create(author=self.user, title='Post in Category', content='Content', category=category)
+
+        url = reverse('blog-api:post-list-api')
+        response = self.client.get(url, {'category__name': 'Test Category'})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['title'], 'Post in Category')
+
+    def test_post_list_filtering_by_tag(self):
+        """
+        GET /api/posts/?tags__name=<tag_name> - 태그 이름으로 필터링되어야 합니다.
+        """
+        tag = Tag.objects.create(name='Test Tag')
+        post_with_tag = Post.objects.create(author=self.user, title='Post with Tag', content='Content')
+        post_with_tag.tags.add(tag)
+
+        url = reverse('blog-api:post-list-api')
+        response = self.client.get(url, {'tags__name': 'Test Tag'})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['title'], 'Post with Tag')
+
 
 class CommentAPITestCase(APITestCase):
     @classmethod
