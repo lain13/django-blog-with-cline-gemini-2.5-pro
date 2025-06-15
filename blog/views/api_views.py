@@ -8,7 +8,7 @@ class PostListAPIView(generics.ListCreateAPIView):
     """
     모든 게시물을 나열하거나 새 게시물을 생성하는 API 뷰입니다.
     """
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-id')
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -28,7 +28,7 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
     """
     모든 댓글을 나열하거나 새 댓글을 생성하는 API 뷰입니다.
     """
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.all().order_by('-id')
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -49,7 +49,7 @@ class CategoryListAPIView(generics.ListAPIView):
     """
     모든 카테고리를 나열하는 API 뷰입니다.
     """
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('-id')
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -67,7 +67,7 @@ class TagListAPIView(generics.ListAPIView):
     """
     모든 태그를 나열하는 API 뷰입니다.
     """
-    queryset = Tag.objects.all()
+    queryset = Tag.objects.all().order_by('-id')
     serializer_class = TagSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 

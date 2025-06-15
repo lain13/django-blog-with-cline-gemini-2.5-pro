@@ -133,7 +133,7 @@
     - [x] TDD: `Category` Read-Only API 구현
     - [x] TDD: `Tag` Read-Only API 구현
   - **[Phase 2] 고급 기능 구현 (Advanced Features)**
-    - [ ] TDD: API 페이징(Pagination) 적용
+    - [x] TDD: API 페이징(Pagination) 적용
     - [ ] TDD: API 필터링(Filtering) 적용
     - [ ] TDD: API 검색(Search) 적용
     - [ ] TDD: API 정렬(Ordering) 적용

@@ -11,16 +11,22 @@ class PostAPITestCase(APITestCase):
         User = get_user_model()
         cls.user = User.objects.create_user(username='apiuser', password='password')
         cls.other_user = User.objects.create_user(username='otheruser', password='password')
-        cls.post_by_user = Post.objects.create(author=cls.user, title='Post by User', content='Content 1')
-        cls.post_by_other_user = Post.objects.create(author=cls.other_user, title='Post by Other', content='Content 2')
+        
+        # Create 15 posts for pagination testing
+        for i in range(15):
+            Post.objects.create(author=cls.user, title=f'Post {i}', content=f'Content {i}')
+
+        cls.post_by_user = Post.objects.last()
+        cls.post_by_other_user = Post.objects.create(author=cls.other_user, title='Post by Other', content='Content Other')
+
 
     def _get_token_and_authenticate(self, user):
-        """Helper method to get token and set credentials."""
+        """헬퍼 메서드: 사용자의 토큰을 가져와 인증 헤더를 설정합니다."""
         token = Token.objects.create(user=user)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
     def test_get_post_list(self):
         """
-        GET /api/posts/ - Should return status 200
+        GET /api/posts/ - 200 상태 코드를 반환해야 합니다.
         """
         url = reverse('blog-api:post-list-api')
         response = self.client.get(url)
@@ -28,28 +34,45 @@ class PostAPITestCase(APITestCase):
 
     def test_get_post_list_returns_data(self):
         """
-        GET /api/posts/ - Should return a list of posts
+        GET /api/posts/ - 게시글 목록을 반환해야 합니다.
         """
         url = reverse('blog-api:post-list-api')
         response = self.client.get(url)
         
-        self.assertEqual(len(response.data), 2)
-        self.assertEqual(response.data[0]['title'], 'Post by User')
-        self.assertEqual(response.data[1]['title'], 'Post by Other')
+        # 페이지네이션 적용 시, response.data는 딕셔너리입니다.
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data['results']), 10)
+        self.assertEqual(response.data['results'][0]['title'], 'Post by Other')
+
+    def test_post_list_pagination(self):
+        """
+        GET /api/posts/ - 페이지네이션된 응답을 반환해야 합니다.
+        """
+        url = reverse('blog-api:post-list-api')
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('count', response.data)
+        self.assertIn('next', response.data)
+        self.assertIn('previous', response.data)
+        self.assertIn('results', response.data)
+        
+        self.assertEqual(response.data['count'], 16)
+        self.assertEqual(len(response.data['results']), 10) # 기본 페이지 크기
 
     def test_get_post_detail(self):
         """
-        GET /api/posts/<pk>/ - Should return a single post's data
+        GET /api/posts/<pk>/ - 단일 게시글 데이터를 반환해야 합니다.
         """
         url = reverse('blog-api:post-detail-api', kwargs={'pk': self.post_by_user.pk})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['title'], 'Post by User')
+        self.assertEqual(response.data['title'], 'Post 14')
 
     def test_post_detail_author_field(self):
         """
-        GET /api/posts/<pk>/ - The author field should be a nested object.
+        GET /api/posts/<pk>/ - 'author' 필드는 중첩된 객체여야 합니다.
         """
         url = reverse('blog-api:post-detail-api', kwargs={'pk': self.post_by_user.pk})
         response = self.client.get(url)
@@ -63,7 +86,7 @@ class PostAPITestCase(APITestCase):
 
     def test_unauthenticated_user_cannot_create_post(self):
         """
-        POST /api/posts/ - Should return 401 for unauthenticated user
+        POST /api/posts/ - 인증되지 않은 사용자는 401을 반환해야 합니다.
         """
         url = reverse('blog-api:post-list-api')
         data = {'title': 'New Post', 'content': 'Some content'}
@@ -72,7 +95,7 @@ class PostAPITestCase(APITestCase):
 
     def test_authenticated_user_can_create_post(self):
         """
-        POST /api/posts/ - Should create a post for an authenticated user
+        POST /api/posts/ - 인증된 사용자는 게시글을 생성할 수 있어야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         
@@ -81,12 +104,12 @@ class PostAPITestCase(APITestCase):
         response = self.client.post(url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Post.objects.count(), 3)
+        self.assertEqual(Post.objects.count(), 17)
         self.assertEqual(Post.objects.latest('id').title, 'Authenticated Post')
 
     def test_user_cannot_update_other_users_post(self):
         """
-        PUT /api/posts/<pk>/ - Should return 403 for user trying to update other's post
+        PUT /api/posts/<pk>/ - 다른 사용자의 게시글을 수정하려는 경우 403을 반환해야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         
@@ -98,7 +121,7 @@ class PostAPITestCase(APITestCase):
 
     def test_user_can_update_own_post(self):
         """
-        PUT /api/posts/<pk>/ - Should return 200 for user updating their own post
+        PUT /api/posts/<pk>/ - 자신의 게시글을 수정하는 경우 200을 반환해야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         
@@ -112,7 +135,7 @@ class PostAPITestCase(APITestCase):
 
     def test_user_cannot_delete_other_users_post(self):
         """
-        DELETE /api/posts/<pk>/ - Should return 403 for user trying to delete other's post
+        DELETE /api/posts/<pk>/ - 다른 사용자의 게시글을 삭제하려는 경우 403을 반환해야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         
@@ -123,7 +146,7 @@ class PostAPITestCase(APITestCase):
 
     def test_user_can_delete_own_post(self):
         """
-        DELETE /api/posts/<pk>/ - Should return 204 for user deleting their own post
+        DELETE /api/posts/<pk>/ - 자신의 게시글을 삭제하는 경우 204를 반환해야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         
@@ -131,7 +154,7 @@ class PostAPITestCase(APITestCase):
         response = self.client.delete(url)
         
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(Post.objects.count(), 1)
+        self.assertEqual(Post.objects.count(), 15)
 
 
 class CommentAPITestCase(APITestCase):
@@ -145,22 +168,23 @@ class CommentAPITestCase(APITestCase):
         cls.other_comment = Comment.objects.create(post=cls.post, author=cls.other_user, text='Another comment')
 
     def _get_token_and_authenticate(self, user):
-        """Helper method to get token and set credentials."""
+        """헬퍼 메서드: 사용자의 토큰을 가져와 인증 헤더를 설정합니다."""
         token = Token.objects.create(user=user)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
 
     def test_get_comment_list(self):
         """
-        GET /api/comments/ - Should return a list of comments.
+        GET /api/comments/ - 댓글 목록을 반환해야 합니다.
         """
         url = reverse('blog-api:comment-list-api')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data['results']), 2)
 
     def test_get_comment_detail(self):
         """
-        GET /api/comments/<pk>/ - Should return a single comment.
+        GET /api/comments/<pk>/ - 단일 댓글을 반환해야 합니다.
         """
         url = reverse('blog-api:comment-detail-api', kwargs={'pk': self.comment.pk})
         response = self.client.get(url)
@@ -169,7 +193,7 @@ class CommentAPITestCase(APITestCase):
 
     def test_unauthenticated_user_cannot_create_comment(self):
         """
-        POST /api/comments/ - Should return 401 for unauthenticated user.
+        POST /api/comments/ - 인증되지 않은 사용자는 401을 반환해야 합니다.
         """
         url = reverse('blog-api:comment-list-api')
         data = {'post': self.post.pk, 'text': 'New comment text'}
@@ -178,7 +202,7 @@ class CommentAPITestCase(APITestCase):
 
     def test_authenticated_user_can_create_comment(self):
         """
-        POST /api/comments/ - Should create a comment for an authenticated user.
+        POST /api/comments/ - 인증된 사용자는 댓글을 생성할 수 있어야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         url = reverse('blog-api:comment-list-api')
@@ -190,7 +214,7 @@ class CommentAPITestCase(APITestCase):
 
     def test_user_can_update_own_comment(self):
         """
-        PUT /api/comments/<pk>/ - Should return 200 for user updating their own comment.
+        PUT /api/comments/<pk>/ - 자신의 댓글을 수정하는 경우 200을 반환해야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         url = reverse('blog-api:comment-detail-api', kwargs={'pk': self.comment.pk})
@@ -202,7 +226,7 @@ class CommentAPITestCase(APITestCase):
 
     def test_user_cannot_update_other_users_comment(self):
         """
-        PUT /api/comments/<pk>/ - Should return 403 for user trying to update other's comment.
+        PUT /api/comments/<pk>/ - 다른 사용자의 댓글을 수정하려는 경우 403을 반환해야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         url = reverse('blog-api:comment-detail-api', kwargs={'pk': self.other_comment.pk})
@@ -212,7 +236,7 @@ class CommentAPITestCase(APITestCase):
 
     def test_user_can_delete_own_comment(self):
         """
-        DELETE /api/comments/<pk>/ - Should return 204 for user deleting their own comment.
+        DELETE /api/comments/<pk>/ - 자신의 댓글을 삭제하는 경우 204를 반환해야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         url = reverse('blog-api:comment-detail-api', kwargs={'pk': self.comment.pk})
@@ -222,7 +246,7 @@ class CommentAPITestCase(APITestCase):
 
     def test_user_cannot_delete_other_users_comment(self):
         """
-        DELETE /api/comments/<pk>/ - Should return 403 for user trying to delete other's comment.
+        DELETE /api/comments/<pk>/ - 다른 사용자의 댓글을 삭제하려는 경우 403을 반환해야 합니다.
         """
         self._get_token_and_authenticate(self.user)
         url = reverse('blog-api:comment-detail-api', kwargs={'pk': self.other_comment.pk})
@@ -238,17 +262,18 @@ class CategoryAPITestCase(APITestCase):
 
     def test_get_category_list(self):
         """
-        GET /api/categories/ - Should return a list of categories.
+        GET /api/categories/ - 카테고리 목록을 반환해야 합니다.
         """
         url = reverse('blog-api:category-list-api')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
-        self.assertEqual(response.data[0]['name'], 'Django')
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data['results']), 2)
+        self.assertEqual(response.data['results'][0]['name'], 'Python')
 
     def test_get_category_detail(self):
         """
-        GET /api/categories/<pk>/ - Should return a single category.
+        GET /api/categories/<pk>/ - 단일 카테고리를 반환해야 합니다.
         """
         url = reverse('blog-api:category-detail-api', kwargs={'pk': self.category.pk})
         response = self.client.get(url)
@@ -257,7 +282,7 @@ class CategoryAPITestCase(APITestCase):
 
     def test_unauthenticated_user_cannot_create_category(self):
         """
-        POST /api/categories/ - Should return 401 for unauthenticated user.
+        POST /api/categories/ - 인증되지 않은 사용자는 401을 반환해야 합니다.
         """
         url = reverse('blog-api:category-list-api')
         data = {'name': 'New Category', 'slug': 'new-category'}
@@ -266,7 +291,7 @@ class CategoryAPITestCase(APITestCase):
 
     def test_authenticated_user_cannot_create_category(self):
         """
-        POST /api/categories/ - Should return 403 for authenticated user as it's read-only.
+        POST /api/categories/ - 인증된 사용자는 읽기 전용이므로 405를 반환해야 합니다.
         """
         User = get_user_model()
         user = User.objects.create_user(username='testuser', password='password')
@@ -287,17 +312,18 @@ class TagAPITestCase(APITestCase):
 
     def test_get_tag_list(self):
         """
-        GET /api/tags/ - Should return a list of tags.
+        GET /api/tags/ - 태그 목록을 반환해야 합니다.
         """
         url = reverse('blog-api:tag-list-api')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
-        self.assertEqual(response.data[0]['name'], 'TDD')
+        self.assertIsInstance(response.data, dict)
+        self.assertEqual(len(response.data['results']), 2)
+        self.assertEqual(response.data['results'][0]['name'], 'Django')
 
     def test_get_tag_detail(self):
         """
-        GET /api/tags/<pk>/ - Should return a single tag.
+        GET /api/tags/<pk>/ - 단일 태그를 반환해야 합니다.
         """
         url = reverse('blog-api:tag-detail-api', kwargs={'pk': self.tag.pk})
         response = self.client.get(url)
@@ -306,7 +332,7 @@ class TagAPITestCase(APITestCase):
 
     def test_unauthenticated_user_cannot_create_tag(self):
         """
-        POST /api/tags/ - Should return 401 for unauthenticated user.
+        POST /api/tags/ - 인증되지 않은 사용자는 401을 반환해야 합니다.
         """
         url = reverse('blog-api:tag-list-api')
         data = {'name': 'New Tag'}
@@ -315,7 +341,7 @@ class TagAPITestCase(APITestCase):
 
     def test_authenticated_user_cannot_create_tag(self):
         """
-        POST /api/tags/ - Should return 405 for authenticated user as it's read-only.
+        POST /api/tags/ - 인증된 사용자는 읽기 전용이므로 405를 반환해야 합니다.
         """
         User = get_user_model()
         user = User.objects.create_user(username='testuser', password='password')
