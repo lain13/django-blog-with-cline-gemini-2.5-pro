@@ -1,6 +1,7 @@
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
         <a href="{% url 'blog:post_list' %}">Home</a>
         <form action="{% url 'set_language' %}" method="post" style="display: inline;">
             {% csrf_token %}
-            <input name="next" type="hidden" value="{{ redirect_to }}">
+            <input name="next" type="hidden" value="{{ request.path }}">
             <select name="language" onchange="this.form.submit()">
                 {% get_current_language as LANGUAGE_CODE %}
                 {% get_available_languages as LANGUAGES %}

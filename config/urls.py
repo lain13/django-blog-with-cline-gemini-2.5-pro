@@ -29,6 +29,7 @@ urlpatterns = i18n_patterns(
 )
 
 urlpatterns += [
+    path('i18n/', include('django.conf.urls.i18n')),
     path('api/', include('blog.urls.api_urls')),
     path('api/users/', include('users.urls.api_urls')),
     path('captcha/', include('captcha.urls')),
