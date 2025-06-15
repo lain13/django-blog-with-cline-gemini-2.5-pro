@@ -3,7 +3,7 @@ from django.db import models
 
 class Vote(models.Model):
     """
-    Represents a vote (like/dislike) on a Post by a User.
+    사용자가 게시물에 대해 한 투표(좋아요/싫어요)를 나타냅니다.
     """
     LIKE = 1
     DISLIKE = -1
@@ -17,7 +17,7 @@ class Vote(models.Model):
     value = models.SmallIntegerField(choices=VOTE_CHOICES)
 
     class Meta:
-        # A user can only vote once on a single post
+        # 사용자는 하나의 게시물에 한 번만 투표할 수 있습니다.
         unique_together = ('user', 'post')
 
     def __str__(self):

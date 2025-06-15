@@ -7,7 +7,7 @@ from .models import Category, Post
 class LatestPostsFeed(Feed):
     title = "My Django Blog"
     link = "/feed/"
-    description = "New posts of my blog."
+    description = "블로그의 새로운 게시물"
 
     def items(self):
         return Post.objects.order_by('-created_at')[:5]

@@ -6,7 +6,7 @@ from ..serializers import PostSerializer, CommentSerializer, CategorySerializer,
 
 class PostListAPIView(generics.ListCreateAPIView):
     """
-    API view to list all posts or create a new post.
+    모든 게시물을 나열하거나 새 게시물을 생성하는 API 뷰입니다.
     """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -17,7 +17,7 @@ class PostListAPIView(generics.ListCreateAPIView):
 
 class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     """
-    API view to retrieve, update or delete a single post.
+    단일 게시물을 조회, 업데이트 또는 삭제하는 API 뷰입니다.
     """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -26,7 +26,7 @@ class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 class CommentListCreateAPIView(generics.ListCreateAPIView):
     """
-    API view to list all comments or create a new comment.
+    모든 댓글을 나열하거나 새 댓글을 생성하는 API 뷰입니다.
     """
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -38,7 +38,7 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
 
 class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     """
-    API view to retrieve, update or delete a single comment.
+    단일 댓글을 조회, 업데이트 또는 삭제하는 API 뷰입니다.
     """
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -47,7 +47,7 @@ class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 
 class CategoryListAPIView(generics.ListAPIView):
     """
-    API view to list all categories.
+    모든 카테고리를 나열하는 API 뷰입니다.
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -56,7 +56,7 @@ class CategoryListAPIView(generics.ListAPIView):
 
 class CategoryDetailAPIView(generics.RetrieveAPIView):
     """
-    API view to retrieve a single category.
+    단일 카테고리를 조회하는 API 뷰입니다.
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -65,7 +65,7 @@ class CategoryDetailAPIView(generics.RetrieveAPIView):
 
 class TagListAPIView(generics.ListAPIView):
     """
-    API view to list all tags.
+    모든 태그를 나열하는 API 뷰입니다.
     """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -74,7 +74,7 @@ class TagListAPIView(generics.ListAPIView):
 
 class TagDetailAPIView(generics.RetrieveAPIView):
     """
-    API view to retrieve a single tag.
+    단일 태그를 조회하는 API 뷰입니다.
     """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer

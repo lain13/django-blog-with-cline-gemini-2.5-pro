@@ -3,15 +3,15 @@ from rest_framework import permissions
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
-    Custom permission to only allow owners of an object to edit it.
+    객체의 소유자만 수정할 수 있도록 하는 커스텀 권한입니다.
     """
     def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
+        # 읽기 권한은 모든 요청에 대해 허용되므로,
+        # GET, HEAD, OPTIONS 요청은 항상 허용합니다.
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        # Write permissions are only allowed to the owner of the snippet.
+        # 쓰기 권한은 객체의 소유자에게만 부여됩니다.
         return obj.author == request.user
 
 class AuthorRequiredMixin(UserPassesTestMixin):
