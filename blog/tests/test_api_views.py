@@ -185,6 +185,20 @@ class PostAPITestCase(APITestCase):
         self.assertEqual(response.data['count'], 1)
         self.assertEqual(response.data['results'][0]['title'], 'Post with Tag')
 
+    def test_post_list_search(self):
+        """
+        GET /api/posts/?search=<keyword> - 검색어로 필터링되어야 합니다.
+        """
+        Post.objects.create(author=self.user, title='A post about Django', content='Django is a web framework.')
+        Post.objects.create(author=self.user, title='A post about Python', content='Python is a programming language.')
+
+        url = reverse('blog-api:post-list-api')
+        response = self.client.get(url, {'search': 'Django'})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['results'][0]['title'], 'A post about Django')
+
 
 class CommentAPITestCase(APITestCase):
     @classmethod

@@ -3,10 +3,11 @@
 ## 1. 현재 작업 포커스 (Current Focus)
 
 - **Phase 2: 고급 기능 구현 (Advanced Features)**
-- API의 고급 기능인 검색(Search)을 TDD 방식으로 구현합니다.
+- API의 고급 기능인 정렬(Ordering)을 TDD 방식으로 구현합니다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
+- **TDD: API 검색(Search) 기능 구현**: `rest_framework.filters.SearchFilter`를 사용하여 `Post` 목록 API에 `title`, `content` 기반 검색 기능을 적용했습니다.
 - **TDD: API 필터링 기능 구현**: `django-filter`를 사용하여 `Post` 목록 API에 카테고리, 태그 기반 필터링 기능을 적용했습니다.
 - **TDD: API 페이징 기능 구현**: Django REST Framework의 `PageNumberPagination`을 사용하여 `Post` 목록 API에 페이지네이션을 적용했습니다.
 - **코드 주석 개선**: 프로젝트 전반의 소스 코드에 포함된 영어 주석을 한국어로 번역하여 코드 가독성을 향상시켰습니다.
@@ -15,7 +16,7 @@
 
 ## 3. 다음 단계 (Next Steps)
 
-- **TDD: API 검색(Search) 적용**
-  - DRF의 `SearchFilter` 백엔드 적용
-  - 검색 기능 검증 테스트 코드 작성
-  - `PostListAPIView`에 검색 필드 설정
+- **TDD: API 정렬(Ordering) 적용**
+  - DRF의 `OrderingFilter` 백엔드 적용
+  - 정렬 기능 검증 테스트 코드 작성
+  - `PostListAPIView`에 정렬 필드 설정
