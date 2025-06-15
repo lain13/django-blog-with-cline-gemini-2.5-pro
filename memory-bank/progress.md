@@ -128,9 +128,18 @@
       - [x] 테스트 내 인증 로직을 `authenticate()` 헬퍼 메서드로 추상화
     - [x] **Phase 4: Serializer 구조화 (Serializer Structuring)**
       - [x] `UserSerializer` 도입 및 `PostSerializer`와 관계 재정의
-  - [x] **주요 API 엔드포인트: 댓글, 카테고리, 태그 등**
-  - [x] **고급 기능: 검색, 필터링, 정렬, 페이징**
-  - [x] **문서화: Swagger/OpenAPI 자동 문서 생성**
+  - **[Phase 1] 주요 API 엔드포인트 추가 (Major API Endpoints)**
+    - [x] TDD: `Comment` CRUD API 구현
+    - [x] TDD: `Category` Read-Only API 구현
+    - [x] TDD: `Tag` Read-Only API 구현
+  - **[Phase 2] 고급 기능 구현 (Advanced Features)**
+    - [ ] TDD: API 페이징(Pagination) 적용
+    - [ ] TDD: API 필터링(Filtering) 적용
+    - [ ] TDD: API 검색(Search) 적용
+    - [ ] TDD: API 정렬(Ordering) 적용
+  - **[Phase 3] API 문서 자동화 (API Documentation)**
+    - [ ] `drf-spectacular` 라이브러리 도입 및 설정
+    - [ ] Swagger/OpenAPI 자동 문서 생성 확인
 - **11. 리팩토링**
   - [x] **코드 일관성 리팩토링**: 프로젝트 전반의 코드 스타일, 명명 규칙 등을 `.clinerules/codingStyle.md`에 따라 일관성 있게 수정합니다.
     - [x] **임포트 순서 정리 (완료)**: 프로젝트 내 모든 파이썬 파일의 임포트 순서를 규칙에 맞게 수정했습니다.
