@@ -16,25 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
-from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-# 다국어 지원이 필요 없는 URL
-urlpatterns = [
-    # API 스키마 및 문서
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-
-    path('i18n/', include('django.conf.urls.i18n')),
+urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
-    path('captcha/', include('captcha.urls')),
-    path('api/posts/', include(('blog.urls.api_urls', 'blog-api'), namespace='blog-api')),
-    path('api/users/', include(('users.urls.api_urls', 'users-api'), namespace='users-api')),
-]
-
-# 다국어 지원이 필요한 URL
-urlpatterns += i18n_patterns(
     path('', include('blog.urls')),
     path('users/', include('users.urls')),
+    prefix_default_language=False,
 )
+
+urlpatterns += [
+    path('api/', include('blog.urls.api_urls')),
+    path('api/users/', include('users.urls.api_urls')),
+    path('captcha/', include('captcha.urls')),
+    # drf-spectacular
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+]

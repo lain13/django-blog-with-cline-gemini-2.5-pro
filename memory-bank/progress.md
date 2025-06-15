@@ -138,7 +138,7 @@
     - [x] TDD: API 검색(Search) 적용
     - [x] TDD: API 정렬(Ordering) 적용
   - **[Phase 3] API 문서 자동화 (API Documentation)**
-    - [ ] `drf-spectacular` 라이브러리 도입 및 설정
+    - [x] `drf-spectacular` 라이브러리 도입 및 설정
     - [ ] Swagger/OpenAPI 자동 문서 생성 확인
 - **11. 리팩토링**
   - [x] **코드 주석 개선**: 프로젝트 전반의 소스 코드에 포함된 영어 주석을 한국어로 번역하여 코드 가독성을 향상시켰습니다.
@@ -181,10 +181,14 @@
     - [x] 사용자가 언어를 선택할 수 있는 UI (e.g., 드롭다운 메뉴)를 `base.html`에 추가.
     - [x] 언어 전환을 처리하는 뷰와 URL 구현.
     - [x] TDD: 언어 전환 기능 검증 테스트 추가
+    - [ ] **URL 렌더링 오류 수정**: `NoReverseMatch` 오류 해결 (다음 태스크)
 
 ## 4. 알려진 이슈 (Known Issues)
 
 ### 현재 알려진 이슈 (Current Issues)
+ - **`NoReverseMatch` for `set_language`**: `base.html` 템플릿에서 `set_language` URL을 찾지 못해 렌더링 오류 발생.
+   - **원인**: `config/urls.py`에 국제화 URL 설정(`django.conf.urls.i18n`) 누락.
+   - **참고**: `memory-bank/retrospective/i18n_url_issue.md`
  - **[리팩토링 계획 완료]** `test_views.py` 파일이 너무 커서 수정하기 어려움. (다음 Task에서 분리 작업 예정)
 
 ### 과거에 해결된 이슈 (Resolved Issues)
