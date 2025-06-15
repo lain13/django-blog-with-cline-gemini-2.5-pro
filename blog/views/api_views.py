@@ -10,12 +10,13 @@ class PostListAPIView(generics.ListCreateAPIView):
     """
     모든 게시물을 나열하거나 새 게시물을 생성하는 API 뷰입니다.
     """
-    queryset = Post.objects.all().order_by('-id')
+    queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = PostFilter
     search_fields = ['title', 'content']
+    ordering_fields = ['created_at', 'view_count', 'title']
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

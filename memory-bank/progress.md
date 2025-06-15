@@ -136,7 +136,7 @@
     - [x] TDD: API 페이징(Pagination) 적용
     - [x] TDD: API 필터링(Filtering) 적용
     - [x] TDD: API 검색(Search) 적용
-    - [ ] TDD: API 정렬(Ordering) 적용
+    - [x] TDD: API 정렬(Ordering) 적용
   - **[Phase 3] API 문서 자동화 (API Documentation)**
     - [ ] `drf-spectacular` 라이브러리 도입 및 설정
     - [ ] Swagger/OpenAPI 자동 문서 생성 확인

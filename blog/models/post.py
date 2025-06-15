@@ -27,6 +27,9 @@ class Post(models.Model):
     )
     tags = models.ManyToManyField(Tag, blank=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
         return self.title
 

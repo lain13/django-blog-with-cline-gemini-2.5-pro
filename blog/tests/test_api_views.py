@@ -14,10 +14,10 @@ class PostAPITestCase(APITestCase):
         
         # Create 15 posts for pagination testing
         for i in range(15):
-            Post.objects.create(author=cls.user, title=f'Post {i}', content=f'Content {i}')
+            Post.objects.create(author=cls.user, title=f'Post {i}', content=f'Content {i}', view_count=i * 5)
 
-        cls.post_by_user = Post.objects.last()
-        cls.post_by_other_user = Post.objects.create(author=cls.other_user, title='Post by Other', content='Content Other')
+        cls.post_by_user = Post.objects.last() # view_count = 70
+        cls.post_by_other_user = Post.objects.create(author=cls.other_user, title='Post by Other', content='Content Other', view_count=100)
 
 
     def _get_token_and_authenticate(self, user):
@@ -198,6 +198,37 @@ class PostAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 1)
         self.assertEqual(response.data['results'][0]['title'], 'A post about Django')
+
+    def test_post_list_ordering(self):
+        """
+        GET /api/posts/?ordering=<field> - 정렬된 결과를 반환해야 합니다.
+        """
+        url = reverse('blog-api:post-list-api')
+
+        # 1. Test ordering by created_at (descending)
+        response = self.client.get(url, {'ordering': '-created_at'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        results = response.data['results']
+        expected_posts = Post.objects.order_by('-created_at')[:10]
+        self.assertEqual([post['id'] for post in results], [post.id for post in expected_posts])
+
+        # 2. Test ordering by view_count (descending)
+        response = self.client.get(url, {'ordering': '-view_count'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        results = response.data['results']
+        # Get all view counts from the response
+        view_counts = [item['view_count'] for item in results]
+        # Check if the list is sorted in descending order
+        self.assertEqual(view_counts, sorted(view_counts, reverse=True))
+        self.assertEqual(results[0]['title'], 'Post by Other') # view_count = 100
+        self.assertEqual(results[1]['title'], 'Post 14') # view_count = 70
+
+        # 3. Test ordering by title (ascending) - This should fail initially
+        response = self.client.get(url, {'ordering': 'title'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        results = response.data['results']
+        titles = [item['title'] for item in results]
+        self.assertEqual(titles, sorted(titles))
 
 
 class CommentAPITestCase(APITestCase):
