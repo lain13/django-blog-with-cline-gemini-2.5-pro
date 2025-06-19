@@ -1,1 +1,3 @@
-# This file makes the `views` directory a Python package.
+from . import api_views
+from . import auth_views
+from . import profile_views

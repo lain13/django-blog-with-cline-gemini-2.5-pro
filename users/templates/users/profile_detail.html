@@ -1,0 +1,11 @@
+{% extends "blog/base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <h1>{% blocktrans with username=profile.user.username %}{{ username }}'s Profile{% endblocktrans %}</h1>
+  <p><strong>{% trans "Bio" %}:</strong> {{ profile.bio|linebreaksbr }}</p>
+  
+  {% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" alt="{% trans 'User Avatar' %}" style="max-width: 200px; height: auto;">
+  {% endif %}
+{% endblock %}

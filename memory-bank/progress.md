@@ -193,10 +193,10 @@
     - [x] TDD: `Profile` 모델 정의 (`users/models/profile.py`, `users/tests/test_profile_model.py`)
     - [x] DB 마이그레이션 (`makemigrations`, `migrate`)
     - [x] TDD: `User` 생성 시 `Profile` 자동 생성을 위한 Signal 구현
-  - [ ] **Phase 2: 프로필 조회 (Profile Read)**
-    - [ ] TDD: `ProfileDetailView` 구현 (`users/views/profile_views.py`)
-    - [ ] TDD: 프로필 페이지 URL 설정 (`users/urls/profile_urls.py`)
-    - [ ] TDD: 프로필 기본 템플릿 구현 (`users/templates/users/profile_detail.html`)
+  - [x] **Phase 2: 프로필 조회 (Profile Read)**
+    - [x] TDD: `ProfileDetailView` 구현 (`users/views/profile_views.py`)
+    - [x] TDD: 프로필 페이지 URL 설정 (`users/urls/profile_urls.py`)
+    - [x] TDD: 프로필 기본 템플릿 구현 (`users/templates/users/profile_detail.html`)
   - [ ] **Phase 3: 프로필 수정 (Profile Update)**
     - [ ] TDD: `ProfileForm` 정의 (`users/forms/profile_forms.py`)
     - [ ] TDD: `ProfileUpdateView` 구현 (본인만 수정 가능하도록 권한 설정 포함)
