@@ -22,6 +22,7 @@
 - **`choices` 상수화**: `Vote` 모델에서처럼 클래스 변수(`LIKE=1`, `DISLIKE=-1`)를 상수로 정의하여 `choices` 옵션에 사용함으로써 코드의 가독성과 유지보수성을 높인다.
 - **복합 고유 제약**: `Vote` 모델의 `Meta` 클래스에서 `unique_together = ('user', 'post')`를 사용하여 사용자가 게시물당 한 번만 투표할 수 있도록 데이터베이스 수준에서 제약한다.
 - **동적 User 모델 참조**: `settings.AUTH_USER_MODEL` 또는 `get_user_model()`을 사용하여 커스텀 User 모델로의 변경에 유연하게 대처한다.
+- **Signal을 이용한 자동 객체 생성**: `post_save` Signal을 사용하여, `User` 모델이 생성될 때마다 해당 사용자와 연결된 `Profile` 객체를 자동으로 생성함으로써 데이터의 정합성을 보장한다.
 
 ### 2.3. 뷰 패턴 (View Patterns)
 
@@ -36,7 +37,11 @@
 - **`get_or_create` 활용**: 태그 저장 시 `Tag.objects.get_or_create()`를 사용하여 기존에 태그가 있으면 가져오고 없으면 생성하는 로직을 효율적으로 구현한다.
 - **CAPTCHA 통합**: `django-simple-captcha`의 `CaptchaField`를 폼에 추가하여 스팸 방지 기능을 구현한다.
 
-### 2.5. API (DRF) 패턴
+### 2.5. 템플릿 패턴 (Template Patterns)
+
+- **커스텀 템플릿 태그/필터**: `templatetags` 패키지 내에 모듈을 만들어 커스텀 태그나 필터를 정의한다. 이를 통해 뷰의 부담을 줄이고 템플릿의 재사용성을 높인다. (예: 검색 결과 하이라이팅, 특정 UI 컴포넌트 렌더링)
+
+### 2.6. API (DRF) 패턴
 
 - **제네릭 뷰 활용**: `ListCreateAPIView`, `RetrieveUpdateDestroyAPIView` 등 DRF의 제네릭 뷰를 사용하여 CRUD API 엔드포인트를 빠르게 구현한다.
 - **커스텀 권한 클래스**: `BasePermission`을 상속받아 `IsOwnerOrReadOnly`와 같은 커스텀 권한 클래스를 만들어 API의 객체 수준 접근을 제어한다.
@@ -97,6 +102,13 @@ erDiagram
         varchar username
     }
 
+    PROFILE {
+        int id PK
+        text bio
+        varchar avatar
+        int user_id FK
+    }
+
     POST {
         int id PK
         varchar(200) title
@@ -137,6 +149,7 @@ erDiagram
         int post_id FK
     }
 
+    USER ||--|{ PROFILE : "has"
     USER ||--o{ POST : "authors"
     USER ||--o{ COMMENT : "authors"
     USER ||--o{ VOTE : "votes"

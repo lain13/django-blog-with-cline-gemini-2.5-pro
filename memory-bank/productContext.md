@@ -47,6 +47,11 @@
   - `post`: 투표 대상 게시글 (Post 모델과 연결, ForeignKey)
   - `value`: 투표 값 (SmallIntegerField, 좋아요: 1, 싫어요: -1)
 
+- **`Profile` (프로필)**
+  - `user`: 사용자 (User 모델과 1:1 연결, OneToOneField)
+  - `bio`: 자기소개 (TextField, 선택 사항)
+  - `avatar`: 프로필 사진 (ImageField, 선택 사항)
+
 ### 4.2. URL 라우팅 (URL Routing)
 
 - **Post (게시글)**
@@ -72,6 +77,10 @@
 
 - **Search (검색)**
   - `GET /search/?q=<keyword>`: 키워드로 게시글 검색
+
+- **Profile (프로필)**
+  - `GET /profile/<str:username>/`: 사용자 프로필 조회
+  - `GET, POST /profile/<str:username>/edit/`: 사용자 프로필 수정
 
 - **API (DRF)**
   - `GET, POST /api/posts/`: 게시글 목록 조회 및 생성
