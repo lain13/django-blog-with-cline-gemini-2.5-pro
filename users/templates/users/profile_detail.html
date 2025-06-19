@@ -2,14 +2,27 @@
 {% load i18n %}
 
 {% block content %}
-  <h1>{% blocktrans with username=profile.user.username %}{{ username }}'s Profile{% endblocktrans %}</h1>
-  <p><strong>{% trans "Bio" %}:</strong> {{ profile.bio|linebreaksbr }}</p>
-  
-  {% if profile.avatar %}
-    <img src="{{ profile.avatar.url }}" alt="{% trans 'User Avatar' %}" style="max-width: 200px; height: auto;">
-  {% endif %}
+  <div class="profile-container">
+    <h1>{% blocktrans with username=profile.user.username %}{{ username }}'s Profile{% endblocktrans %}</h1>
+    
+    <div class="profile-avatar">
+      {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="{% trans 'User Avatar' %}" style="max-width: 200px; height: auto; border-radius: 50%;">
+      {% else %}
+        <p>{% trans "No avatar uploaded." %}</p>
+      {% endif %}
+    </div>
+    
+    <hr>
+    
+    <div class="profile-bio">
+      <h2>{% trans "Bio" %}</h2>
+      <p>{{ profile.bio|linebreaksbr|default:"-" }}</p>
+    </div>
 
-  {% if user == profile.user %}
-    <a href="{% url 'users:profile_update' username=user.username %}">{% trans "Edit Profile" %}</a>
-  {% endif %}
+    {% if user == profile.user %}
+      <hr>
+      <a href="{% url 'users:profile_update' username=user.username %}">{% trans "Edit Profile" %}</a>
+    {% endif %}
+  </div>
 {% endblock %}

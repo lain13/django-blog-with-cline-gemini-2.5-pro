@@ -27,6 +27,7 @@
         <hr>
         {% if user.is_authenticated %}
             <span>Welcome, {{ user.username }}!</span>
+            <a href="{% url 'users:profile_detail' username=user.username %}">{% trans "My Profile" %}</a>
             <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit" style="background: none; border: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;">Logout</button>

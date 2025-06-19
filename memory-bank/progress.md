@@ -201,9 +201,9 @@
     - [x] TDD: `ProfileForm` 정의 (`users/forms/profile_forms.py`)
     - [x] TDD: `ProfileUpdateView` 구현 (본인만 수정 가능하도록 권한 설정 포함)
     - [x] TDD: 프로필 수정 폼 템플릿 구현 (`users/templates/users/profile_form.html`)
-  - [ ] **Phase 4: UI 연동 및 최종 검토 (UI Integration & Final Review)**
-    - [ ] 네비게이션 바에 '내 프로필' 링크 추가
-    - [ ] 프로필 관련 페이지 UI 최종 검토
+  - [x] **Phase 4: UI 연동 및 최종 검토 (UI Integration & Final Review)**
+    - [x] 네비게이션 바에 '내 프로필' 링크 추가
+    - [x] 프로필 관련 페이지 UI 최종 검토
 
 ## 4. 알려진 이슈 (Known Issues)
 
