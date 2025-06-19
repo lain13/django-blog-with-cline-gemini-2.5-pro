@@ -189,11 +189,21 @@
   - [x] **`users` 앱 테스트 구조 리팩토링**: `test_user_views.py`를 `test_auth_views.py`로 변경하고 기능에 맞게 분리
 
 - **14. 사용자 프로필 기능 (User Profile Feature)**
-  - [ ] **TDD: `Profile` 모델 정의 및 테스트**
-  - [ ] **TDD: `User` 생성 시 `Profile` 자동 생성 (Signal)**
-  - [ ] **TDD: 프로필 상세/수정 뷰 및 테스트**
-  - [ ] **TDD: 프로필 URL 및 테스트**
-  - [ ] **TDD: 프로필 템플릿 및 테스트**
+  - [x] **Phase 1: 모델 및 Signal (Model & Signal)**
+    - [x] TDD: `Profile` 모델 정의 (`users/models/profile.py`, `users/tests/test_profile_model.py`)
+    - [x] DB 마이그레이션 (`makemigrations`, `migrate`)
+    - [x] TDD: `User` 생성 시 `Profile` 자동 생성을 위한 Signal 구현
+  - [ ] **Phase 2: 프로필 조회 (Profile Read)**
+    - [ ] TDD: `ProfileDetailView` 구현 (`users/views/profile_views.py`)
+    - [ ] TDD: 프로필 페이지 URL 설정 (`users/urls/profile_urls.py`)
+    - [ ] TDD: 프로필 기본 템플릿 구현 (`users/templates/users/profile_detail.html`)
+  - [ ] **Phase 3: 프로필 수정 (Profile Update)**
+    - [ ] TDD: `ProfileForm` 정의 (`users/forms/profile_forms.py`)
+    - [ ] TDD: `ProfileUpdateView` 구현 (본인만 수정 가능하도록 권한 설정 포함)
+    - [ ] TDD: 프로필 수정 폼 템플릿 구현 (`users/templates/users/profile_form.html`)
+  - [ ] **Phase 4: UI 연동 및 최종 검토 (UI Integration & Final Review)**
+    - [ ] 네비게이션 바에 '내 프로필' 링크 추가
+    - [ ] 프로필 관련 페이지 UI 최종 검토
 
 ## 4. 알려진 이슈 (Known Issues)
 

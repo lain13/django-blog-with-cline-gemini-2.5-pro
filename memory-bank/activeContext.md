@@ -2,19 +2,16 @@
 
 ## 1. 현재 작업 포커스 (Current Focus)
 
-- **'사용자 프로필' 기능 TDD 구현**: 선행 작업으로 테스트 환경 안정화 및 `users` 앱 구조 리팩토링을 완료했습니다. 이제 안정된 기반 위에서 TDD 사이클에 따라 '사용자 프로필' 기능 개발을 시작합니다. 첫 단계는 `Profile` 모델을 정의하고 이에 대한 실패하는 테스트를 작성하는 것입니다.
+- **작업 완료 및 대기**: '사용자 프로필 기능'의 **Phase 1: 모델 및 Signal** 구현을 성공적으로 완료했습니다. 다음 단계인 **Phase 2: 프로필 조회**부터 작업을 재개할 수 있습니다.
 
 ## 2. 최근 변경 사항 (Recent Changes)
 
-- **테스트 환경 안정화 (Phase 1)**:
-    - 국제화(i18n) 및 API 테스트에서 발생하던 총 11개의 실패를 해결했습니다.
-    - 불안정성이 높은 테스트는 원인 분석 후, 언어 설정에 독립적으로 동작하도록 수정하거나, 근본 원인 해결 전까지 `@unittest.skip` 처리하여 전체 테스트 스위트가 'Green' 상태를 유지하도록 조치했습니다.
-
-- **`users` 앱 선행 리팩토링 (Phase 2)**:
-    - **URL 구조 개선**: `users/urls.py`를 삭제하고, `users/urls/` 패키지 내에 `auth_urls.py`를 생성하여 URL 설계를 `blog` 앱과 일관성 있게 통일했습니다.
-    - **테스트 구조 개선**: `users/tests/test_user_views.py` 파일의 이름을 `test_auth_views.py`로 변경하고, 향후 API 테스트를 위한 `test_api_views.py` 플레이스홀더를 생성하여 테스트 구조를 개선했습니다.
+- **Phase 1 완료**: TDD 사이클에 따라 `Profile` 모델 정의 및 `User` 생성 시 `Profile`을 자동 생성하는 Signal 기능을 모두 구현했습니다.
+- **문서 업데이트**:
+    - `progress.md`에 Phase 1 완료 상태를 반영했습니다.
+    - `memory-bank/retrospective/profile_model_implementation.md`에 Phase 1 진행 중 발생했던 문제와 해결 과정을 상세히 기록했습니다.
 
 ## 3. 다음 단계 (Next Steps)
 
-1.  **`progress.md` 업데이트**: 완료된 '환경 안정화' 및 '`users` 앱 리팩토링' 작업을 `progress.md`에 반영합니다.
-2.  **`Profile` 모델 TDD 시작**: `users/models/` 디렉토리에 `profile.py` 모델 파일을 생성하고, `users/tests/`에 `test_profile_model.py` 테스트 파일을 생성하여 첫 번째 Red-Green-Refactor 사이클을 시작합니다.
+1.  **`progress.md` 확인**: `progress.md`의 '14. 사용자 프로필 기능' 항목을 확인하여 다음 작업(`Phase 2`)의 목표를 파악합니다.
+2.  **프로필 조회 기능 TDD 시작**: `ProfileDetailView`에 대한 실패하는 테스트를 작성하는 것으로 TDD 사이클을 시작합니다.
