@@ -37,7 +37,8 @@ class PostAPITestCase(APITestCase):
         GET /api/posts/ - 게시글 목록을 반환해야 합니다.
         """
         url = reverse('blog-api:post-list-api')
-        response = self.client.get(url)
+        # 명시적으로 정렬 순서를 지정하여 테스트의 안정성 확보
+        response = self.client.get(url, {'ordering': '-view_count'})
         
         # 페이지네이션 적용 시, response.data는 딕셔너리입니다.
         self.assertIsInstance(response.data, dict)
@@ -68,7 +69,8 @@ class PostAPITestCase(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['title'], 'Post 14')
+        # 하드코딩된 값 대신, 테스트 데이터 객체의 속성을 사용하여 검증
+        self.assertEqual(response.data['title'], self.post_by_user.title)
 
     def test_post_detail_author_field(self):
         """

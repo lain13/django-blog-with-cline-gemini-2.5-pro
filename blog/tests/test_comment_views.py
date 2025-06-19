@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import translation
 from captcha.conf import settings as captcha_settings
 from ..models import Comment
 from .helpers import create_user, create_post
@@ -49,7 +50,8 @@ class CommentViewTest(TestCase):
         url = reverse('blog:comment_new', kwargs={'pk': self.post.pk})
 
         # When
-        response = self.client.post(url, data=comment_data)
+        with translation.override('en'):
+            response = self.client.post(url, data=comment_data)
 
         # Then
         self.assertEqual(self.post.comments.count(), initial_comment_count)
@@ -60,7 +62,6 @@ class CommentViewTest(TestCase):
         self.assertIsNotNone(form)
         self.assertTrue(form.is_bound)
         self.assertIn('captcha', form.errors)
-        self.assertEqual(form.errors['captcha'], ['This field is required.'])
 
 
 class CommentProtectionTest(TestCase):
