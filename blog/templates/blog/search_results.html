@@ -1,11 +1,12 @@
 {% extends "blog/base.html" %}
+{% load i18n %}
 {% load blog_tags %}
 
-{% block title %}Search Results for "{{ query }}"{% endblock %}
+{% block title %}{% trans "Search Results for" %} "{{ query }}"{% endblock %}
 
 {% block content %}
-    <h1>Search Results for "{{ query }}"</h1>
-    <a href="{% url 'blog:post_list' %}">Back to Post List</a>
+    <h1>{% trans "Search Results for" %} "{{ query }}"</h1>
+    <a href="{% url 'blog:post_list' %}">{% trans "Back to Post List" %}</a>
     <hr>
 
     {% if message %}
@@ -17,11 +18,11 @@
             <li>
                 <h2><a href="{% url 'blog:post_detail' pk=post.pk %}">{{ post.title|highlight:query }}</a></h2>
                 <p>{{ post.content|highlight:query }}</p>
-                <small>Created: {{ post.created_at }} | Updated: {{ post.updated_at }}</small>
+                <small>{% trans "Created" %}: {{ post.created_at }} | {% trans "Updated" %}: {{ post.updated_at }}</small>
             </li>
         {% empty %}
             {% if not message %}
-                <p>No posts found.</p>
+                <p>{% trans "No posts found." %}</p>
             {% endif %}
         {% endfor %}
     </ul>

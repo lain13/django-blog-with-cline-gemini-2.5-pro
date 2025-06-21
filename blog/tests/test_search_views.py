@@ -56,7 +56,6 @@ class SearchViewTest(TestCase):
         self.assertNotContains(response, "Second Post")
         self.assertNotContains(response, "Third Banana")
 
-    @unittest.skip("Skipping due to i18n issues in test environment.")
     def test_search_no_results(self):
         """검색 결과가 없을 때를 올바르게 처리하는지 테스트"""
         with translation.override('en'):
@@ -64,7 +63,6 @@ class SearchViewTest(TestCase):
             self.assertContains(response, "No posts found.")
             self.assertNotContains(response, "Apple Banana")
 
-    @unittest.skip("Skipping due to i18n issues in test environment.")
     def test_search_empty_query(self):
         """검색어가 비어있을 때 모든 포스트를 보여주지 않는지 테스트"""
         with translation.override('en'):

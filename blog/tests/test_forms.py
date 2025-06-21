@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from ..models import Post, Tag
@@ -42,11 +43,16 @@ class PostFormTest(TestCase):
 class CommentFormTest(TestCase):
     """CommentForm 관련 테스트"""
 
-    @unittest.skip("Skipping due to CAPTCHA dependency, will be addressed later.")
-    def test_form_is_valid_with_data(self):
+    @patch('captcha.fields.CaptchaField.clean')
+    def test_form_is_valid_with_data(self, mock_clean):
         """폼에 유효한 데이터가 입력되었을 때 폼이 유효한지 테스트"""
         # Given
-        form_data = {'text': 'A valid comment'}
+        mock_clean.return_value = 'passed'
+        form_data = {
+            'text': 'A valid comment',
+            'captcha_0': 'dummy-key',  # CAPTCHA 필드에 필요한 더미 데이터
+            'captcha_1': 'passed',     # CAPTCHA 필드에 필요한 더미 데이터
+        }
         form = CommentForm(data=form_data)
         # Then
         self.assertTrue(form.is_valid())

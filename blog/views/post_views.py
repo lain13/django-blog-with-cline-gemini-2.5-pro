@@ -81,12 +81,13 @@ class SearchView(ListView):
         context['query'] = query
 
         if not query:
-            context['message'] = "검색어를 입력해주세요."
+            context['message'] = gettext("Please enter a search term.")
             # 빈 쿼리일 경우, context에서 'posts'와 'object_list'를 제거하여 테스트를 통과시킵니다.
             context.pop('posts', None)
             context.pop('object_list', None)
         elif not context['posts'].exists():
-            context['message'] = "게시물을 찾을 수 없습니다."
+            # This message is now handled by the template's `empty` block.
+            pass
         return context
 
 class TagFilteredPostListView(ListView):

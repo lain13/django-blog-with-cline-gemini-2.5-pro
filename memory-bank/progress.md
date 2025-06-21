@@ -205,16 +205,21 @@
     - [x] 네비게이션 바에 '내 프로필' 링크 추가
     - [x] 프로필 관련 페이지 UI 최종 검토
 - **15. i18n 기능 개선 및 안정화**
-  - [ ] **Phase 1: Skipped 테스트 해결 (TDD 기반)**
-    - [ ] `blog/tests/test_forms.py`: CAPTCHA 의존성 테스트 리팩토링
-    - [ ] `blog/tests/test_i18n.py`: 언어 컨텍스트 및 쿠키 관련 테스트 리팩토링
-    - [ ] `blog/tests/test_search_views.py`: i18n 환경 테스트 리팩토링
-  - [ ] **Phase 2: 미번역 텍스트 번역 적용**
+  - [ ] **Phase 1: 선행 작업 (Prerequisites)**
+    - [ ] `.po` 파일 업데이트 (`makemessages`)
+    - [ ] `en/django.po` 파일의 비어있는 번역 채우기
+    - [ ] 번역 파일 컴파일 (`compilemessages`)
+  - [ ] **Phase 2: Skipped 테스트 해결 (TDD 기반)**
+    - [ ] `blog/tests/test_forms.py`: `CommentForm` CAPTCHA 테스트 해결 (`mock.patch` 사용)
+    - [ ] `blog/tests/test_search_views.py`: `SearchView` 번역 테스트 2개 해결 (`translation.activate` 사용)
+    - [ ] `blog/tests/test_i18n.py`: `InternationalizationTest` 번역 테스트 2개 해결 (`translation.activate` 사용)
+    - [ ] `blog/tests/test_i18n.py`: `test_language_switcher` 쿠키/세션 테스트 해결
+  - [ ] **Phase 3: 미번역 텍스트 번역 적용**
     - [ ] 사이트 전체 수동 검증 및 미번역 텍스트 목록화
     - [ ] 템플릿에 `{% trans %}` 태그 적용
     - [ ] 번역 파일(`.po`) 업데이트 및 컴파일
     - [ ] TDD 기반 번역 검증 테스트 추가
-  - [ ] **Phase 3: i18n Best Practice 적용**
+  - [ ] **Phase 4: i18n Best Practice 적용**
     - [ ] `gettext_lazy` 적용 전수 조사 및 리팩토링
     - [ ] `LocaleMiddleware` 설정 검토
 

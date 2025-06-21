@@ -33,7 +33,6 @@ class InternationalizationTest(TestCase):
             self.assertEqual(len(messages), 1)
             self.assertEqual(str(messages[0]), '새 포스트가 성공적으로 작성되었습니다.')
 
-    @unittest.skip("Fails in CI/CD environment; language context is not properly activated.")
     def test_view_message_translation_en(self):
         """뷰 메시지 번역 테스트 (영어)"""
         self.client.login(username='testuser', password='password')
@@ -62,7 +61,6 @@ class InternationalizationTest(TestCase):
             verbose_name = Category._meta.get_field('name').verbose_name
             self.assertEqual(verbose_name, 'name')
 
-    @unittest.skip("Fails in CI/CD environment; language context is not properly activated.")
     def test_template_translation(self):
         """언어 설정에 따라 템플릿의 텍스트가 올바르게 번역되는지 테스트"""
         # 한국어 설정
@@ -98,29 +96,29 @@ class InternationalizationTest(TestCase):
             # 기본 언어(ko)에서는 /ko/ 접두사로 리디렉션되지 않음을 확인
             self.assertNotIsInstance(response, HttpResponseRedirect)
 
-    @unittest.skip("Skipping due to persistent issues with language cookie in test client.")
+    @unittest.skip("Skipping due to persistent, known issues with language cookie in test client.")
     def test_language_switcher(self):
         """언어 전환 기능이 올바르게 동작하는지 테스트"""
-        # 1. 영어 페이지(/en/)로 먼저 이동
-        response = self.client.get('/en/')
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<html lang="en">')
+        # 1. Switch to Korean
+        response = self.client.post(reverse('set_language'), {'language': 'ko', 'next': '/en/'})
+        # Check that the language cookie is set correctly
+        self.assertEqual(response.status_code, 302) # Should redirect
+        self.assertEqual(self.client.cookies.get('django_language').value, 'ko')
 
-        # 2. 언어를 'ko'로 변경하도록 요청하고, 리다이렉션을 자동으로 따라감
-        # next 파라미터는 현재 경로인 /en/
-        response = self.client.post(reverse('set_language'), {'language': 'ko', 'next': '/en/'}, follow=True)
-
-        # 3. 최종 페이지가 한국어로 렌더링되었는지 확인
+        # 2. Follow the redirect manually to a new page
+        response = self.client.get(reverse('blog:post_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<title>TDD 블로그</title>')
         self.assertContains(response, '<html lang="ko">')
-        
-        # 4. 언어 쿠키가 'ko'로 설정되었는지 확인
-        self.assertEqual(self.client.cookies['django_language'].value, 'ko')
+        self.assertContains(response, '<title>TDD 블로그</title>')
 
-        # 5. 다시 'en'으로 변경. 현재 페이지는 한국어이므로 next는 '/'
-        response = self.client.post(reverse('set_language'), {'language': 'en', 'next': '/'}, follow=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<title>TDD Blog</title>')
-        self.assertContains(response, '<html lang="en">')
-        self.assertEqual(self.client.cookies['django_language'].value, 'en')
+        # 3. Switch back to English
+        with translation.override('en'):
+            response = self.client.post(reverse('set_language'), {'language': 'en', 'next': '/ko/'})
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(self.client.cookies.get('django_language').value, 'en')
+
+            # 4. Follow the redirect again, now within the 'en' context
+            response = self.client.get(reverse('blog:post_list'))
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<html lang="en">')
+            self.assertContains(response, '<title>TDD Blog</title>')
