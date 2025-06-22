@@ -174,7 +174,7 @@
     - [x] 뷰에서 전달하는 메시지(e.g., `messages.success`)를 `gettext`를 사용하여 번역.
     - [x] 모델과 뷰의 번역이 올바르게 적용되는지 검증하는 테스트 작성.
   - [x] **5. 번역 파일 생성 및 관리**
-    - [x] `python manage.py makemessages -l ko -l en` 명령어로 번역 파일(`.po`) 생성.
+    - [x] `python manage.py makemessages -l ko -l en -e venv` 명령어로 번역 파일(`.po`) 생성.
     - [x] 생성된 `.po` 파일에 각 언어에 맞는 번역 텍스트 작성.
     - [x] `python manage.py compilemessages` 명령어로 번역 파일 컴파일.
   - [x] **6. 언어 전환 기능 구현**
