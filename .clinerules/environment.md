@@ -28,3 +28,17 @@
 
 - **Name**: Django
 - **Version**: 5.2.x (latest stable)
+
+## 5. 프로덕션 환경 (Production Environment)
+
+- **웹 서버 (Web Server)**: Nginx (권장)
+- **WSGI 서버 (WSGI Server)**: Gunicorn (권장)
+- **데이터베이스 (Database)**: PostgreSQL (권장)
+- **환경 변수**: 모든 민감 정보는 `.env` 파일을 통해 관리한다. (`.clinerules/security.md` 참조)
+- **배포 절차**:
+    1. `git pull`
+    2. `pip install -r requirements.txt`
+    3. `python manage.py migrate`
+    4. `python manage.py collectstatic --noinput`
+    5. `python manage.py check --deploy`
+    6. WSGI 서버 재시작

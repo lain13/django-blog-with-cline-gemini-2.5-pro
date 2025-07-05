@@ -42,11 +42,6 @@
 
 - **일관성 유지**: 프로젝트 전반에 걸쳐 일관된 코드 스타일을 유지한다.
 
-## 7. 보안 (Security)
-
-- **`SECRET_KEY` 관리**: `SECRET_KEY`는 환경 변수 등을 통해 안전하게 관리하며, 버전 관리 시스템에 직접 포함시키지 않는다.
-- **`DEBUG` 모드**: 개발 환경에서는 `DEBUG = True`를 사용할 수 있으나, 프로덕션 환경에서는 반드시 `DEBUG = False`로 설정한다.
-
 ## 8. 템플릿 구조 (Template Structure)
 
 - **앱별 템플릿 디렉토리**: 각 앱(app)의 템플릿은 해당 앱 디렉토리 내의 `templates/<app_name>/` 경로에 위치시켜 이름 충돌을 방지한다. (예: `blog/templates/blog/post_list.html`)

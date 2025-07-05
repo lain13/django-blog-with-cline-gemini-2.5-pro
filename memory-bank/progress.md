@@ -226,6 +226,7 @@
 ## 4. 알려진 이슈 (Known Issues)
 
 ### 현재 알려진 이슈 (Current Issues)
+ - **보안 설정 미비**: `config/settings.py`에 `SECRET_KEY`가 하드코딩되어 있고 `DEBUG` 모드가 활성화되어 있어 즉시 공개하기에 부적합함.
  - **테스트 환경의 한계**: `test_language_switcher` 테스트가 테스트 클라이언트의 쿠키 처리 문제로 인해 지속적으로 실패하여 임시로 비활성화됨. (실제 브라우저에서는 정상 동작 확인)
 
 ### 과거에 해결된 이슈 (Resolved Issues)
@@ -247,6 +248,7 @@
 
 ## 6. 리팩토링 백로그 (Refactoring Backlog)
 
+- [ ] **보안 설정 리팩토링**: `python-dotenv`를 사용하여 `SECRET_KEY` 및 기타 민감 정보를 `.env` 파일로 분리하고, `.gitignore`에 추가합니다.
 - [ ] **(TDD) 버튼 스타일을 CSS 파일로 분리**: `base.html`의 인라인 스타일을 별도 CSS 파일로 분리하고 클래스를 적용합니다.
 - [ ] **(TDD) 누락된 "No tags." trans 태그 추가**: `post_list.html`의 "No tags." 메시지를 번역 가능하도록 수정합니다.
 - [ ] **(TDD) 언어 전환 POST 로직 테스트 복원**: `test_i18n.py`에 언어 전환 시 POST 요청 및 세션 변경을 검증하는 테스트를 복원합니다.
