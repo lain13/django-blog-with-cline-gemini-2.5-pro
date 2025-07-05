@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-20 22:21+0900\n"
+"POT-Creation-Date: 2025-07-05 13:50+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,86 +17,124 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
 #: .\blog\models\category.py:5
 msgid "name"
-msgstr "name"
+msgstr ""
 
 #: .\blog\models\category.py:14
 msgid "category"
-msgstr "category"
+msgstr ""
 
 #: .\blog\models\category.py:15
 msgid "categories"
-msgstr "categories"
+msgstr ""
 
 #: .\blog\templates\blog\base.html:8
 msgid "TDD Blog"
-msgstr "TDD Blog"
+msgstr ""
+
+#: .\blog\templates\blog\base.html:13
+msgid "Home"
+msgstr ""
 
 #: .\blog\templates\blog\base.html:30
 msgid "My Profile"
-msgstr "My Profile"
+msgstr ""
+
+#: .\blog\templates\blog\base.html:33
+msgid "Logout"
+msgstr ""
+
+#: .\blog\templates\blog\base.html:36
+msgid "Login"
+msgstr ""
+
+#: .\blog\templates\blog\base.html:37 .\users\templates\users\signup.html:5
+#: .\users\templates\users\signup.html:9
+msgid "Sign Up"
+msgstr ""
+
+#: .\blog\templates\blog\post_list.html:8
+msgid "New Post"
+msgstr ""
+
+#: .\blog\templates\blog\post_list.html:11
+msgid "Search Posts..."
+msgstr ""
+
+#: .\blog\templates\blog\post_list.html:12
+msgid "Search"
+msgstr ""
+
+#: .\blog\templates\blog\post_list.html:22
+msgid "Tags"
+msgstr ""
+
+#: .\blog\templates\blog\post_list.html:29
+#: .\blog\templates\blog\search_results.html:21
+msgid "Created"
+msgstr ""
+
+#: .\blog\templates\blog\post_list.html:29
+#: .\blog\templates\blog\search_results.html:21
+msgid "Updated"
+msgstr ""
 
 #: .\blog\templates\blog\search_results.html:5
 #: .\blog\templates\blog\search_results.html:8
 msgid "Search Results for"
-msgstr "Search Results for"
+msgstr ""
 
 #: .\blog\templates\blog\search_results.html:9
 msgid "Back to Post List"
-msgstr "Back to Post List"
-
-#: .\blog\templates\blog\search_results.html:21
-msgid "Created"
-msgstr "Created"
-
-#: .\blog\templates\blog\search_results.html:21
-msgid "Updated"
-msgstr "Updated"
+msgstr ""
 
 #: .\blog\templates\blog\search_results.html:25
 msgid "No posts found."
-msgstr "No posts found."
+msgstr ""
 
 #: .\blog\views\post_views.py:47
 msgid "New post has been created successfully."
-msgstr "New post has been created successfully."
+msgstr ""
 
 #: .\blog\views\post_views.py:84
 msgid "Please enter a search term."
-msgstr "Please enter a search term."
+msgstr ""
 
 #: .\config\settings.py:127
 msgid "English"
-msgstr "English"
+msgstr ""
 
 #: .\config\settings.py:128
 msgid "Korean"
-msgstr "Korean"
+msgstr ""
+
+#: .\users\templates\users\login.html:5 .\users\templates\users\login.html:24
+msgid "Log In"
+msgstr ""
 
 #: .\users\templates\users\profile_detail.html:6
 #, python-format
 msgid "%(username)s's Profile"
-msgstr "%(username)s's Profile"
+msgstr ""
 
 #: .\users\templates\users\profile_detail.html:10
 msgid "User Avatar"
-msgstr "User Avatar"
+msgstr ""
 
 #: .\users\templates\users\profile_detail.html:12
 msgid "No avatar uploaded."
-msgstr "No avatar uploaded."
+msgstr ""
 
 #: .\users\templates\users\profile_detail.html:19
 msgid "Bio"
-msgstr "Bio"
+msgstr ""
 
 #: .\users\templates\users\profile_detail.html:25
 #: .\users\templates\users\profile_form.html:6
 msgid "Edit Profile"
-msgstr "Edit Profile"
+msgstr ""
 
 #: .\users\templates\users\profile_form.html:10
 msgid "Save Changes"
-msgstr "Save Changes"
+msgstr ""

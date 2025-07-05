@@ -1,7 +1,8 @@
 {% extends "blog/base.html" %}
+{% load i18n %}
 
 {% block content %}
-  <h2>Log In</h2>
+  <h2>{% trans "Log In" %}</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.non_field_errors }}
@@ -20,6 +21,6 @@
         {{ form.captcha }}
         {{ form.captcha.errors }}
     </p>
-    <button type="submit">Log In</button>
+    <button type="submit">{% trans "Log In" %}</button>
   </form>
 {% endblock %}

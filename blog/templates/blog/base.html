@@ -10,7 +10,7 @@
 </head>
 <body>
     <nav>
-        <a href="{% url 'blog:post_list' %}">Home</a>
+        <a href="{% url 'blog:post_list' %}">{% trans "Home" %}</a>
         <form action="{% url 'set_language' %}" method="post" style="display: inline;">
             {% csrf_token %}
             <input name="next" type="hidden" value="{{ request.path }}">
@@ -30,11 +30,11 @@
             <a href="{% url 'users:profile_detail' username=user.username %}">{% trans "My Profile" %}</a>
             <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" style="background: none; border: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;">Logout</button>
+                <button type="submit" style="background: none; border: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer;">{% trans "Logout" %}</button>
             </form>
         {% else %}
-            <a href="{% url 'users:login' %}">Login</a>
-            <a href="{% url 'users:signup' %}">Sign Up</a>
+            <a href="{% url 'users:login' %}">{% trans "Login" %}</a>
+            <a href="{% url 'users:signup' %}">{% trans "Sign Up" %}</a>
         {% endif %}
     </nav>
     <main>

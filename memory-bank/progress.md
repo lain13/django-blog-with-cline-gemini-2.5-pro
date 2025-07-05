@@ -205,21 +205,21 @@
     - [x] 네비게이션 바에 '내 프로필' 링크 추가
     - [x] 프로필 관련 페이지 UI 최종 검토
 - **15. i18n 기능 개선 및 안정화**
-  - [ ] **Phase 1: 선행 작업 (Prerequisites)**
-    - [ ] `.po` 파일 업데이트 (`makemessages`)
+  - [x] **Phase 1: 환경 설정 및 기본 번역 적용 (Setup & Initial Translation)**
+    - [x] `compilemessages` 오류 해결 및 `venv` 폴더 제외 설정
     - [ ] `en/django.po` 파일의 비어있는 번역 채우기
-    - [ ] 번역 파일 컴파일 (`compilemessages`)
-  - [ ] **Phase 2: Skipped 테스트 해결 (TDD 기반)**
+  - [ ] **Phase 2: 기능 적용 (TDD 기반)**
+    - [ ] 템플릿에 `trans` 태그 적용
+    - [ ] 테스트 코드에서 `translation.activate` 사용
+  - [ ] **Phase 3: Skipped 테스트 해결 (TDD 기반)**
     - [ ] `blog/tests/test_forms.py`: `CommentForm` CAPTCHA 테스트 해결 (`mock.patch` 사용)
     - [ ] `blog/tests/test_search_views.py`: `SearchView` 번역 테스트 2개 해결 (`translation.activate` 사용)
     - [ ] `blog/tests/test_i18n.py`: `InternationalizationTest` 번역 테스트 2개 해결 (`translation.activate` 사용)
     - [ ] `blog/tests/test_i18n.py`: `test_language_switcher` 쿠키/세션 테스트 해결
-  - [ ] **Phase 3: 미번역 텍스트 번역 적용**
+  - [ ] **Phase 4: 미번역 텍스트 번역 적용**
     - [ ] 사이트 전체 수동 검증 및 미번역 텍스트 목록화
-    - [ ] 템플릿에 `{% trans %}` 태그 적용
-    - [ ] 번역 파일(`.po`) 업데이트 및 컴파일
     - [ ] TDD 기반 번역 검증 테스트 추가
-  - [ ] **Phase 4: i18n Best Practice 적용**
+  - [ ] **Phase 5: i18n Best Practice 적용**
     - [ ] `gettext_lazy` 적용 전수 조사 및 리팩토링
     - [ ] `LocaleMiddleware` 설정 검토
 
@@ -244,3 +244,9 @@
 - **테스팅**: 인증이 필요한 모든 기능에 대한 권한 테스트 케이스 추가
 - **SEO**: RSS 피드를 통한 검색 엔진 최적화 및 콘텐츠 배포
 - **캐싱**: RSS 피드 성능 최적화를 위한 캐싱 전략 고려
+
+## 6. 리팩토링 백로그 (Refactoring Backlog)
+
+- [ ] **(TDD) 버튼 스타일을 CSS 파일로 분리**: `base.html`의 인라인 스타일을 별도 CSS 파일로 분리하고 클래스를 적용합니다.
+- [ ] **(TDD) 누락된 "No tags." trans 태그 추가**: `post_list.html`의 "No tags." 메시지를 번역 가능하도록 수정합니다.
+- [ ] **(TDD) 언어 전환 POST 로직 테스트 복원**: `test_i18n.py`에 언어 전환 시 POST 요청 및 세션 변경을 검증하는 테스트를 복원합니다.

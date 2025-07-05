@@ -1,14 +1,15 @@
 {% extends "blog/base.html" %}
+{% load i18n %}
 
 {% block title %}Blog Posts{% endblock %}
 
 {% block content %}
     <h1>Blog Posts</h1>
-    <a href="{% url 'blog:post_new' %}">New Post</a>
+    <a href="{% url 'blog:post_new' %}">{% trans "New Post" %}</a>
 
     <form action="{% url 'blog:search' %}" method="get">
-        <input type="text" name="q" placeholder="Search Posts...">
-        <button type="submit">Search</button>
+        <input type="text" name="q" placeholder="{% trans "Search Posts..." %}">
+        <button type="submit">{% trans "Search" %}</button>
     </form>
     <hr>
 
@@ -18,14 +19,14 @@
                 <h2><a href="{% url 'blog:post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
                 <p>{{ post.content }}</p>
                 <div>
-                    <strong>Tags:</strong>
+                    <strong>{% trans "Tags" %}:</strong>
                     {% for tag in post.tags.all %}
                         <a href="{% url 'blog:post_list_by_tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                     {% empty %}
                         <span>No tags.</span>
                     {% endfor %}
                 </div>
-                <small>Created: {{ post.created_at }} | Updated: {{ post.updated_at }}</small>
+                <small>{% trans "Created" %}: {{ post.created_at }} | {% trans "Updated" %}: {{ post.updated_at }}</small>
             </li>
         {% endfor %}
     </ul>
