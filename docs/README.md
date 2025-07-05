@@ -48,7 +48,7 @@
 ### 4.1. 환경 설정
 ```bash
 # 1. 저장소 복제
-git clone https://github.com/your-username/django-tdd-blog.git
+git clone https://github.com/lain13/django-blog-with-cline-gemini-2.5-pro.git
 cd django-tdd-blog
 
 # 2. 가상 환경 생성 및 활성화
@@ -58,6 +58,10 @@ source venv/Scripts/activate  # Windows Git Bash
 
 # 3. 의존성 패키지 설치
 pip install -r requirements.txt
+
+# 4. .env 파일 설정
+# .env.example 파일을 복사하여 .env 파일을 생성하고, SECRET_KEY 등 필요한 값을 설정합니다.
+cp .env.example .env
 ```
 
 ### 4.2. 데이터베이스 설정

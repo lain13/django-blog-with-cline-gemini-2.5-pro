@@ -10,20 +10,24 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*xfwt^au+be_bye@0f(c5=ib#&)u7=hy+%o4!l_dy)35s6j+tv'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -151,8 +155,8 @@ LOGIN_URL = 'users:login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Google reCAPTCHA settings
-RECAPTCHA_PUBLIC_KEY = ''  # Add your reCAPTCHA public key here
-RECAPTCHA_PRIVATE_KEY = ''  # Add your reCAPTCHA private key here
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
 # Django REST Framework settings
 REST_FRAMEWORK = {

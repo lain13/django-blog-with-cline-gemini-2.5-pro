@@ -42,3 +42,10 @@
     4. `python manage.py collectstatic --noinput`
     5. `python manage.py check --deploy`
     6. WSGI 서버 재시작
+
+## 6. 환경 변수 (Environment Variables)
+- **민감 정보 관리**: 모든 민감 정보(`SECRET_KEY`, `DB_PASSWORD` 등)는 `.env` 파일을 통해 관리합니다.
+- **설정 방법**:
+    1. 프로젝트 루트의 `.env.example` 파일을 복사하여 `.env` 파일을 생성합니다.
+    2. `.env` 파일 내에 필요한 환경 변수 값을 설정합니다.
+    3. `.env` 파일은 `.gitignore`에 등록되어 버전 관리에서 제외됩니다.
