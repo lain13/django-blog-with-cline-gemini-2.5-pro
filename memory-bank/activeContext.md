@@ -2,18 +2,19 @@
 
 ## 현재 작업 (Current Task)
 
-- **보안 설정 리팩토링 (Security Settings Refactoring)**
+- **테스트 시스템 안정화 및 성능 최적화**
 
 ## 상태 (Status)
 
-- **완료 (Completed)**
+- **진행 중 (In Progress)**
 
 ## 설명 (Description)
 
-- `python-dotenv`를 사용하여 `SECRET_KEY`, `DEBUG` 등 민감 정보를 `.env` 파일로 분리했습니다.
-- 새로운 개발자를 위해 `.env.example` 파일을 추가하고, `README.md`와 `.clinerules/environment.md`에 관련 설정 방법을 문서화했습니다.
-- `progress.md`의 '리팩토링 백로그'와 '알려진 이슈'를 업데이트하여 작업 상태를 반영했습니다.
+- 국제화(i18n) 테스트 오류 해결: `translation.activate()`를 잘못된 방식으로 사용하던 테스트 코드를 `translation.override()`로 수정하여 11개의 테스트 오류를 모두 해결했습니다.
+- 데이터베이스 쿼리 성능 최적화: N+1 문제를 해결하기 위해 뷰들에 `select_related`와 `prefetch_related`를 적용하여 성능을 개선했습니다.
+- 모든 테스트가 정상적으로 통과하는 상태로 프로젝트 안정성이 향상되었습니다.
 
 ## 다음 단계 (Next Steps)
 
-- `progress.md`의 '리팩토링 백로그' 또는 '남은 작업'을 검토하여 다음 작업을 계획합니다.
+- `progress.md`의 '리팩토링 백로그' 항목들을 검토하여 다음 리팩토링 작업을 계획합니다.
+- 미완료된 i18n 관련 작업들을 순차적으로 처리합니다.

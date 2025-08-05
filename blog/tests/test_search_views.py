@@ -58,14 +58,14 @@ class SearchViewTest(TestCase):
 
     def test_search_no_results(self):
         """검색 결과가 없을 때를 올바르게 처리하는지 테스트"""
-        with translation.activate('en'):
+        with translation.override('en'):
             response = self.client.get(reverse('blog:search'), {'q': 'NonExistentTerm'})
             self.assertContains(response, "No posts found.")
             self.assertNotContains(response, "Apple Banana")
 
     def test_search_empty_query(self):
         """검색어가 비어있을 때 모든 포스트를 보여주지 않는지 테스트"""
-        with translation.activate('en'):
+        with translation.override('en'):
             response = self.client.get(reverse('blog:search'), {'q': ''})
             self.assertContains(response, "Please enter a search term.")
             self.assertNotIn('posts', response.context)

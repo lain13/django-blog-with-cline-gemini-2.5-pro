@@ -22,11 +22,16 @@ class PostListView(ListView):
     paginate_by = 10
     ordering = ['-created_at']
 
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related('tags')
+
 class PostDetailView(DetailView):
     model = Post
 
     def get_object(self, queryset=None):
-        post = super().get_object(queryset)
+        # Prefetch related objects to avoid N+1 queries
+        queryset = self.get_queryset().select_related('author', 'category').prefetch_related('tags', 'comments__author')
+        post = super().get_object(queryset=queryset)
         post.increase_view_count()
         return post
 
@@ -72,7 +77,7 @@ class SearchView(ListView):
         if query:
             return Post.objects.filter(
                 Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
-            ).distinct().order_by('pk')
+            ).distinct().order_by('pk').prefetch_related('tags')
         return Post.objects.none()
 
     def get_context_data(self, **kwargs):
@@ -98,7 +103,7 @@ class TagFilteredPostListView(ListView):
 
     def get_queryset(self):
         self.tag = get_object_or_404(Tag, name=self.kwargs['tag_name'])
-        return Post.objects.filter(tags=self.tag).order_by('-created_at')
+        return Post.objects.filter(tags=self.tag).order_by('-created_at').prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -34,3 +34,5 @@
 
 - **한글 슬러그 지원**: `Category` 모델의 `slug` 필드에 `allow_unicode=True` 옵션을 적용하여, URL에서 한글을 사용할 수 있도록 지원한다.
 - **AJAX 통신**: '좋아요/싫어요' 기능과 같이 페이지 새로고침 없이 서버와 통신이 필요한 경우, JavaScript의 `fetch` API와 `JsonResponse`를 사용한 AJAX 통신을 구현한다.
+- **성능 최적화**: 데이터베이스 쿼리 성능을 위해 `select_related`와 `prefetch_related`를 적극적으로 사용하여 N+1 문제를 해결한다.
+- **테스트 안정성**: 국제화 테스트의 안정성을 위해 `translation.override()` 컨텍스트 매니저를 사용하여 테스트 환경을 격리한다.

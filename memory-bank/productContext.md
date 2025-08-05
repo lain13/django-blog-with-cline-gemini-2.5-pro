@@ -36,7 +36,7 @@
 
 - **`Category` (카테고리)**
   - `name`: 카테고리 이름 (CharField, 고유값)
-  - `slug`: URL을 위한 슬러그 (SlugField, 고유값)
+  - `slug`: URL을 위한 슬러그 (SlugField, 고유값, 유니코드 지원)
   - `parent`: 부모 카테고리 (자신을 참조하는 ForeignKey, 계층 구조)
 
 - **`Tag` (태그)**

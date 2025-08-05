@@ -223,6 +223,11 @@
     - [ ] `gettext_lazy` 적용 전수 조사 및 리팩토링
     - [ ] `LocaleMiddleware` 설정 검토
 
+- **16. 테스트 시스템 안정화 및 성능 최적화**
+  - [x] **국제화 테스트 안정화**: `translation.activate()` 오류 해결을 위해 `translation.override()`로 수정
+  - [x] **데이터베이스 쿼리 최적화**: N+1 문제 해결을 위한 `select_related`/`prefetch_related` 적용
+  - [x] **전체 테스트 통과**: 148개 테스트 모두 정상 통과 확인
+
 ## 4. 알려진 이슈 (Known Issues)
 
 ### 현재 알려진 이슈 (Current Issues)

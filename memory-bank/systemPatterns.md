@@ -30,6 +30,7 @@
 - **커스텀 권한 Mixin**: `UserPassesTestMixin`을 상속받는 `AuthorRequiredMixin`과 같은 커스텀 Mixin을 만들어 객체 수준의 복잡한 권한 로직을 재사용한다.
 - **AJAX 요청 처리**: `django.views.View`를 직접 상속하고 `post` 메서드를 구현하여 AJAX 요청을 처리한다. `JsonResponse`를 사용하여 응답을 반환한다.
 - **AJAX 인증 처리**: `LoginRequiredMixin`의 `handle_no_permission` 메서드를 오버라이딩하여, 인증 실패 시 리다이렉트 대신 `401 Unauthorized` 상태와 함께 JSON 에러 메시지를 반환한다.
+- **성능 최적화**: `select_related`와 `prefetch_related`를 사용하여 N+1 문제를 해결하고 데이터베이스 쿼리 성능을 최적화한다.
 
 ### 2.4. 폼 패턴 (Form Patterns)
 

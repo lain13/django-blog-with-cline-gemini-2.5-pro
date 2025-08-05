@@ -10,7 +10,7 @@ class PostListAPIView(generics.ListCreateAPIView):
     """
     모든 게시물을 나열하거나 새 게시물을 생성하는 API 뷰입니다.
     """
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related('author').prefetch_related('tags')
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -25,7 +25,7 @@ class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     """
     단일 게시물을 조회, 업데이트 또는 삭제하는 API 뷰입니다.
     """
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related('author').prefetch_related('tags')
     serializer_class = PostSerializer
     permission_classes = [IsOwnerOrReadOnly]
 
@@ -34,7 +34,7 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
     """
     모든 댓글을 나열하거나 새 댓글을 생성하는 API 뷰입니다.
     """
-    queryset = Comment.objects.all().order_by('-id')
+    queryset = Comment.objects.select_related('author', 'post').order_by('-id')
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -46,7 +46,7 @@ class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     """
     단일 댓글을 조회, 업데이트 또는 삭제하는 API 뷰입니다.
     """
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.select_related('author', 'post')
     serializer_class = CommentSerializer
     permission_classes = [IsOwnerOrReadOnly]
 
